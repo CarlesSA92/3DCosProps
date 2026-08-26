@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import type { Locale } from "../i18n";
+import { ProfileIcon, HamburgerIcon, CloseIcon } from "../../src/icons";
 
 type SiteHeaderProps = {
   locale: Locale;
@@ -121,18 +122,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
             className="hidden md:flex text-text-dim transition-colors hover:text-[#d4af37]"
             aria-label="User profile"
           >
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
+            <ProfileIcon />
           </a>
 
           {/* Mobile hamburger */}
@@ -143,16 +133,9 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? (
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
+              <CloseIcon />
             ) : (
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 6h16" />
-                <path d="M4 12h16" />
-                <path d="M4 18h16" />
-              </svg>
+              <HamburgerIcon />
             )}
           </button>
         </div>
@@ -187,18 +170,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
                 className="flex items-center gap-3 font-label text-sm uppercase tracking-[0.1em] text-text-dim hover:text-[#d4af37] transition-colors"
                 aria-label="User profile"
               >
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
+                <ProfileIcon className="h-5 w-5" />
                 {locale === "es" ? "Perfil" : "Profile"}
               </a>
               <div className="flex items-center gap-1 font-label text-sm uppercase tracking-[0.1em]">

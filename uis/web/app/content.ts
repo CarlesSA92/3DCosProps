@@ -1,38 +1,5 @@
 import type { Locale } from "./i18n";
-
-export type NavItem = {
-  href: string;
-  label: string;
-};
-
-type HomeDictionary = {
-  languageLabel: string;
-  nav: NavItem[];
-  ctaPrimary: string;
-  ctaSecondary: string;
-  heroTag: string;
-  heroTitle: string;
-  heroBody: string;
-  capabilitiesTitle: string;
-  capabilities: Array<{ title: string; body: string }>;
-  projectsTitle: string;
-  projectsBody: string;
-  projectsChips: string[];
-  commissionTitle: string;
-  commissionBody: string;
-  footer: string;
-  footerNavTitle: string;
-  footerFollowTitle: string;
-  footerPrivacyLabel: string;
-  servicesOverviewTitle: string;
-  servicesOverviewBody: string;
-  servicesCardTitle: string;
-  servicesCardBody: string;
-  servicesCardCta: string;
-  commissionsCardTitle: string;
-  commissionsCardBody: string;
-  commissionsCardCta: string;
-};
+import type { NavItem, HomeDictionary } from "../src/types/content";
 
 const dictionaries: Record<Locale, HomeDictionary> = {
   en: {

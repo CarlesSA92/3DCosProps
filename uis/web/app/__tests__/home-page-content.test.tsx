@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { HomePageContent } from "../components/home-page-content";
-import type { HomePageContentDict } from "../components/home-page-content";
+import type { HomePageContentDict } from "../../src/types/content";
 
 const mockDict: HomePageContentDict = {
   heroTag: "High-fidelity replicas",

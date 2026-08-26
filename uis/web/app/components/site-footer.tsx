@@ -1,4 +1,4 @@
-import type { NavItem } from "../content";
+import type { NavItem } from "../../src/types/content";
 
 type SiteFooterProps = {
   text: string;
@@ -19,7 +19,7 @@ export function SiteFooter({ text, nav, footerNavTitle, footerFollowTitle, foote
           {text}
         </p>
       </div>
-      <div className="col-span-1 flex flex-col gap-4 font-body text-base text-center md:text-left items-center md:items-start" aria-label={footerNavTitle}>
+      <nav className="col-span-1 flex flex-col gap-4 font-body text-base text-center md:text-left items-center md:items-start" aria-label={footerNavTitle}>
         <h4 className="font-label text-xs text-primary uppercase tracking-widest mb-2">{footerNavTitle}</h4>
         {nav.map((item) => (
           <a key={item.href} className="text-text-dim hover:text-primary transition-colors" href={item.href}>
@@ -27,7 +27,7 @@ export function SiteFooter({ text, nav, footerNavTitle, footerFollowTitle, foote
           </a>
         ))}
         <a className="text-text-dim hover:text-primary transition-colors" href="#">{footerPrivacyLabel}</a>
-      </div>
+      </nav>
       <div className="col-span-1 flex flex-col gap-6" aria-label={footerFollowTitle}>
         <h4 className="font-label text-xs text-primary uppercase tracking-widest mb-2">{footerFollowTitle}</h4>
         <div className="grid grid-cols-3 grid-rows-2 gap-4">
