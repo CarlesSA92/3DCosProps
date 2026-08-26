@@ -1,6 +1,7 @@
 import { PageIntro } from "../../src/ui/page-intro";
 import { SectionIntro } from "../../src/ui/section-intro";
 import { FeatureCard } from "../../src/ui/feature-card";
+import { CarouselSection } from "../../src/ui/carousel-section";
 import { SettingsIcon, PenIcon } from "../../src/icons";
 import type { HomePageContentDict } from "../../src/types/content";
 
@@ -22,8 +23,14 @@ export function HomePageContent({ dict }: HomePageContentProps) {
         }}
       />
 
+      {/* ── Gallery Carousel ── */}
+      <CarouselSection
+        slides={dict.gallery.slides}
+        autoPlayInterval={5000}
+      />
+
       {/* ── Services & Commissions Overview ── */}
-      <section className="py-16 md:py-24 px-4 md:px-12 bg-background">
+      <section className="py-8 md:py-12 px-4 md:px-12 bg-background">
         <div className="max-w-7xl mx-auto">
           <SectionIntro
             title={dict.servicesOverviewTitle}

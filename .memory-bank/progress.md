@@ -139,6 +139,8 @@ Goal: deliver a polished bilingual Home page aligned with brief + design + refer
 - [x] Implement bilingual routing skeleton (/es, /en).
 - [x] Define design tokens in code (colors, typography, spacing, radius, layers).
 - [x] Build Home sections (hero, capabilities, highlights, CTA).
+- [x] Implement gallery image carousel (auto-play, manual arrows, dots, keyboard nav, accessible).
+  - _Component: `src/ui/carousel-section.tsx`. Uses `CarouselSlide[]` type with placeholder gradients._
 - [x] Implement persistent navigation and footer.
 - [x] Add core motion (reveal/stagger/hover) with reduced-motion support.
 - [x] Add responsive behavior for desktop and mobile.
@@ -155,6 +157,33 @@ Goal: deliver a polished bilingual Home page aligned with brief + design + refer
 ### Exit Criteria
 - Home is visually aligned and responsive.
 - Quality baseline checks pass.
+
+### Gallery Carousel — Image Replacement Guide
+When real images are ready, replace placeholders in `app/content.ts` → each slide's `slides[]` array (both `en` and `es` dictionaries).
+
+**Per slide, add `src` pointing to the image asset (e.g. `/media/gallery/filename.webp`):**
+```typescript
+{
+  id: "props",
+  src: "/media/gallery/prop-helmet.webp",  // <-- add this line
+  alt: "High-fidelity prop replicas showcase",
+  label: "Props",
+  placeholderGradient: "linear-gradient(135deg, …)",   // ignored when src is present
+}
+```
+
+**Steps:**
+1. Place real images in the root `/media/gallery/` directory (symlinked to `uis/web/public/media/`).
+2. Add `src` field to each slide in both EN and ES entries.
+3. Update `alt` text to describe the actual image content.
+4. Run `npx next build` to verify no errors.
+5. Optionally remove `placeholderGradient` fields once all slides have `src`.
+
+**Image guidelines:**
+- Use WebP format for production (lighter, faster).
+- Aspect ratio 16:9 (mobile) / 21:9 (desktop). The carousel clips to fill.
+- Optimize with `next/image` (already configured — no extra work).
+- Max 5 slides shown; add more by pushing objects into the `slides[]` array.
 
 ---
 

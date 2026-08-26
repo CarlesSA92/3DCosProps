@@ -9,6 +9,17 @@ const mockDict: HomePageContentDict = {
   heroBody: "Specialists in cosplays, replicas and atrezzo.",
   ctaSecondary: "Explore Projects",
   ctaPrimary: "Start Commission",
+  gallery: {
+    title: "Gallery",
+    slides: [
+      {
+        id: "test-slide",
+        alt: "Test slide",
+        label: "Test",
+        placeholderGradient: "linear-gradient(135deg, #000 0%, #333 100%)",
+      },
+    ],
+  },
   servicesOverviewTitle: "Do you have a project?",
   servicesOverviewBody: "We will help you make it real.",
   servicesCardTitle: "Services",

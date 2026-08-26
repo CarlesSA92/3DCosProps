@@ -33,6 +33,7 @@ export type HomeDictionary = PageContent & {
   projectsChips: string[];
   commissionTitle: string;
   commissionBody: string;
+  gallery: GallerySection;
   servicesOverviewTitle: string;
   servicesOverviewBody: string;
   servicesCardTitle: string;
@@ -62,6 +63,25 @@ export type SectionIntroContent = {
   body: string;
 };
 
+/** A single slide in the gallery carousel */
+export type CarouselSlide = {
+  id: string;
+  /** Future: real image path e.g. "/media/gallery/prop-helmet.webp" */
+  src?: string;
+  /** Alt text for screen readers */
+  alt: string;
+  /** Short label overlay (e.g. "Props", "Cosplay") */
+  label: string;
+  /** CSS gradient for placeholder visuals (used until real images are provided) */
+  placeholderGradient: string;
+};
+
+/** Gallery carousel section data */
+export type GallerySection = {
+  title: string;
+  slides: CarouselSlide[];
+};
+
 /** Flat dictionary shape expected by HomePageContent — no nested objects */
 export type HomePageContentDict = {
   heroTag: string;
@@ -69,6 +89,7 @@ export type HomePageContentDict = {
   heroBody: string;
   ctaSecondary: string;
   ctaPrimary: string;
+  gallery: GallerySection;
   servicesOverviewTitle: string;
   servicesOverviewBody: string;
   servicesCardTitle: string;
