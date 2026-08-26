@@ -61,8 +61,42 @@
 - src/: shared types/models used across UI and services
 - scripts/: build, validation, or migration scripts as project matures
 
+## Backend Preparation (Pre-Implementation)
+- Integration blueprint document:
+	- docs/BACKEND_INTEGRATION_BLUEPRINT.md
+- RBAC matrix by endpoint:
+	- docs/API_RBAC_MATRIX.md
+- Endpoint draft by domain:
+	- services/contracts/endpoints.md
+- Shared TypeScript contracts for frontend/backend connection:
+	- src/models/api/contracts.ts
+
+### Backend Integration Conventions
+- Versioned API base path: /api/v1
+- Shared DTO contracts must be defined first in src/models/api before endpoint implementation.
+- Views must connect through domain endpoints (products, portfolio, commissions, orders, users, metrics) to avoid cross-domain coupling.
+- Checkout must remain provider-agnostic through an adapter approach until final payment decision.
+- Admin operations require role-based access control (admin, manager, support, customer).
+- User Profile view must support: profile editing, payment method management, order tracking, commission tracking, and role-gated backend access link.
+- Backend access link visibility from profile:
+	- Visible: admin, manager
+	- Hidden: support, customer, anonymous
+- Visibility is UX-only. Server-side authorization is mandatory for all privileged endpoints.
+
+## User Profile Integration Scope (Planned)
+- Account data:
+	- display name, email, password update flow, shipping/billing address
+- Payment methods:
+	- provider-tokenized references only (no raw card storage)
+- Tracking:
+	- user order status timeline
+	- user commission status timeline
+- Security:
+	- ownership checks for user data
+	- RBAC enforcement for backend/admin access
+
 ## Open Technical Decisions
-- Deployment platform (pending)
+- Deployment platform: Vercel with owned domain (decided in ADR-001)
 - Payment provider for full checkout (pending)
 - CMS adoption vs repository-based content (pending)
 
