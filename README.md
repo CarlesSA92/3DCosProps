@@ -76,6 +76,12 @@ See the complete checklist and DoD in [.memory-bank/progress.md](.memory-bank/pr
 
 When implementation begins (Phase 1), bootstrap the web app inside uis/web with Next.js + TypeScript + Tailwind and align with docs listed above.
 
+Run in development mode:
+
+1. cd uis/web
+2. npm run dev
+3. Open http://localhost:3000
+
 Suggested first milestones:
 
 1. Create uis/web app scaffold and base layout.

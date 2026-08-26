@@ -87,10 +87,10 @@ Revisit this ADR at the beginning of Phase 3, or earlier if either condition is 
 - Testing baseline exists and passes (unit + smoke E2E for Home and locale switch).
 
 #### DoD - Phase 2 (Informational Pages)
-- Services and Projects pages are published in both locales.
+- Services, Projects, and Privacy Policy pages are published in both locales.
 - Projects filtering UX works with local typed data.
 - Shared components/tokens are reused without duplicating design logic.
-- Core user journeys for Services/Projects are covered by tests.
+- Core user journeys for Services/Projects/Privacy Policy are covered by tests.
 - User Profile information architecture is defined (sections, navigation entry, and role-aware backend link behavior).
 
 #### DoD - Phase 3 (Commissions and Shop Foundations)
@@ -134,20 +134,23 @@ Revisit this ADR at the beginning of Phase 3, or earlier if either condition is 
 Goal: deliver a polished bilingual Home page aligned with brief + design + references.
 
 ### Checklist
-- [ ] Bootstrap Next.js app in uis/web with TypeScript and Tailwind.
-- [ ] Configure app structure (routes, layout, components, styles).
-- [ ] Implement bilingual routing skeleton (/es, /en).
-- [ ] Define design tokens in code (colors, typography, spacing, radius, layers).
-- [ ] Build Home sections (hero, capabilities, highlights, CTA).
-- [ ] Implement persistent navigation and footer.
-- [ ] Add core motion (reveal/stagger/hover) with reduced-motion support.
-- [ ] Add responsive behavior for desktop and mobile.
+- [x] Bootstrap Next.js app in uis/web with TypeScript and Tailwind.
+- [x] Configure app structure (routes, layout, components, styles).
+- [x] Implement bilingual routing skeleton (/es, /en).
+- [x] Define design tokens in code (colors, typography, spacing, radius, layers).
+- [x] Build Home sections (hero, capabilities, highlights, CTA).
+- [x] Implement persistent navigation and footer.
+- [x] Add core motion (reveal/stagger/hover) with reduced-motion support.
+- [x] Add responsive behavior for desktop and mobile.
 
 ### Quality Checklist (Phase 1)
-- [ ] Accessibility baseline (keyboard nav, focus states, semantics, contrast).
-- [ ] SEO baseline (metadata, open graph, robots, sitemap, canonical per locale).
-- [ ] Performance baseline (image strategy, lazy loading, LCP/CLS controls).
-- [ ] Testing baseline (unit + smoke E2E for Home and locale switch).
+- [x] Accessibility baseline (keyboard nav, focus states, semantics, contrast).
+  - _Resolved: Added global `*:focus-visible` styles (2px gold outline + 3px offset + 4px radius). Added `aria-label` to footer nav and social sections. Fixed Spanish accent typos: "Impresion"→"Impresión", "Produccion"→"Producción", "captacion"→"captación", "estan"→"están", "ruta de produccion"→"ruta de producción"._
+- [x] SEO baseline (metadata, open graph, robots, sitemap, canonical per locale).
+- [x] Performance baseline (image strategy, lazy loading, LCP/CLS controls).
+  - _Resolved: Migrated Hero `<img>` to `next/image` with `fill`, `priority`, `sizes="100vw"`. Configured `deviceSizes` in next.config.ts. Deduplicated background scales image — removed `/background-scales.png`, both layout and Hero now reference `/media/Background-Scales.png` via symlink to root `/media`._
+- [x] Testing baseline (unit + smoke E2E for Home and locale switch).
+  - _Resolved: 25 unit tests across 6 files (i18n, robots, sitemap, site-footer, content, home-page-content). 6 Playwright E2E tests covering EN/ES loading, locale switch, mobile menu, robots/sitemap. All tests passing._
 
 ### Exit Criteria
 - Home is visually aligned and responsive.
@@ -156,11 +159,12 @@ Goal: deliver a polished bilingual Home page aligned with brief + design + refer
 ---
 
 ## Phase 2 - Informational Pages
-Goal: add Services and Projects using reusable UI system and local typed data.
+Goal: add Services, Projects, and Privacy Policy pages using reusable UI system and local typed data.
 
 ### Checklist
 - [ ] Implement Services page.
 - [ ] Implement Projects page with filtering UX.
+- [ ] Implement Privacy Policy page in both locales (/en/privacy-policy and /es/politica-privacidad).
 - [ ] Reuse shared components and style tokens.
 - [ ] Add bilingual content for new pages.
 - [ ] Extend tests for main user flows.
