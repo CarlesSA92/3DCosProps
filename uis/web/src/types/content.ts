@@ -44,25 +44,6 @@ export type HomeDictionary = PageContent & {
   commissionsCardCta: string;
 };
 
-export type FeatureCardContent = {
-  title: string;
-  body: string;
-  cta: string;
-};
-
-export type PageIntroContent = {
-  tag: string;
-  title: string;
-  body: string;
-  ctaSecondary: string;
-  ctaPrimary: string;
-};
-
-export type SectionIntroContent = {
-  title: string;
-  body: string;
-};
-
 /** A single slide in the gallery carousel */
 export type CarouselSlide = {
   id: string;

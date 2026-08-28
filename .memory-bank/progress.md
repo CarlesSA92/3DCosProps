@@ -3,7 +3,7 @@
 ## Global Status
 - Current phase: Phase 2 (Informational Pages)
 - Last update: 2026-08-28
-- Scope decision: Phase 1 complete; Phase 2 in progress (Services page active)
+- Scope decision: Phase 1 complete; Phase 2 in progress (Services page complete; Projects & Privacy Policy pending)
 - Phase 0 status: Completed
 - Phase 1 status: Completed
 
@@ -199,7 +199,7 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
   - _Icons: Added 6 new service icons in `src/icons/index.tsx`._
   - _Content: Added full bilingual dictionary in `app/content.ts` with `getServicesDictionary()` export._
   - _Tests: 8 unit tests covering hero, service cards, features, and CTA. 5 E2E tests covering EN/ES load, nav links, locale persistence, header/footer._
-  - _All 33 unit tests and 11 E2E tests passing._
+  - _All 35 unit tests and 11 E2E tests passing._
   - [x] Replace service icons with redesigned set.
   - [x] Change the page text for fidelity of the brand, clarity and brand tone.
   - [x] Add gold-highlighted words in Service card titles (Blueprints, Design, Print, Finish, Piece) and CTA (legend).
@@ -209,8 +209,18 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
   - [x] Update Commissions card text in English: "Do you have a specific project in mind? Let us build it from scratch to your exact specifications."
   - [x] Update Services card text in Spanish: "diseñados para crear tus proyectos al más mínimo detalle."
   - [x] Update Commissions card text in Spanish: replace "atrezo" → "proyecto".
-  - [ ] Audit SEO metadata, aria-labels, Schema.org markup (e.g. `Service` type), and accessibility for the Services page.
-  - [ ] Check if there are new types to create and reuse in future views.
+  - [x] Add consultation card as #1 service with new messaging and "Complete Piece" gold-wrapped in both locales.
+  - [x] Add subtitle labels to all 6 service cards (PLANNING, CONCEPT, 3D MODELING, 3D PRINTING, FINISHING, RESULT / PLANIFICACIÓN, CONCEPTO, MODELADO 3D, IMPRESIÓN 3D, ACABADO, RESULTADO).
+  - [x] Audit SEO metadata, aria-labels, Schema.org markup (JSON-LD: Organization, WebSite, Service+OfferCatalog), and accessibility for both pages.
+    - _Skip-to-content link added for keyboard users._
+    - _`aria-hidden="true"` added to all decorative SVGs (icons, checkmarks, carousel arrows, CTA arrows)._
+    - _Profile link: `role="button"` + `tabIndex={0}` added._
+    - _FeatureCard: converted to Client Component with keyboard handler (Enter/Space)._
+    - _Sitemap updated with `/en/services` and `/es/services` entries._
+    - _Root layout: restored hardcoded `lang="en"`._
+  - [x] Create `src/types/component.ts` with reusable component prop types and deduplicate from `content.ts`.
+    - _Types moved: `PageIntroContent`, `SectionIntroProps`, `CtaButtonProps`, `FeatureCardContent`, `CarouselSectionProps`, `IconProps`._
+    - _Components updated to import from `../types/component` instead of inline or from `content.ts`._
 - [ ] Implement Projects page with filtering UX.
 - [ ] Implement Privacy Policy page in both locales (/en/privacy-policy and /es/politica-privacidad).
 - [ ] Reuse shared components and style tokens.

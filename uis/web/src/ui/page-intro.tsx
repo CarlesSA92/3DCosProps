@@ -1,7 +1,7 @@
 import { splitGoldTag } from "../utils/split-gold-tag";
 import { ScalesBackground } from "./scales-background";
 import { CtaButton } from "./cta-button";
-import type { PageIntroContent } from "../types/content";
+import type { PageIntroContent } from "../types/component";
 
 type PageIntroProps = {
   content: PageIntroContent;

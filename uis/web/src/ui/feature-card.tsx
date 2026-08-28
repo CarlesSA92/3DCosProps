@@ -1,6 +1,6 @@
 "use client";
 
-import type { FeatureCardContent } from "../types/content";
+import type { FeatureCardContent } from "../types/component";
 
 type FeatureCardProps = {
   /** The content (title, body, cta label) */

@@ -2,15 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import type { CarouselSlide } from "../types/content";
-
-type CarouselSectionProps = {
-  /** Optional section title. Omit or pass empty string to hide it. */
-  title?: string;
-  slides: CarouselSlide[];
-  /** Auto-play interval in milliseconds. Default 5000 (5s). Set to 0 to disable. */
-  autoPlayInterval?: number;
-};
+import type { CarouselSectionProps } from "../types/component";
 
 /** Chevron-left icon */
 function ChevronLeftIcon({ className = "h-5 w-5" }: { className?: string }) {

@@ -1,11 +1,6 @@
-import type { ReactNode } from "react";
 import { splitGoldTag } from "../utils/split-gold-tag";
 
-type SectionIntroProps = {
-  title: string;
-  body?: string;
-  children?: ReactNode;
-};
+import type { SectionIntroProps } from "../types/component";
 
 /**
  * Reusable section heading with an optional subtitle.
