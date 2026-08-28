@@ -4,6 +4,7 @@ import { renderBody } from "../../src/utils/render-body";
 import { splitGoldTag } from "../../src/utils/split-gold-tag";
 import {
   CubeIcon,
+  PrinterIcon,
   BrushIcon,
   SwordIcon,
   HelmetIcon,
@@ -20,7 +21,7 @@ type ServicesPageContentProps = {
 function getServiceIcon(id: string): ReactNode {
   const iconMap: Record<string, ReactNode> = {
     modeling: <CubeIcon />,
-    printing: <BrushIcon />,
+    printing: <PrinterIcon />,
     finishing: <SprayIcon />,
     "prop-fabrication": <SwordIcon />,
     cosplay: <HelmetIcon />,
@@ -60,9 +61,14 @@ export function ServicesPageContent({ dict }: ServicesPageContentProps) {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative z-10 flex flex-col h-full">
                   {/* Icon — centered at top */}
-                  <div className="w-16 h-16 md:w-20 md:h-20 mb-5 md:mb-6 mx-auto text-primary flex items-center justify-center border border-white/10 rounded-full group-hover:scale-110 transition-transform duration-500 shadow-[0_0_15px_rgba(212,175,55,0.1)] group-hover:shadow-[0_0_25px_rgba(212,175,55,0.3)]">
+                  <div className="w-16 h-16 md:w-20 md:h-20 mb-5 md:mb-6 mx-auto text-primary flex items-center justify-center border border-white/10 rounded-full group-hover:scale-110 transition-transform duration-500 shadow-[0_0_15px_rgba(212,175,55,0.1)] group-hover:shadow-[0_0_25px_rgba(212,175,55,0.3)]" aria-hidden="true">
                     {getServiceIcon(service.id)}
                   </div>
+
+                  {/* Subtitle badge */}
+                  <p className="font-label text-[10px] md:text-xs uppercase tracking-[0.15em] text-primary/70 mb-1 md:mb-2 text-center">
+                    {service.subtitle}
+                  </p>
 
                   {/* Title */}
                   <h2 className="font-display text-xl md:text-2xl text-white mb-3 md:mb-4 text-center">
@@ -89,6 +95,7 @@ export function ServicesPageContent({ dict }: ServicesPageContentProps) {
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
+                          aria-hidden="true"
                         >
                           <polyline points="20 6 9 17 4 12" />
                         </svg>

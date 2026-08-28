@@ -17,18 +17,20 @@ type PageIntroProps = {
 
 function ArrowIcon() {
   return (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
+    <svg className="h-8 w-8" viewBox="0 0 640 640" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="miter">
+      <circle cx="324.36182" cy="314.39221" r="247.09879" />
+      <path d="m 235.1425,312.86245 174.86989,0" />
+      <path d="m 338.2404,243.07311 71.77199,69.78934 -71.77199,72.76332" />
     </svg>
   );
 }
 
 function EditIcon() {
   return (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+    <svg className="h-8 w-8" viewBox="0 0 640 640" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m 301.36307,158.61214 h -177.6456 v 365.601 h 364.01487 l 0,-180.81785" />
+      <path d="m 482.26961,94.210807 70.6581,70.658103 -222.9095,222.9095 -95.80209,25.67009 25.74554,-96.08366 z" />
+      <path d="m 419.86178,156.85616 70.53934,70.53934" />
     </svg>
   );
 }
@@ -66,11 +68,11 @@ export function PageIntro({ content, bgOpacity = 0.3, showCta = true, compact = 
           <div className="animate-reveal-up-3 opacity-0 mt-8 sm:mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:w-auto">
             <CtaButton href="#projects" variant="primary">
               {content.ctaSecondary}
-              <ArrowIcon />
+              <span aria-hidden="true"><ArrowIcon /></span>
             </CtaButton>
             <CtaButton href="#commissions" variant="secondary">
               {content.ctaPrimary}
-              <EditIcon />
+              <span aria-hidden="true"><EditIcon /></span>
             </CtaButton>
           </div>
         )}

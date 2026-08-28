@@ -200,7 +200,7 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
   - _Content: Added full bilingual dictionary in `app/content.ts` with `getServicesDictionary()` export._
   - _Tests: 8 unit tests covering hero, service cards, features, and CTA. 5 E2E tests covering EN/ES load, nav links, locale persistence, header/footer._
   - _All 33 unit tests and 11 E2E tests passing._
-  - [ ] Replace service icons with redesigned set.
+  - [x] Replace service icons with redesigned set.
   - [x] Change the page text for fidelity of the brand, clarity and brand tone.
   - [x] Add gold-highlighted words in Service card titles (Blueprints, Design, Print, Finish, Piece) and CTA (legend).
   - [x] Add gold-highlighted words in Service card titles for Spanish (Planos, Diseñamos, Imprimimos, Acabado, Pieza) and CTA (leyenda).

@@ -18,6 +18,7 @@ const mockDict: ServicesDictionary = {
   services: [
     {
       id: "modeling",
+      subtitle: "3D MODELING",
       title: "We <gold>Design</gold> Your Vision",
       body: "Every great piece starts with a great model.",
       features: [
@@ -27,6 +28,7 @@ const mockDict: ServicesDictionary = {
     },
     {
       id: "printing",
+      subtitle: "3D PRINTING",
       title: "We <gold>Print</gold> the Details",
       body: "We turn digital designs into physical pieces.",
       features: [

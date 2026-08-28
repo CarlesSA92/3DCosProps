@@ -202,7 +202,7 @@ export function CarouselSection({
             className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background/70 backdrop-blur-sm border border-white/10 text-white hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 focus-visible:outline-2 focus-visible:outline-primary"
             aria-label="Previous slide"
           >
-            <ChevronLeftIcon />
+            <span aria-hidden="true"><ChevronLeftIcon /></span>
           </button>
 
           {/* Next arrow */}
@@ -212,7 +212,7 @@ export function CarouselSection({
             className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background/70 backdrop-blur-sm border border-white/10 text-white hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 focus-visible:outline-2 focus-visible:outline-primary"
             aria-label="Next slide"
           >
-            <ChevronRightIcon />
+            <span aria-hidden="true"><ChevronRightIcon /></span>
           </button>
 
           {/* Dots navigation */}
@@ -241,7 +241,7 @@ export function CarouselSection({
           {/* Pause indicator */}
           {isPaused && (
             <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 rounded-full bg-background/70 backdrop-blur-sm px-3 py-1.5 text-xs text-text-dim font-label border border-white/10">
-              <PauseIcon /> <span>Paused</span>
+              <span aria-hidden="true"><PauseIcon /></span> <span>Paused</span>
             </div>
           )}
         </div>

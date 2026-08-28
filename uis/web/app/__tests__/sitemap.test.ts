@@ -4,8 +4,8 @@ import sitemap from "../sitemap";
 describe("sitemap.xml", () => {
   const entries = sitemap();
 
-  it("should return both locale entries", () => {
-    expect(entries).toHaveLength(2);
+  it("should return all locale entries (home + services)", () => {
+    expect(entries).toHaveLength(4);
   });
 
   it("should have /en entry", () => {
@@ -20,6 +20,20 @@ describe("sitemap.xml", () => {
     expect(esEntry).toBeDefined();
     expect(esEntry?.priority).toBe(1);
     expect(esEntry?.changeFrequency).toBe("weekly");
+  });
+
+  it("should have /en/services entry", () => {
+    const entry = entries.find((e) => e.url === "https://3dcosprops.com/en/services");
+    expect(entry).toBeDefined();
+    expect(entry?.priority).toBe(0.9);
+    expect(entry?.changeFrequency).toBe("weekly");
+  });
+
+  it("should have /es/services entry", () => {
+    const entry = entries.find((e) => e.url === "https://3dcosprops.com/es/services");
+    expect(entry).toBeDefined();
+    expect(entry?.priority).toBe(0.9);
+    expect(entry?.changeFrequency).toBe("weekly");
   });
 
   it("should have valid lastModified dates", () => {

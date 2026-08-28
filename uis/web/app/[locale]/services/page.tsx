@@ -47,5 +47,48 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
 
   const dict = getServicesDictionary(locale as Locale);
 
-  return <ServicesPageContent dict={dict} />;
+  const servicesDescription =
+    locale === "es"
+      ? "Servicios profesionales de modelado 3D, impresión 3D, acabados y pintura, fabricación de atrezzo, cosplay y consultoría."
+      : "Professional 3D modeling, 3D printing, finishing and painting, prop fabrication, cosplay, and consultation services.";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    provider: {
+      "@type": "Organization",
+      name: "3D CosProps",
+    },
+    name:
+      locale === "es"
+        ? "Servicios de modelado e impresión 3D"
+        : "3D Modeling and Printing Services",
+    description: servicesDescription,
+    areaServed: "Worldwide",
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name:
+        locale === "es"
+          ? "Servicios de 3D CosProps"
+          : "3D CosProps Services",
+      itemListElement: [
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "3D Modeling" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "3D Printing" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Finishing & Painting" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Prop Fabrication" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Cosplay" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Consultation" } },
+      ],
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ServicesPageContent dict={dict} />
+    </>
+  );
 }

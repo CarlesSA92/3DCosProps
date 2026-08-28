@@ -158,15 +158,17 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
 
           <a
             href="#"
-            className="hidden md:flex text-text-dim transition-colors hover:text-[#d4af37]"
+            className="hidden md:flex text-primary transition-colors hover:text-[#d4af37]"
             aria-label="User profile"
+            tabIndex={0}
+            role="button"
           >
-            <ProfileIcon />
+            <ProfileIcon className="h-[1.5625rem] w-[1.5625rem]" />
           </a>
 
           {/* Mobile hamburger */}
           <button
-            className="flex md:hidden text-text-dim hover:text-primary transition-colors"
+            className="flex md:hidden text-primary transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
@@ -206,10 +208,12 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
               <a
                 href="#"
                 onClick={handleNavClick}
-                className="flex items-center gap-3 font-label text-sm uppercase tracking-[0.1em] text-text-dim hover:text-[#d4af37] transition-colors"
+                className="flex items-center gap-3 font-label text-sm uppercase tracking-[0.1em] text-primary hover:text-[#d4af37] transition-colors"
                 aria-label="User profile"
+                tabIndex={0}
+                role="button"
               >
-                <ProfileIcon className="h-5 w-5" />
+                <ProfileIcon className="h-10 w-10" />
                 {locale === "es" ? "Perfil" : "Profile"}
               </a>
               <div className="flex items-center gap-1 font-label text-sm uppercase tracking-[0.1em]">

@@ -85,6 +85,7 @@ export type GallerySection = {
 /** A single service offering */
 export type ServiceItem = {
   id: string;
+  subtitle: string;
   title: string;
   body: string;
   features: string[];

@@ -208,7 +208,18 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       "From the first sketch to the final coat of paint — we partner with you at every stage of production. Each service is designed for precision, durability, and showcase-level quality.",
     services: [
       {
+        id: "consultation",
+        subtitle: "PLANNING",
+        title: "Let's Plan Your <gold>Project</gold>",
+        body: "Not sure where to start? We help you define the best approach for your project, from materials and production methods to budget and timeline.",
+        features: [
+          "Project scope, planning & material consultation",
+          "Budget & production timeline",
+        ],
+      },
+      {
         id: "cosplay",
+        subtitle: "CONCEPT",
         title: "<gold>Blueprints</gold> & Concept Design",
         body: "Before a creation becomes reality, it needs a plan. We develop **2D sketches, technical blueprints, and construction plans** that translate an idea into a clear and achievable build.\n\nFrom the overall design to individual components, every detail is mapped out to guide the **modeling, fabrication, assembly, and finishing** process.",
         features: [
@@ -218,6 +229,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       },
       {
         id: "modeling",
+        subtitle: "3D MODELING",
         title: "We <gold>Design</gold> Your Vision",
         body: "Every great piece starts with a great model. We create and adapt 3D models from **concept art, game assets, illustrations, references, or your own ideas**, preparing each piece specifically for real-world production.\n\nWe carefully consider **proportions, details, assembly, and wearability** to ensure your model looks right and works in the real world.",
         features: [
@@ -227,6 +239,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       },
       {
         id: "printing",
+        subtitle: "3D PRINTING",
         title: "We <gold>Print</gold> the Details",
         body: "We turn digital designs into physical pieces using high-precision 3D printing. Each project is matched with the right **technology, material, and print settings** according to its size, detail, and intended use.\n\nFrom helmets and armor to weapons, accessories, and large-scale props, we aim for the perfect balance of **strength, detail, and quality**.",
         features: [
@@ -236,6 +249,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       },
       {
         id: "finishing",
+        subtitle: "FINISHING PROCESS",
         title: "The <gold>Finish</gold> Makes the Difference",
         body: "Printing is only the beginning. Through **sanding, priming, assembly, painting, and weathering**, we transform raw prints into finished pieces worthy of the character they represent.\n\nEvery surface is carefully prepared to hide print lines and recreate the look of materials such as **metal, wood, leather, stone, or futuristic alloys**.",
         features: [
@@ -245,23 +259,12 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       },
       {
         id: "prop-fabrication",
-        title: "We Build the Complete <gold>Piece</gold>",
+        subtitle: "RESULT",
+        title: "We Build the <gold>Complete Piece</gold>",
         body: "We can take your project from the first digital model to the finished piece. By combining **3D printing with electronics, lighting, mechanisms, structural elements, and traditional crafting techniques**, we create complete, convention-ready creations.\n\nEvery build is designed to balance **appearance, durability, functionality, and comfort**, while paying attention to every detail.",
         features: [
           "Electronics, LEDs & Mechanisms",
           "Structural Reinforcement & Assembly",
-        ],
-      },
-      {
-        id: "consultation",
-        title: "Consultation & Design",
-        body: "Not sure where to start? We offer project planning sessions to help define scope, materials, budget, and timeline before any production begins.",
-        features: [
-          "Project scope & planning",
-          "Material & process consultation",
-          "Budget estimation & breakdown",
-          "Technical feasibility review",
-          "Production timeline planning",
         ],
       },
     ],
@@ -291,7 +294,18 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       "Desde el primer boceto hasta la última capa de pintura — te acompañamos en cada etapa de producción. Cada servicio está diseñado para ofrecer precisión, durabilidad y calidad de exposición.",
     services: [
       {
+        id: "consultation",
+        subtitle: "PLANIFICACIÓN",
+        title: "Planifiquemos tu <gold>Proyecto</gold>",
+        body: "¿No sabes por dónde empezar? Te ayudamos a definir el mejor enfoque para tu proyecto, desde materiales y métodos de producción hasta presupuesto y cronograma.",
+        features: [
+          "Alcance del proyecto, planificación y consultoría",
+          "Presupuesto y cronograma de producción",
+        ],
+      },
+      {
         id: "cosplay",
+        subtitle: "CONCEPTO",
         title: "<gold>Planos</gold> y Diseño Conceptual",
         body: "Antes de que una creación se convierta en realidad, necesita un plan. Desarrollamos **bocetos 2D, planos técnicos y planos de construcción** que traducen una idea en una construcción clara y alcanzable.\n\nDesde el diseño general hasta los componentes individuales, cada detalle se mapea para guiar el proceso de **modelado, fabricación, montaje y acabado**.",
         features: [
@@ -301,6 +315,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       },
       {
         id: "modeling",
+        subtitle: "MODELADO 3D",
         title: "<gold>Diseñamos</gold> tu Visión",
         body: "Toda gran pieza comienza con un gran modelo. Creamos y adaptamos modelos 3D a partir de **concept art, assets de videojuegos, ilustraciones, referencias o tus propias ideas**, preparando cada pieza específicamente para la producción en el mundo real.\n\nConsideramos cuidadosamente **proporciones, detalles, ensamblaje y portabilidad** para asegurar que tu modelo se vea bien y funcione en el mundo real.",
         features: [
@@ -310,6 +325,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       },
       {
         id: "printing",
+        subtitle: "IMPRESIÓN 3D",
         title: "<gold>Imprimimos</gold> los Detalles",
         body: "Convertimos diseños digitales en piezas físicas mediante impresión 3D de alta precisión. Cada proyecto se empareja con la **tecnología, material y configuración de impresión** adecuados según su tamaño, detalle y uso previsto.\n\nDesde cascos y armaduras hasta armas, accesorios y atrezzo de gran formato, buscamos el equilibrio perfecto entre **resistencia, detalle y calidad**.",
         features: [
@@ -319,6 +335,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       },
       {
         id: "finishing",
+        subtitle: "ACABADOS",
         title: "El <gold>Acabado</gold> Marca la Diferencia",
         body: "La impresión es solo el comienzo. Mediante **lijado, imprimación, montaje, pintura y desgaste**, transformamos piezas impresas en piezas terminadas dignas del personaje que representan.\n\nCada superficie se prepara cuidadosamente para ocultar las líneas de impresión y recrear el aspecto de materiales como **metal, madera, cuero, piedra o aleaciones futuristas**.",
         features: [
@@ -328,23 +345,12 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       },
       {
         id: "prop-fabrication",
-        title: "Construimos la <gold>Pieza</gold> Completa",
+        subtitle: "RESULTADO",
+        title: "Construimos la <gold>Pieza Completa</gold>",
         body: "Podemos llevar tu proyecto desde el primer modelo digital hasta la pieza terminada. Combinando **impresión 3D con electrónica, iluminación, mecanismos, elementos estructurales y técnicas artesanales tradicionales**, creamos creaciones completas listas para convenciones.\n\nCada construcción está diseñada para equilibrar **apariencia, durabilidad, funcionalidad y comodidad**, prestando atención a cada detalle.",
         features: [
           "Electrónica, LEDs y Mecanismos",
           "Refuerzo Estructural y Montaje",
-        ],
-      },
-      {
-        id: "consultation",
-        title: "Consultoría y Diseño",
-        body: "¿No sabes por dónde empezar? Ofrecemos sesiones de planificación para definir alcance, materiales, presupuesto y cronograma antes de comenzar la producción.",
-        features: [
-          "Definición de alcance y planificación",
-          "Consultoría de materiales y procesos",
-          "Estimación y desglose de presupuesto",
-          "Revisión de viabilidad técnica",
-          "Planificación de cronograma",
         ],
       },
     ],
