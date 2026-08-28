@@ -82,6 +82,14 @@ export type GallerySection = {
   slides: CarouselSlide[];
 };
 
+/** A single service offering */
+export type ServiceItem = {
+  id: string;
+  title: string;
+  body: string;
+  features: string[];
+};
+
 /** Flat dictionary shape expected by HomePageContent — no nested objects */
 export type HomePageContentDict = {
   heroTag: string;
@@ -98,4 +106,17 @@ export type HomePageContentDict = {
   commissionsCardTitle: string;
   commissionsCardBody: string;
   commissionsCardCta: string;
+};
+
+/** Content dictionary for the Services page */
+export type ServicesDictionary = PageContent & {
+  heroTag: string;
+  heroTitle: string;
+  heroBody: string;
+  ctaPrimary: string;
+  ctaSecondary: string;
+  services: ServiceItem[];
+  ctaTitle: string;
+  ctaBody: string;
+  ctaLabel: string;
 };

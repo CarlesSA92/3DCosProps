@@ -1,12 +1,12 @@
 import type { Locale } from "./i18n";
-import type { NavItem, HomeDictionary } from "../src/types/content";
+import type { NavItem, HomeDictionary, ServicesDictionary } from "../src/types/content";
 
 const dictionaries: Record<Locale, HomeDictionary> = {
   en: {
     languageLabel: "Language",
     nav: [
       { href: "/", label: "Home" },
-      { href: "#services", label: "Services" },
+      { href: "/services", label: "Services" },
       { href: "#projects", label: "Projects" },
       { href: "#shop", label: "Shop" },
       { href: "#commissions", label: "Commissions" },
@@ -99,7 +99,7 @@ const dictionaries: Record<Locale, HomeDictionary> = {
     languageLabel: "Idioma",
     nav: [
       { href: "/", label: "Inicio" },
-      { href: "#services", label: "Servicios" },
+      { href: "/services", label: "Servicios" },
       { href: "#projects", label: "Proyectos" },
       { href: "#shop", label: "Tienda" },
       { href: "#commissions", label: "Encargos" },
@@ -190,6 +190,209 @@ const dictionaries: Record<Locale, HomeDictionary> = {
   },
 };
 
+const servicesDictionaries: Record<Locale, ServicesDictionary> = {
+  en: {
+    languageLabel: "Language",
+    nav: [
+      { href: "/", label: "Home" },
+      { href: "/services", label: "Services" },
+      { href: "#projects", label: "Projects" },
+      { href: "#shop", label: "Shop" },
+      { href: "#commissions", label: "Commissions" },
+    ],
+    ctaPrimary: "Start Commission",
+    ctaSecondary: "Explore Projects",
+    heroTag: "Our expertise",
+    heroTitle: "From concept to <gold>masterpiece</gold>",
+    heroBody:
+      "From the first sketch to the final coat of paint — we partner with you at every stage of production. Each service is designed for precision, durability, and showcase-level quality.",
+    services: [
+      {
+        id: "modeling",
+        title: "3D Modeling & Design",
+        body: "Custom digital sculpting and hard-surface modeling tailored for production-ready 3D printing. We bring your reference images, concept art, or rough sketches to life with precise engineering.",
+        features: [
+          "Digital sculpting (ZBrush, Blender)",
+          "Hard-surface modeling (Fusion 360, SolidWorks)",
+          "3D scanning & reverse engineering",
+          "File optimization for print",
+          "Technical drawings & dimensioning",
+        ],
+      },
+      {
+        id: "printing",
+        title: "3D Printing & Production",
+        body: "Industrial-grade FDM and resin printing calibrated for tight tolerances, repeatable quality, and large-format capability. From one-off prototypes to small production runs.",
+        features: [
+          "FDM printing (PLA, PETG, ABS, PC)",
+          "Resin printing (standard, tough, castable)",
+          "Large-format capability (up to 500mm)",
+          "Batch production & repeatability",
+          "Material consultation & selection",
+        ],
+      },
+      {
+        id: "finishing",
+        title: "Finishing & Painting",
+        body: "Professional-grade assembly, surface preparation, and painting that transforms raw prints into museum-quality pieces. Every surface is treated with premium techniques.",
+        features: [
+          "Assembly & part joining",
+          "Sanding, priming & gap filling",
+          "Airbrushing & color matching",
+          "Hand painting & detail work",
+          "Weathering, aging & effects",
+        ],
+      },
+      {
+        id: "prop-fabrication",
+        title: "Prop & Replica Fabrication",
+        body: "End-to-end custom prop building from concept to final display. Whether it is a screen-accurate replica or an original design, we handle every step with obsessive attention to detail.",
+        features: [
+          "Full custom prop builds",
+          "Screen-accurate replicas",
+          "Display mounting & bases",
+          "LED lighting integration",
+          "Secure packaging & shipping",
+        ],
+      },
+      {
+        id: "cosplay",
+        title: "Cosplay Armor & Accessories",
+        body: "Custom-fitted cosplay armor, helmets, and accessories engineered for both convention wear and display. Lightweight, durable, and finished to your character reference.",
+        features: [
+          "Custom-fitted armor sets",
+          "Helmets, visors & masks",
+          "Weapons & prop accessories",
+          "LED & electronic integration",
+          "Comfort lining & strap systems",
+        ],
+      },
+      {
+        id: "consultation",
+        title: "Consultation & Design",
+        body: "Not sure where to start? We offer project planning sessions to help define scope, materials, budget, and timeline before any production begins.",
+        features: [
+          "Project scope & planning",
+          "Material & process consultation",
+          "Budget estimation & breakdown",
+          "Technical feasibility review",
+          "Production timeline planning",
+        ],
+      },
+    ],
+    ctaTitle: "Ready to start your project?",
+    ctaBody:
+      "Send us a commission request and we will get back to you within 48 hours with a detailed quote and production plan.",
+    ctaLabel: "Request a Quote",
+    footer: "3D CosProps. High-Fidelity 3D Craftsmanship.",
+    footerNavTitle: "Navigation",
+    footerFollowTitle: "Follow Us",
+    footerPrivacyLabel: "Privacy Policy",
+  },
+  es: {
+    languageLabel: "Idioma",
+    nav: [
+      { href: "/", label: "Inicio" },
+      { href: "/services", label: "Servicios" },
+      { href: "#projects", label: "Proyectos" },
+      { href: "#shop", label: "Tienda" },
+      { href: "#commissions", label: "Encargos" },
+    ],
+    ctaPrimary: "Iniciar Encargo",
+    ctaSecondary: "Ver Portfolio",
+    heroTag: "Nuestra experiencia",
+    heroTitle: "Del concepto a la <gold>obra maestra</gold>",
+    heroBody:
+      "Desde el primer boceto hasta la última capa de pintura — te acompañamos en cada etapa de producción. Cada servicio está diseñado para ofrecer precisión, durabilidad y calidad de exposición.",
+    services: [
+      {
+        id: "modeling",
+        title: "Modelado y Diseño 3D",
+        body: "Esculpido digital y modelado hard-surface personalizados, listos para impresión 3D. Damos vida a tus imágenes de referencia, arte conceptual o bocetos con ingeniería de precisión.",
+        features: [
+          "Esculpido digital (ZBrush, Blender)",
+          "Modelado hard-surface (Fusion 360, SolidWorks)",
+          "Escaneo 3D e ingeniería inversa",
+          "Optimización de archivos para impresión",
+          "Planos técnicos y dimensionado",
+        ],
+      },
+      {
+        id: "printing",
+        title: "Impresión y Producción 3D",
+        body: "Impresión FDM y resina de grado industrial calibrada para tolerancias ajustadas, calidad consistente y capacidad de gran formato. Desde prototipos únicos hasta series pequeñas.",
+        features: [
+          "Impresión FDM (PLA, PETG, ABS, PC)",
+          "Impresión resina (estándar, resistente, colable)",
+          "Capacidad de gran formato (hasta 500mm)",
+          "Producción por lotes y repetibilidad",
+          "Consultoría y selección de materiales",
+        ],
+      },
+      {
+        id: "finishing",
+        title: "Acabados y Pintura",
+        body: "Montaje profesional, preparación de superficie y pintura que transforma piezas impresas en obras dignas de museo. Cada superficie recibe un tratamiento con técnicas premium.",
+        features: [
+          "Montaje y unión de piezas",
+          "Lijado, imprimación y relleno",
+          "Aerografía y correspondencia cromática",
+          "Pintura a mano y detalle fino",
+          "Envejecido, desgaste y efectos",
+        ],
+      },
+      {
+        id: "prop-fabrication",
+        title: "Fabricación de Atrezzo y Réplicas",
+        body: "Construcción completa de atrezzo personalizado, desde el concepto hasta la vitrina. Ya sea una réplica exacta o un diseño original, cuidamos cada detalle.",
+        features: [
+          "Construcciones personalizadas completas",
+          "Réplicas exactas de pantalla",
+          "Montaje expositivo y bases",
+          "Integración de iluminación LED",
+          "Embalaje seguro y envío",
+        ],
+      },
+      {
+        id: "cosplay",
+        title: "Armaduras y Accesorios Cosplay",
+        body: "Armaduras, cascos y accesorios cosplay a medida, diseñados tanto para convenciones como para exposición. Ligeros, duraderos y acabados según tu referencia.",
+        features: [
+          "Armaduras a medida",
+          "Cascos, viseras y máscaras",
+          "Armas y accesorios de atrezzo",
+          "Integración LED y electrónica",
+          "Sistemas de forro comfort y correas",
+        ],
+      },
+      {
+        id: "consultation",
+        title: "Consultoría y Diseño",
+        body: "¿No sabes por dónde empezar? Ofrecemos sesiones de planificación para definir alcance, materiales, presupuesto y cronograma antes de comenzar la producción.",
+        features: [
+          "Definición de alcance y planificación",
+          "Consultoría de materiales y procesos",
+          "Estimación y desglose de presupuesto",
+          "Revisión de viabilidad técnica",
+          "Planificación de cronograma",
+        ],
+      },
+    ],
+    ctaTitle: "¿Listo para empezar tu proyecto?",
+    ctaBody:
+      "Envíanos una solicitud de encargo y te responderemos en menos de 48 horas con un presupuesto detallado y plan de producción.",
+    ctaLabel: "Solicitar Presupuesto",
+    footer: "3D CosProps. Artesanía 3D de alta fidelidad.",
+    footerNavTitle: "Navegación",
+    footerFollowTitle: "Síguenos",
+    footerPrivacyLabel: "Política de Privacidad",
+  },
+};
+
 export function getDictionary(locale: Locale): HomeDictionary {
   return dictionaries[locale];
+}
+
+export function getServicesDictionary(locale: Locale): ServicesDictionary {
+  return servicesDictionaries[locale];
 }

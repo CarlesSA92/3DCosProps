@@ -43,6 +43,7 @@ export default async function LocaleLayout({
       />
       {children}
       <SiteFooter
+        locale={locale as Locale}
         text={dictionary.footer}
         nav={dictionary.nav}
         footerNavTitle={dictionary.footerNavTitle}
