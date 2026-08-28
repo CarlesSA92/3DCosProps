@@ -9,34 +9,34 @@ const mockDict: ServicesDictionary = {
     { href: "/", label: "Home" },
     { href: "/services", label: "Services" },
   ],
-  ctaPrimary: "Request a Quote",
+  ctaPrimary: "Start Commission",
   ctaSecondary: "Explore Projects",
   heroTag: "Our expertise",
-  heroTitle: "From concept to <gold>masterpiece</gold>",
+  heroTitle: "From Concept to <gold>Reality</gold>",
   heroBody:
     "From the first sketch to the final coat of paint — we partner with you.",
   services: [
     {
       id: "modeling",
-      title: "3D Modeling & Design",
-      body: "Custom digital sculpting and hard-surface modeling.",
+      title: "We <gold>Design</gold> Your Vision",
+      body: "Every great piece starts with a great model.",
       features: [
-        "Digital sculpting (ZBrush, Blender)",
-        "Hard-surface modeling (Fusion 360, SolidWorks)",
+        "Custom 3D Modeling",
+        "Model Adaptation & Optimization",
       ],
     },
     {
       id: "printing",
-      title: "3D Printing & Production",
-      body: "Industrial-grade FDM and resin printing.",
+      title: "We <gold>Print</gold> the Details",
+      body: "We turn digital designs into physical pieces.",
       features: [
-        "FDM printing (PLA, PETG, ABS, PC)",
-        "Resin printing (standard, tough, castable)",
+        "FDM & Resin Printing",
+        "Large-Format & High-Detail Parts",
       ],
     },
   ],
-  ctaTitle: "Ready to start your project?",
-  ctaBody: "Send us a commission request.",
+  ctaTitle: "Ready to forge your <gold>legend</gold>?",
+  ctaBody: "Tell us what you have in mind.",
   ctaLabel: "Request a Quote",
   footer: "3D CosProps. High-Fidelity 3D Craftsmanship.",
   footerNavTitle: "Navigation",
@@ -52,7 +52,7 @@ describe("ServicesPageContent", () => {
 
   it("should render the hero title with gold highlight", () => {
     render(<ServicesPageContent dict={mockDict} />);
-    const goldSpan = screen.getByText("masterpiece");
+    const goldSpan = screen.getByText("Reality");
     expect(goldSpan).toBeInTheDocument();
     expect(goldSpan).toHaveClass("bg-gradient-to-r");
   });
@@ -64,39 +64,46 @@ describe("ServicesPageContent", () => {
     ).toBeInTheDocument();
   });
 
-  it("should render both service cards with titles", () => {
+  it("should render both service cards with gold-highlighted words", () => {
     render(<ServicesPageContent dict={mockDict} />);
-    expect(screen.getByText("3D Modeling & Design")).toBeInTheDocument();
-    expect(screen.getByText("3D Printing & Production")).toBeInTheDocument();
+    const designGold = screen.getByText("Design");
+    expect(designGold).toBeInTheDocument();
+    expect(designGold).toHaveClass("bg-gradient-to-r");
+
+    const printGold = screen.getByText("Print");
+    expect(printGold).toBeInTheDocument();
+    expect(printGold).toHaveClass("bg-gradient-to-r");
   });
 
   it("should render service card descriptions", () => {
     render(<ServicesPageContent dict={mockDict} />);
     expect(
-      screen.getByText("Custom digital sculpting and hard-surface modeling."),
+      screen.getByText("Every great piece starts with a great model."),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Industrial-grade FDM and resin printing."),
+      screen.getByText("We turn digital designs into physical pieces."),
     ).toBeInTheDocument();
   });
 
   it("should render feature lists for each service", () => {
     render(<ServicesPageContent dict={mockDict} />);
-    expect(screen.getByText("Digital sculpting (ZBrush, Blender)")).toBeInTheDocument();
-    expect(screen.getByText("Hard-surface modeling (Fusion 360, SolidWorks)")).toBeInTheDocument();
-    expect(screen.getByText("FDM printing (PLA, PETG, ABS, PC)")).toBeInTheDocument();
-    expect(screen.getByText("Resin printing (standard, tough, castable)")).toBeInTheDocument();
+    expect(screen.getByText("Custom 3D Modeling")).toBeInTheDocument();
+    expect(screen.getByText("Model Adaptation & Optimization")).toBeInTheDocument();
+    expect(screen.getByText("FDM & Resin Printing")).toBeInTheDocument();
+    expect(screen.getByText("Large-Format & High-Detail Parts")).toBeInTheDocument();
   });
 
-  it("should render the final CTA section title and body", () => {
+  it("should render the final CTA section title with gold highlight and body", () => {
     render(<ServicesPageContent dict={mockDict} />);
-    expect(screen.getByText("Ready to start your project?")).toBeInTheDocument();
-    expect(screen.getByText("Send us a commission request.")).toBeInTheDocument();
+    const legendGold = screen.getByText("legend");
+    expect(legendGold).toBeInTheDocument();
+    expect(legendGold).toHaveClass("bg-gradient-to-r");
+    expect(screen.getByText("Tell us what you have in mind.")).toBeInTheDocument();
   });
 
   it("should render the final CTA button with correct label", () => {
     render(<ServicesPageContent dict={mockDict} />);
     // Hero CTAs are hidden — only the bottom CTA button shows
-    expect(screen.getByText("Request a Quote")).toBeInTheDocument();
+    expect(screen.getByText("Start Commission")).toBeInTheDocument();
   });
 });

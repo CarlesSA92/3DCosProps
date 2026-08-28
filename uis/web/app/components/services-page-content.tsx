@@ -1,5 +1,7 @@
 import { PageIntro } from "../../src/ui/page-intro";
 import { CtaButton } from "../../src/ui/cta-button";
+import { renderBody } from "../../src/utils/render-body";
+import { splitGoldTag } from "../../src/utils/split-gold-tag";
 import {
   CubeIcon,
   BrushIcon,
@@ -56,24 +58,24 @@ export function ServicesPageContent({ dict }: ServicesPageContentProps) {
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10">
-                  {/* Icon */}
-                  <div className="w-16 h-16 md:w-20 md:h-20 mb-5 md:mb-6 text-primary flex items-center justify-center border border-white/10 rounded-full group-hover:scale-110 transition-transform duration-500 shadow-[0_0_15px_rgba(212,175,55,0.1)] group-hover:shadow-[0_0_25px_rgba(212,175,55,0.3)]">
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Icon — centered at top */}
+                  <div className="w-16 h-16 md:w-20 md:h-20 mb-5 md:mb-6 mx-auto text-primary flex items-center justify-center border border-white/10 rounded-full group-hover:scale-110 transition-transform duration-500 shadow-[0_0_15px_rgba(212,175,55,0.1)] group-hover:shadow-[0_0_25px_rgba(212,175,55,0.3)]">
                     {getServiceIcon(service.id)}
                   </div>
 
                   {/* Title */}
-                  <h2 className="font-display text-xl md:text-2xl text-white mb-3 md:mb-4">
-                    {service.title}
+                  <h2 className="font-display text-xl md:text-2xl text-white mb-3 md:mb-4 text-center">
+                    {splitGoldTag(service.title)}
                   </h2>
 
-                  {/* Body */}
-                  <p className="font-body text-sm md:text-base text-text-dim mb-5 md:mb-6 leading-relaxed">
-                    {service.body}
-                  </p>
+                  {/* Body — grows to push ticks to bottom */}
+                  <div className="mb-5 md:mb-6 flex-1 space-y-3">
+                    {renderBody(service.body)}
+                  </div>
 
-                  {/* Features list */}
-                  <ul className="space-y-2.5" role="list">
+                  {/* Features list — pinned to bottom */}
+                  <ul className="space-y-2.5 mt-auto" role="list">
                     {service.features.map((feature) => (
                       <li
                         key={feature}
@@ -105,11 +107,11 @@ export function ServicesPageContent({ dict }: ServicesPageContentProps) {
       <section className="py-20 md:py-28 px-4 md:px-8 bg-background border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-display text-2xl md:text-4xl text-white mb-4 md:mb-6">
-            {dict.ctaTitle}
+            {splitGoldTag(dict.ctaTitle)}
           </h2>
-          <p className="font-body text-sm md:text-base text-text-dim mb-8 md:mb-10 max-w-2xl mx-auto">
-            {dict.ctaBody}
-          </p>
+          <div className="font-body text-sm md:text-base text-text-dim mb-8 md:mb-10 max-w-2xl mx-auto space-y-3">
+            {renderBody(dict.ctaBody)}
+          </div>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:w-auto">
             <CtaButton href="/commissions" variant="primary">
               {dict.ctaPrimary}

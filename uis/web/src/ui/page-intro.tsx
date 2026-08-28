@@ -53,7 +53,7 @@ export function PageIntro({ content, bgOpacity = 0.3, showCta = true, compact = 
 
         {/* Title — render <gold> as styled span */}
         <h1 className={`animate-reveal-up-1 opacity-0 font-display text-3xl leading-[1.08] font-bold italic tracking-[-0.02em] text-white sm:text-4xl md:text-7xl md:leading-[1.06] ${compact ? "mb-2" : ""}`}>
-          {splitGoldTag(content.title)}
+          {splitGoldTag(content.title, "pr-2")}
         </h1>
 
         {/* Body */}

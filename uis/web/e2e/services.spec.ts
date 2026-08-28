@@ -11,22 +11,18 @@ test.describe("Services page smoke tests", () => {
     await expect(page.getByText("Our expertise")).toBeVisible();
 
     // Service cards should be rendered
-
-    // Bottom CTA should show "Start Commission"
-    await expect(page.getByRole("link", { name: "Start Commission" })).toBeVisible();
-    await expect(page.getByText("3D Modeling & Design")).toBeVisible();
-    await expect(page.getByText("3D Printing & Production")).toBeVisible();
-    await expect(page.getByText("Finishing & Painting")).toBeVisible();
-    await expect(page.getByText("Prop & Replica Fabrication")).toBeVisible();
-    await expect(page.getByText("Cosplay Armor & Accessories")).toBeVisible();
-    await expect(page.getByText("Consultation & Design")).toBeVisible();
+    await expect(page.getByText("We Design Your Vision")).toBeVisible();
+    await expect(page.getByText("We Print the Details")).toBeVisible();
+    await expect(page.getByText("The Finish Makes the Difference")).toBeVisible();
+    await expect(page.getByText("We Build the Complete Piece")).toBeVisible();
+    await expect(page.getByText("Blueprints & Concept Design")).toBeVisible();
 
     // Features should be listed
-    await expect(page.getByText("Digital sculpting (ZBrush, Blender)")).toBeVisible();
-    await expect(page.getByText("FDM printing (PLA, PETG, ABS, PC)")).toBeVisible();
+    await expect(page.getByText("Custom 3D Modeling")).toBeVisible();
+    await expect(page.getByText("FDM & Resin Printing")).toBeVisible();
 
     // Final CTA section should be visible
-    await expect(page.getByText("Ready to start your project?")).toBeVisible();
+    await expect(page.getByText("Ready to forge your legend?")).toBeVisible();
 
     // Footer should be visible
     await expect(page.getByRole("contentinfo")).toBeVisible();
@@ -40,18 +36,17 @@ test.describe("Services page smoke tests", () => {
     await expect(page.getByText("Nuestra experiencia")).toBeVisible();
 
     // Service cards in Spanish
-    await expect(page.getByText("Modelado y Diseño 3D")).toBeVisible();
-    await expect(page.getByText("Impresión y Producción 3D")).toBeVisible();
-    await expect(page.getByText("Acabados y Pintura")).toBeVisible();
-    await expect(page.getByText("Fabricación de Atrezzo y Réplicas")).toBeVisible();
-    await expect(page.getByText("Armaduras y Accesorios Cosplay")).toBeVisible();
-    await expect(page.getByText("Consultoría y Diseño")).toBeVisible();
+    await expect(page.getByText("Diseñamos tu Visión")).toBeVisible();
+    await expect(page.getByText("Imprimimos los Detalles")).toBeVisible();
+    await expect(page.getByText("El Acabado Marca la Diferencia")).toBeVisible();
+    await expect(page.getByText("Construimos la Pieza Completa")).toBeVisible();
+    await expect(page.getByText("Planos y Diseño Conceptual")).toBeVisible();
 
     // Features in Spanish
-    await expect(page.getByText("Esculpido digital (ZBrush, Blender)")).toBeVisible();
+    await expect(page.getByText("Modelado 3D Personalizado")).toBeVisible();
 
     // Final CTA in Spanish
-    await expect(page.getByText("¿Listo para empezar tu proyecto?")).toBeVisible();
+    await expect(page.getByText("¿Listo para forjar tu leyenda?")).toBeVisible();
 
     // Bottom CTA should show "Iniciar Encargo"
     await expect(page.getByRole("link", { name: "Iniciar Encargo" })).toBeVisible();

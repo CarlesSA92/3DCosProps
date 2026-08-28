@@ -1,10 +1,11 @@
 # 3D CosProps - Project Progress
 
 ## Global Status
-- Current phase: Phase 1 (Home Experience - MVP UI)
-- Last update: 2026-08-26
-- Scope decision: Phase 1 delivers Home only
+- Current phase: Phase 2 (Informational Pages)
+- Last update: 2026-08-28
+- Scope decision: Phase 1 complete; Phase 2 in progress (Services page active)
 - Phase 0 status: Completed
+- Phase 1 status: Completed
 
 ## Progress Tracking Rules
 - Mark each item with [x] only when fully completed.
@@ -152,7 +153,7 @@ Goal: deliver a polished bilingual Home page aligned with brief + design + refer
 - [x] Performance baseline (image strategy, lazy loading, LCP/CLS controls).
   - _Resolved: Migrated Hero `<img>` to `next/image` with `fill`, `priority`, `sizes="100vw"`. Configured `deviceSizes` in next.config.ts. Deduplicated background scales image — removed `/background-scales.png`, both layout and Hero now reference `/media/Background-Scales.png` via symlink to root `/media`._
 - [x] Testing baseline (unit + smoke E2E for Home and locale switch).
-  - _Resolved: 25 unit tests across 6 files (i18n, robots, sitemap, site-footer, content, home-page-content). 6 Playwright E2E tests covering EN/ES loading, locale switch, mobile menu, robots/sitemap. All tests passing._
+  - _Resolved: 33 unit tests across 7 files (i18n, robots, sitemap, site-footer, content, home-page-content, services-page-content). 11 Playwright E2E tests covering Home (EN/ES, locale switch, mobile menu, robots/sitemap) and Services (EN/ES, nav links, locale persistence, header/footer). All tests passing._
 
 ### Exit Criteria
 - Home is visually aligned and responsive.
@@ -191,7 +192,25 @@ When real images are ready, replace placeholders in `app/content.ts` → each sl
 Goal: add Services, Projects, and Privacy Policy pages using reusable UI system and local typed data.
 
 ### Checklist
-- [ ] Implement Services page.
+- [x] Implement Services page.
+  - _Component: `app/components/services-page-content.tsx`. Uses `PageIntro` hero, 6 service cards with icons (Cube, Printer, Brush, Sword, Helmet, Message), feature lists, and final CTA section._
+  - _Route: `app/[locale]/services/page.tsx`. Bilingual SSG at `/en/services` and `/es/services`._
+  - _Nav: Updated SiteHeader to handle both route-based (/services) and hash-based (#projects) links with locale prefix._
+  - _Icons: Added 6 new service icons in `src/icons/index.tsx`._
+  - _Content: Added full bilingual dictionary in `app/content.ts` with `getServicesDictionary()` export._
+  - _Tests: 8 unit tests covering hero, service cards, features, and CTA. 5 E2E tests covering EN/ES load, nav links, locale persistence, header/footer._
+  - _All 33 unit tests and 11 E2E tests passing._
+  - [ ] Replace service icons with redesigned set.
+  - [x] Change the page text for fidelity of the brand, clarity and brand tone.
+  - [x] Add gold-highlighted words in Service card titles (Blueprints, Design, Print, Finish, Piece) and CTA (legend).
+  - [x] Add gold-highlighted words in Service card titles for Spanish (Planos, Diseñamos, Imprimimos, Acabado, Pieza) and CTA (leyenda).
+  - [x] Add gold-highlighted words in Home services overview title (project, start / proyecto, empezar).
+  - [x] Refactor splitGoldTag utility to accept optional className parameter, apply pr-2 only to HeroTitle (avoids extra spacing in card titles).
+  - [x] Update Commissions card text in English: "Do you have a specific project in mind? Let us build it from scratch to your exact specifications."
+  - [x] Update Services card text in Spanish: "diseñados para crear tus proyectos al más mínimo detalle."
+  - [x] Update Commissions card text in Spanish: replace "atrezo" → "proyecto".
+  - [ ] Audit SEO metadata, aria-labels, Schema.org markup (e.g. `Service` type), and accessibility for the Services page.
+  - [ ] Check if there are new types to create and reuse in future views.
 - [ ] Implement Projects page with filtering UX.
 - [ ] Implement Privacy Policy page in both locales (/en/privacy-policy and /es/politica-privacidad).
 - [ ] Reuse shared components and style tokens.

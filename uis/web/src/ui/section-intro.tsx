@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { splitGoldTag } from "../utils/split-gold-tag";
 
 type SectionIntroProps = {
   title: string;
@@ -14,7 +15,7 @@ export function SectionIntro({ title, body, children }: SectionIntroProps) {
   return (
     <div className="text-center mb-12 md:mb-16 max-w-3xl mx-auto px-2">
       <h2 className="font-display text-2xl md:text-4xl text-white mb-4 md:mb-6">
-        {title}
+        {splitGoldTag(title)}
       </h2>
       {body && (
         <p className="font-body text-sm md:text-base text-text-dim">
