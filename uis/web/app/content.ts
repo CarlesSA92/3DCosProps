@@ -1,5 +1,5 @@
 import type { Locale } from "./i18n";
-import type { NavItem, HomeDictionary, ServicesDictionary } from "../src/types/content";
+import type { NavItem, HomeDictionary, ServicesDictionary, ProjectsDictionary } from "../src/types/content";
 
 const dictionaries: Record<Locale, HomeDictionary> = {
   en: {
@@ -7,7 +7,7 @@ const dictionaries: Record<Locale, HomeDictionary> = {
     nav: [
       { href: "/", label: "Home" },
       { href: "/services", label: "Services" },
-      { href: "#projects", label: "Projects" },
+      { href: "/projects", label: "Projects" },
       { href: "#shop", label: "Shop" },
       { href: "#commissions", label: "Commissions" },
     ],
@@ -43,6 +43,10 @@ const dictionaries: Record<Locale, HomeDictionary> = {
     footerNavTitle: "Navigation",
     footerFollowTitle: "Follow Us",
     footerPrivacyLabel: "Privacy Policy",
+    footerLegalTitle: "Legal",
+    footerLegalNoticeLabel: "Legal Notice",
+    footerCookiePolicyLabel: "Cookie Policy",
+    footerTermsLabel: "Terms & Conditions",
     gallery: {
       title: "Gallery",
       slides: [
@@ -100,7 +104,7 @@ const dictionaries: Record<Locale, HomeDictionary> = {
     nav: [
       { href: "/", label: "Inicio" },
       { href: "/services", label: "Servicios" },
-      { href: "#projects", label: "Proyectos" },
+      { href: "/projects", label: "Proyectos" },
       { href: "#shop", label: "Tienda" },
       { href: "#commissions", label: "Encargos" },
     ],
@@ -136,6 +140,10 @@ const dictionaries: Record<Locale, HomeDictionary> = {
     footerNavTitle: "Navegación",
     footerFollowTitle: "Síguenos",
     footerPrivacyLabel: "Política de Privacidad",
+    footerLegalTitle: "Legal",
+    footerLegalNoticeLabel: "Aviso Legal",
+    footerCookiePolicyLabel: "Política de Cookies",
+    footerTermsLabel: "Términos y Condiciones",
     gallery: {
       title: "Galería",
       slides: [
@@ -196,7 +204,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
     nav: [
       { href: "/", label: "Home" },
       { href: "/services", label: "Services" },
-      { href: "#projects", label: "Projects" },
+      { href: "/projects", label: "Projects" },
       { href: "#shop", label: "Shop" },
       { href: "#commissions", label: "Commissions" },
     ],
@@ -276,13 +284,17 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
     footerNavTitle: "Navigation",
     footerFollowTitle: "Follow Us",
     footerPrivacyLabel: "Privacy Policy",
+    footerLegalTitle: "Legal",
+    footerLegalNoticeLabel: "Legal Notice",
+    footerCookiePolicyLabel: "Cookie Policy",
+    footerTermsLabel: "Terms & Conditions",
   },
   es: {
     languageLabel: "Idioma",
     nav: [
       { href: "/", label: "Inicio" },
       { href: "/services", label: "Servicios" },
-      { href: "#projects", label: "Proyectos" },
+      { href: "/projects", label: "Proyectos" },
       { href: "#shop", label: "Tienda" },
       { href: "#commissions", label: "Encargos" },
     ],
@@ -362,6 +374,201 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
     footerNavTitle: "Navegación",
     footerFollowTitle: "Síguenos",
     footerPrivacyLabel: "Política de Privacidad",
+    footerLegalTitle: "Legal",
+    footerLegalNoticeLabel: "Aviso Legal",
+    footerCookiePolicyLabel: "Política de Cookies",
+    footerTermsLabel: "Términos y Condiciones",
+  },
+};
+
+const projectsDictionaries: Record<Locale, ProjectsDictionary> = {
+  en: {
+    languageLabel: "Language",
+    nav: [
+      { href: "/", label: "Home" },
+      { href: "/services", label: "Services" },
+      { href: "/projects", label: "Projects" },
+      { href: "#shop", label: "Shop" },
+      { href: "#commissions", label: "Commissions" },
+    ],
+    ctaPrimary: "Start Commission",
+    ctaSecondary: "Explore Projects",
+    footer: "3D CosProps. High-Fidelity 3D Craftsmanship.",
+    footerNavTitle: "Navigation",
+    footerFollowTitle: "Follow Us",
+    footerPrivacyLabel: "Privacy Policy",
+    footerLegalTitle: "Legal",
+    footerLegalNoticeLabel: "Legal Notice",
+    footerCookiePolicyLabel: "Cookie Policy",
+    footerTermsLabel: "Terms & Conditions",
+    heroTag: "Our portfolio",
+    heroTitle: "Forged <gold>Projects</gold>",
+    heroBody:
+      "A showcase of our finest creations — from anime replica props to game-inspired collectibles. Each piece reflects our commitment to fidelity and craftsmanship.",
+    heroCtaPrimary: "Request Commission",
+    heroCtaSecondary: "View Services",
+    galleryTitle: "Project Gallery",
+    filterAll: "All",
+    filterAnime: "Anime",
+    filterGames: "Games",
+    loadMore: "Load More Projects",
+    noMoreProjects: "No more projects.",
+    projects: [
+      {
+        id: "tanjiro-sword",
+        title: "Tanjiro's Nichirin Blade",
+        description: "Handcrafted replica of Tanjiro Kamado's sword from Demon Slayer, finished with a polished steel effect and detailed tsuba.",
+        category: "anime",
+        image: {
+          gradient: "linear-gradient(135deg, #1a2a1a 0%, #2d4a2d 50%, #1a3a1a 100%)",
+          alt: "Tanjiro's Nichirin Blade replica",
+        },
+      },
+      {
+        id: "mando-helmet",
+        title: "Mandalorian Helmet",
+        description: "Premium beskar-inspired Mandalorian helmet with weathering effects, LED lighting, and adjustable interior padding.",
+        category: "games",
+        image: {
+          gradient: "linear-gradient(135deg, #2a2a2a 0%, #4a4a4a 50%, #3a3a3a 100%)",
+          alt: "Mandalorian helmet replica",
+        },
+      },
+      {
+        id: "master-sword",
+        title: "Master Sword",
+        description: "Full-scale replica of the Legend of Zelda Master Sword with metallic finish, leather-wrapped grip, and detailed engravings.",
+        category: "games",
+        image: {
+          gradient: "linear-gradient(135deg, #1a1a3a 0%, #2a2a5a 50%, #1a1a4a 100%)",
+          alt: "Master Sword replica from Legend of Zelda",
+        },
+      },
+      {
+        id: "nezuko-bamboo",
+        title: "Nezuko's Bamboo Muzzle",
+        description: "Detailed replica of Nezuko Kamado's signature bamboo muzzle with custom hand-painted wood grain texture.",
+        category: "anime",
+        image: {
+          gradient: "linear-gradient(135deg, #2a1a0a 0%, #4a2a1a 50%, #3a1a0a 100%)",
+          alt: "Nezuko's bamboo muzzle replica",
+        },
+      },
+      {
+        id: "doom-slayer",
+        title: "Doom Slayer Armor Set",
+        description: "Full cosplay armor set inspired by Doom Eternal, featuring LED chest light, articulated joints, and weathered paint job.",
+        category: "games",
+        image: {
+          gradient: "linear-gradient(135deg, #1a0a0a 0%, #3a1a1a 50%, #2a0a0a 100%)",
+          alt: "Doom Slayer armor set replica",
+        },
+      },
+      {
+        id: "levi-sword",
+        title: "Levi's Thunder Spear",
+        description: "Replica of Levi Ackerman's Thunder Spear from Attack on Titan, with retractable mechanism and battle-worn finishing.",
+        category: "anime",
+        image: {
+          gradient: "linear-gradient(135deg, #1a1a2a 0%, #2a2a4a 50%, #1a1a3a 100%)",
+          alt: "Levi's Thunder Spear replica from Attack on Titan",
+        },
+      },
+    ],
+  },
+  es: {
+    languageLabel: "Idioma",
+    nav: [
+      { href: "/", label: "Inicio" },
+      { href: "/services", label: "Servicios" },
+      { href: "/projects", label: "Proyectos" },
+      { href: "#shop", label: "Tienda" },
+      { href: "#commissions", label: "Encargos" },
+    ],
+    ctaPrimary: "Iniciar Encargo",
+    ctaSecondary: "Explorar Proyectos",
+    footer: "3D CosProps. Artesanía 3D de alta fidelidad.",
+    footerNavTitle: "Navegación",
+    footerFollowTitle: "Síguenos",
+    footerPrivacyLabel: "Política de Privacidad",
+    footerLegalTitle: "Legal",
+    footerLegalNoticeLabel: "Aviso Legal",
+    footerCookiePolicyLabel: "Política de Cookies",
+    footerTermsLabel: "Términos y Condiciones",
+    heroTag: "Nuestro portafolio",
+    heroTitle: "Proyectos <gold>Forjados</gold>",
+    heroBody:
+      "Una muestra de nuestras mejores creaciones — desde réplicas de anime hasta coleccionables inspirados en videojuegos. Cada pieza refleja nuestro compromiso con la fidelidad y la artesanía.",
+    heroCtaPrimary: "Solicitar Encargo",
+    heroCtaSecondary: "Ver Servicios",
+    galleryTitle: "Galería de Proyectos",
+    filterAll: "Todas",
+    filterAnime: "Anime",
+    filterGames: "Videojuegos",
+    loadMore: "Cargar Más Proyectos",
+    noMoreProjects: "No hay más proyectos.",
+    projects: [
+      {
+        id: "tanjiro-sword",
+        title: "Espada de Tanjiro",
+        description: "R�plica artesanal de la espada de Tanjiro Kamado de Demon Slayer, con acabado de acero pulido y tsuba detallada.",
+        category: "anime",
+        image: {
+          gradient: "linear-gradient(135deg, #1a2a1a 0%, #2d4a2d 50%, #1a3a1a 100%)",
+          alt: "Réplica de la espada de Tanjiro",
+        },
+      },
+      {
+        id: "mando-helmet",
+        title: "Casco Mandaloriano",
+        description: "Casco Mandaloriano premium inspirado en beskar con efectos de desgaste, iluminación LED y acolchado interior ajustable.",
+        category: "games",
+        image: {
+          gradient: "linear-gradient(135deg, #2a2a2a 0%, #4a4a4a 50%, #3a3a3a 100%)",
+          alt: "Réplica del casco Mandaloriano",
+        },
+      },
+      {
+        id: "master-sword",
+        title: "Espada Maestra",
+        description: "Réplica a escala real de la Espada Maestra de Zelda con acabado metálico, empuñadura de cuero y grabados detallados.",
+        category: "games",
+        image: {
+          gradient: "linear-gradient(135deg, #1a1a3a 0%, #2a2a5a 50%, #1a1a4a 100%)",
+          alt: "Réplica de la Espada Maestra de Zelda",
+        },
+      },
+      {
+        id: "nezuko-bamboo",
+        title: "Bozal de Nezuko",
+        description: "Réplica detallada del bozal de bambú de Nezuko Kamado con textura de veta de madera pintada a mano.",
+        category: "anime",
+        image: {
+          gradient: "linear-gradient(135deg, #2a1a0a 0%, #4a2a1a 50%, #3a1a0a 100%)",
+          alt: "Réplica del bozal de Nezuko",
+        },
+      },
+      {
+        id: "doom-slayer",
+        title: "Armadura del Doom Slayer",
+        description: "Armadura cosplay completa inspirada en Doom Eternal, con luz LED en el pecho, articulaciones móviles y pintura desgastada.",
+        category: "games",
+        image: {
+          gradient: "linear-gradient(135deg, #1a0a0a 0%, #3a1a1a 50%, #2a0a0a 100%)",
+          alt: "Réplica de la armadura del Doom Slayer",
+        },
+      },
+      {
+        id: "levi-sword",
+        title: "Lanza Trueno de Levi",
+        description: "Réplica de la Lanza Trueno de Levi Ackerman de Attack on Titan, con mecanismo retráctil y acabado de batalla.",
+        category: "anime",
+        image: {
+          gradient: "linear-gradient(135deg, #1a1a2a 0%, #2a2a4a 50%, #1a1a3a 100%)",
+          alt: "Réplica de la Lanza Trueno de Levi",
+        },
+      },
+    ],
   },
 };
 
@@ -371,4 +578,8 @@ export function getDictionary(locale: Locale): HomeDictionary {
 
 export function getServicesDictionary(locale: Locale): ServicesDictionary {
   return servicesDictionaries[locale];
+}
+
+export function getProjectsDictionary(locale: Locale): ProjectsDictionary {
+  return projectsDictionaries[locale];
 }

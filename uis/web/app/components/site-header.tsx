@@ -103,6 +103,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
         <Link
           href={`/${locale}`}
           className="font-display text-sm font-semibold uppercase tracking-[0.15em] text-primary transition-colors hover:text-[#d4af37]"
+          aria-label="3D CosProps"
         >
           3D CosProps
         </Link>
@@ -116,6 +117,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
                 key={item.href}
                 href={navHref(item.href)}
                 onClick={() => handleNavClickDesktop(item.href)}
+                aria-current={active ? "page" : undefined}
                 className={`font-label text-[11px] uppercase tracking-[0.1em] transition-colors ${
                   active
                     ? "border-b border-[#d4af37] font-semibold text-[#d4af37]"
@@ -185,7 +187,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-xl">
-          <nav aria-label="Mobile navigation" className="flex flex-col px-4 py-6 gap-5">
+          <nav aria-label={locale === "es" ? "Menú móvil" : "Mobile navigation"} className="flex flex-col px-4 py-6 gap-5">
             {nav.map((item) => {
               const active = isActive(item.href);
               return (

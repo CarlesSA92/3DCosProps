@@ -81,6 +81,10 @@ export default async function LocaleLayout({
           footerNavTitle={dictionary.footerNavTitle}
           footerFollowTitle={dictionary.footerFollowTitle}
           footerPrivacyLabel={dictionary.footerPrivacyLabel}
+          footerLegalTitle={dictionary.footerLegalTitle}
+          footerLegalNoticeLabel={dictionary.footerLegalNoticeLabel}
+          footerCookiePolicyLabel={dictionary.footerCookiePolicyLabel}
+          footerTermsLabel={dictionary.footerTermsLabel}
         />
       </div>
     </>

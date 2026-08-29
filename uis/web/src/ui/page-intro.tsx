@@ -66,7 +66,7 @@ export function PageIntro({ content, bgOpacity = 0.3, showCta = true, compact = 
         {/* CTA buttons */}
         {showCta && (
           <div className="animate-reveal-up-3 opacity-0 mt-8 sm:mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:w-auto">
-            <CtaButton href="#projects" variant="primary">
+            <CtaButton href="/projects" variant="primary">
               {content.ctaSecondary}
               <span aria-hidden="true"><ArrowIcon /></span>
             </CtaButton>

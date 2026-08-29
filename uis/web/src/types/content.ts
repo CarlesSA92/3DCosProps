@@ -20,6 +20,10 @@ export type PageContent = {
   footerNavTitle: string;
   footerFollowTitle: string;
   footerPrivacyLabel: string;
+  footerLegalTitle: string;
+  footerLegalNoticeLabel: string;
+  footerCookiePolicyLabel: string;
+  footerTermsLabel: string;
 };
 
 export type HomeDictionary = PageContent & {
@@ -101,4 +105,33 @@ export type ServicesDictionary = PageContent & {
   ctaTitle: string;
   ctaBody: string;
   ctaLabel: string;
+};
+
+/** A single project item in the gallery */
+export type ProjectItem = {
+  id: string;
+  title: string;
+  description: string;
+  category: "anime" | "games" | "movies";
+  image: {
+    /** Placeholder gradient until real images are provided */
+    gradient: string;
+    alt: string;
+  };
+};
+
+/** Projects page dictionary */
+export type ProjectsDictionary = PageContent & {
+  heroTag: string;
+  heroTitle: string;
+  heroBody: string;
+  heroCtaPrimary: string;
+  heroCtaSecondary: string;
+  galleryTitle: string;
+  filterAll: string;
+  filterAnime: string;
+  filterGames: string;
+  projects: ProjectItem[];
+  loadMore: string;
+  noMoreProjects: string;
 };

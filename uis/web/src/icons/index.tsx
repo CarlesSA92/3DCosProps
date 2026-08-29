@@ -56,6 +56,18 @@ export function ProfileIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
+/** Magnifying glass / search icon for project gallery zoom */
+export function MagnifyingGlassIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 640 640" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="262.5" cy="264.09" r="183.2" />
+      <path d="M 262.5,189.54 V 342.6" />
+      <path d="M 186.37,264.88 H 340.22" />
+      <path d="M 390.6,395.06 531.35,535.81" />
+    </svg>
+  );
+}
+
 /** Menu hamburger icon */
 export function HamburgerIcon({ className = "h-6 w-6" }: { className?: string }) {
   return (
@@ -158,6 +170,51 @@ export function FacebookIcon({ className = "w-5 h-5" }: { className?: string }) 
   return (
     <svg className={className} viewBox="0 0 640 640" fill="currentColor" stroke="none">
       <path d="m 261.32283,302.82045 h -55.51708 v 80.19134 h 54.39553 V 536.10435 H 153.65334 c -26.20255,0 -60.003312,-25.12754 -60.003312,-60.00331 V 129.53986 c 0,-27.99033 28.610362,-61.12487 61.124872,-61.12487 h 346.56118 c 30.07572,0 59.98455,34.03137 58.88175,58.88175 v 349.36508 c 0,29.59389 -34.00895,59.44253 -59.44253,59.44253 H 358.89831 V 382.45101 h 71.77966 l 16.26258,-78.509 h -87.48146 v -43.74073 c 0,-33.25984 20.31798,-53.57403 91.40691,-45.42307 v -74.58356 c -134.57598,-16.84922 -189.54317,6.70394 -189.54317,162.6258 z" />
+    </svg>
+  );
+}
+
+/** Anime / Japanese culture category icon */
+export function AnimeIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 640 640" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="320" cy="320" r="280" />
+      <ellipse cx="245" cy="290" rx="45" ry="55" />
+      <ellipse cx="395" cy="290" rx="45" ry="55" />
+      <circle cx="235" cy="278" r="14" fill="currentColor" stroke="none" />
+      <circle cx="405" cy="278" r="14" fill="currentColor" stroke="none" />
+      <path d="M 210,360 Q 320,440 430,360" strokeWidth="12" fill="none" />
+    </svg>
+  );
+}
+
+/** Games / gamepad category icon */
+export function GameIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 640 640" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M 148,260 C 100,260 64,296 64,344 v 80 c 0,40 32,72 72,72 24,0 44,-8 60,-24 l 36,-36 h 176 l 36,36 c 16,16 36,24 60,24 40,0 72,-32 72,-72 v -80 c 0,-48 -36,-84 -84,-84 H 148 Z" />
+      <circle cx="192" cy="340" r="16" fill="currentColor" stroke="none" />
+      <circle cx="256" cy="340" r="16" fill="currentColor" stroke="none" />
+      <path d="M 384,320 h 48" />
+      <path d="M 408,296 v 48" />
+      <circle cx="472" cy="330" r="14" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+/** Film / movie category icon */
+export function FilmIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 640 640" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="butt" strokeLinejoin="miter">
+      <rect x="96" y="160" width="448" height="320" rx="24" />
+      <path d="M 224,160 v 320" />
+      <path d="M 416,160 v 320" />
+      <path d="M 96,240 h 128" />
+      <path d="M 416,240 h 128" />
+      <path d="M 96,400 h 128" />
+      <path d="M 416,400 h 128" />
+      <path d="M 96,320 h 128" />
+      <path d="M 416,320 h 128" />
     </svg>
   );
 }

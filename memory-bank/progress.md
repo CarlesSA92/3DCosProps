@@ -2,8 +2,8 @@
 
 ## Global Status
 - Current phase: Phase 2 (Informational Pages)
-- Last update: 2026-08-28
-- Scope decision: Phase 1 complete; Phase 2 in progress (Services page complete; Projects & Privacy Policy pending)
+- Last update: 2026-08-29
+- Scope decision: Phase 1 complete; Phase 2 in progress (Services page complete; Projects page complete with modal gallery + SEO/a11y; Legal pages — mockup versions created for Privacy Policy, Cookie Policy, Legal Notice, and Terms & Conditions)
 - Phase 0 status: Completed
 - Phase 1 status: Completed
 
@@ -88,10 +88,10 @@ Revisit this ADR at the beginning of Phase 3, or earlier if either condition is 
 - Testing baseline exists and passes (unit + smoke E2E for Home and locale switch).
 
 #### DoD - Phase 2 (Informational Pages)
-- Services, Projects, and Privacy Policy pages are published in both locales.
+- Services, Projects, and Legal pages (Privacy Policy, Cookie Policy, Legal Notice, Terms & Conditions) are published in both locales.
 - Projects filtering UX works with local typed data.
 - Shared components/tokens are reused without duplicating design logic.
-- Core user journeys for Services/Projects/Privacy Policy are covered by tests.
+- Core user journeys for Services, Projects, and Legal pages are covered by tests.
 - User Profile information architecture is defined (sections, navigation entry, and role-aware backend link behavior).
 
 #### DoD - Phase 3 (Commissions and Shop Foundations)
@@ -221,8 +221,33 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
   - [x] Create `src/types/component.ts` with reusable component prop types and deduplicate from `content.ts`.
     - _Types moved: `PageIntroContent`, `SectionIntroProps`, `CtaButtonProps`, `FeatureCardContent`, `CarouselSectionProps`, `IconProps`._
     - _Components updated to import from `../types/component` instead of inline or from `content.ts`._
-- [ ] Implement Projects page with filtering UX.
-- [ ] Implement Privacy Policy page in both locales (/en/privacy-policy and /es/politica-privacidad).
+- [x] Implement Projects page with filtering UX.
+    - _Component: `src/ui/project-card.tsx` — card with category badge (icon + label), gradient placeholder, magnifying glass zoom button on hover._
+    - _Component: `src/ui/project-gallery-modal.tsx` — full-screen modal with navigation arrows, position indicator (e.g. 1/6), caption (category badge + title + description), close via ✕ button, backdrop click, or Escape key, keyboard arrow navigation._
+    - _Component: `app/components/projects-page-content.tsx` — hero via PageIntro (compact), gallery title with gold highlight, filter buttons (All/Anime/Games) with aria-pressed, 3-column responsive grid, Load More CTA, "No more projects." message._
+    - _Route: `app/[locale]/projects/page.tsx`. Bilingual SSG at `/en/projects` and `/es/projects`._
+    - _Content: Full bilingual dictionary in `app/content.ts` with `getProjectsDictionary()` export. 6 projects (Tanjiro's Sword, Mandalorian Helmet, Master Sword, Nezuko's Muzzle, Doom Slayer Armor, Levi's Spear)._
+    - _Icons: Added `MagnifyingGlassIcon` in `src/icons/index.tsx`._
+    - _Tests: 21 unit tests (7 new for modal: open, close via button, close via backdrop, next/prev navigation, position indicator, category badge + description in caption). All 56 tests passing._
+    - _Fix applied: CTA in PageIntro changed from `#projects` to `/projects`._
+  - [x] Add magnifying glass zoom button in card hover (circular, same style as Services feature-card icons, with CTA hover effect — bg white, text dark, gold glow).
+  - [x] Add modal gallery with navigation, caption, and keyboard/backdrop dismiss.
+  - [x] Audit SEO metadata, aria-labels, Schema.org markup, and accessibility for Projects page.
+    - _Metadata: title, description, keywords, openGraph (title, description, url, siteName, locale, type), robots (index, follow), alternates with canonical and hreflang._
+    - _JSON-LD: `CollectionPage` with `@id`, `provider` (Organization), `mainEntity` array of `CreativeWork` (name, description, keywords, image) per project._
+    - _ProjectCard: `itemScope itemType="https://schema.org/CreativeWork"`, `itemProp` on name/description/image/keywords. Bilingual `aria-label` on zoom button and image. `role="img"` on gradient placeholder._
+    - _ProjectsPageContent: `aria-labelledby="gallery-title"` on gallery section, `role="group"` on filter buttons with `aria-pressed`, `role="status" aria-live="polite"` on load-more area._
+    - _ProjectGalleryModal: `aria-describedby="modal-caption-text"`, `aria-live="polite"` on position indicator, bilingual `aria-label` on nav arrows and close button, `aria-hidden="true"` on decorative SVG icons._
+    - _SiteHeader: `aria-current="page"` on active nav link, `aria-label` on logo and mobile nav menu (bilingual)._
+- [x] Create Legal pages (mockup versions) with dedicated route per document:
+  - [x] Privacy Policy — `/en/privacy-policy`, `/es/privacy-policy`
+  - [x] Cookie Policy — `/en/cookie-policy`, `/es/cookie-policy`
+  - [x] Legal Notice — `/en/legal-notice`, `/es/legal-notice`
+  - [x] Terms & Conditions — `/en/terms-conditions`, `/es/terms-conditions`
+  - _Component: `src/ui/legal-page.tsx` — shared renderer for all legal documents._
+  - _Content: `app/content/legal-content.ts` — separate file with full mockup content for ES; EN as translation-pending placeholder._
+  - _Footer: Added "Legal" section in nav column with links to all 4 pages._
+  - _Tests: 58 unit tests passing (new tests for legal links in footer, updated content test keys)._
 - [ ] Reuse shared components and style tokens.
 - [ ] Add bilingual content for new pages.
 - [ ] Extend tests for main user flows.
@@ -231,6 +256,8 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
 
 ### Exit Criteria
 - Services and Projects are production-ready in both locales.
+  - _Projects: 56 unit tests passing. SEO metadata + JSON-LD + Schema.org microdata applied. aria-labels, aria-current, aria-pressed, aria-live, keyboard navigation (Escape, arrows) all in place. Skip-to-content link covers all pages._
+- Legal pages mockup versions created (Privacy Policy, Cookie Policy, Legal Notice, Terms & Conditions) in both locales with shared LegalPage component and disclaimer banner for draft status.
 
 ---
 
@@ -320,6 +347,12 @@ Goal: configure backend capabilities and admin operations required to run users,
 Goal: prepare release, documentation, and post-launch operations.
 
 ### Checklist
+- [ ] **Replace mockup legal content with final versions** (once provided by legal team):
+  - [ ] Complete all `[ ]` fields (name, NIF, address, email, etc.) in each document.
+  - [ ] Translate content to English (currently ES-only mockup content).
+  - [ ] Review sections with brackets (e.g. `[SI 3DCOSPROPS VENDE...]`) and decide whether to keep/remove/modify.
+  - [ ] Update `lastUpdated` dates.
+  - [ ] Remove the mockup disclaimer banner from `legal-page.tsx`.
 - [ ] Final QA pass (functional, accessibility, performance, SEO).
 - [ ] Production build and deployment pipeline verified.
 - [ ] Update README with setup, scripts, structure, and run guide.
