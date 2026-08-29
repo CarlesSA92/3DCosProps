@@ -1,20 +1,37 @@
 import type { MetadataRoute } from "next";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://3dcosprops.com";
+const locales = ["en", "es"] as const;
+const baseUrl = "https://3dcosprops.com";
 
-  return [
-    {
-      url: `${baseUrl}/en`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/es`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-  ];
+type PageEntry = {
+  path: string;
+  priority: number;
+};
+
+const pages: PageEntry[] = [
+  { path: "", priority: 1 },
+  { path: "services", priority: 0.9 },
+  { path: "projects", priority: 0.9 },
+  { path: "privacy-policy", priority: 0.5 },
+  { path: "cookie-policy", priority: 0.5 },
+  { path: "legal-notice", priority: 0.5 },
+  { path: "terms-conditions", priority: 0.5 },
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
+
+  for (const locale of locales) {
+    for (const page of pages) {
+      const path = page.path ? `/${locale}/${page.path}` : `/${locale}`;
+      entries.push({
+        url: `${baseUrl}${path}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: page.priority,
+      });
+    }
+  }
+
+  return entries;
 }

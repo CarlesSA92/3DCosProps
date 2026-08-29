@@ -16,14 +16,28 @@ type SiteHeaderProps = {
 export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
   const pathname = usePathname();
   const alternateLocale = locale === "en" ? "es" : "en";
+
+  // Build locale-switch URL preserving the current path
+  const switchHref = useCallback(
+    (targetLocale: string) => {
+      // Replace locale prefix in pathname: /en/services -> /es/services, /en -> /es
+      const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "");
+      return `/${targetLocale}${pathWithoutLocale}`;
+    },
+    [pathname],
+  );
+
   const [activeHash, setActiveHash] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = useCallback(
     (href: string) => {
-      if (href === "/") {
-        return pathname === `/${locale}` || pathname === "/";
+      if (href.startsWith("/")) {
+        // Route-based link: match pathname
+        const fullPath = `/${locale}${href}`;
+        return pathname === fullPath;
       }
+      // Hash-based link: use intersection observer
       return activeHash === href.replace("#", "");
     },
     [pathname, activeHash, locale],
@@ -34,6 +48,8 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
       .filter((item) => item.href.startsWith("#"))
       .map((item) => document.getElementById(item.href.replace("#", "")))
       .filter(Boolean) as HTMLElement[];
+
+    if (sections.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -58,6 +74,28 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
     setMobileMenuOpen(false);
   }, []);
 
+  // Build href with locale prefix for route-based links
+  const navHref = useCallback(
+    (href: string) => {
+      if (href.startsWith("/")) {
+        return `/${locale}${href}`;
+      }
+      return href;
+    },
+    [locale],
+  );
+
+  const handleNavClickDesktop = useCallback(
+    (href: string) => {
+      if (href.startsWith("/")) {
+        return;
+      }
+      // hash link — close mobile menu if open
+      setMobileMenuOpen(false);
+    },
+    [],
+  );
+
   return (
     <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-black/70 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between px-4 py-3 md:px-8 md:py-4">
@@ -65,6 +103,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
         <Link
           href={`/${locale}`}
           className="font-display text-sm font-semibold uppercase tracking-[0.15em] text-primary transition-colors hover:text-[#d4af37]"
+          aria-label="3D CosProps"
         >
           3D CosProps
         </Link>
@@ -76,7 +115,9 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
             return (
               <a
                 key={item.href}
-                href={item.href}
+                href={navHref(item.href)}
+                onClick={() => handleNavClickDesktop(item.href)}
+                aria-current={active ? "page" : undefined}
                 className={`font-label text-[11px] uppercase tracking-[0.1em] transition-colors ${
                   active
                     ? "border-b border-[#d4af37] font-semibold text-[#d4af37]"
@@ -93,7 +134,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
         <div className="flex items-center gap-3 md:gap-4">
           <div className="hidden md:flex items-center gap-1 font-label text-[11px] uppercase tracking-[0.1em]">
             <Link
-              href="/en"
+              href={switchHref("en")}
               className={`transition-colors ${
                 locale === "en"
                   ? "text-[#d4af37]"
@@ -105,7 +146,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
             </Link>
             <span className="text-text-dim/30">|</span>
             <Link
-              href="/es"
+              href={switchHref("es")}
               className={`transition-colors ${
                 locale === "es"
                   ? "text-[#d4af37]"
@@ -119,15 +160,17 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
 
           <a
             href="#"
-            className="hidden md:flex text-text-dim transition-colors hover:text-[#d4af37]"
+            className="hidden md:flex text-primary transition-colors hover:text-[#d4af37]"
             aria-label="User profile"
+            tabIndex={0}
+            role="button"
           >
-            <ProfileIcon />
+            <ProfileIcon className="h-[1.5625rem] w-[1.5625rem]" />
           </a>
 
           {/* Mobile hamburger */}
           <button
-            className="flex md:hidden text-text-dim hover:text-primary transition-colors"
+            className="flex md:hidden text-primary transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
@@ -144,13 +187,13 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-xl">
-          <nav aria-label="Mobile navigation" className="flex flex-col px-4 py-6 gap-5">
+          <nav aria-label={locale === "es" ? "Menú móvil" : "Mobile navigation"} className="flex flex-col px-4 py-6 gap-5">
             {nav.map((item) => {
               const active = isActive(item.href);
               return (
                 <a
                   key={item.href}
-                  href={item.href}
+                  href={navHref(item.href)}
                   onClick={handleNavClick}
                   className={`font-label text-sm uppercase tracking-[0.1em] transition-colors ${
                     active
@@ -167,15 +210,17 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
               <a
                 href="#"
                 onClick={handleNavClick}
-                className="flex items-center gap-3 font-label text-sm uppercase tracking-[0.1em] text-text-dim hover:text-[#d4af37] transition-colors"
+                className="flex items-center gap-3 font-label text-sm uppercase tracking-[0.1em] text-primary hover:text-[#d4af37] transition-colors"
                 aria-label="User profile"
+                tabIndex={0}
+                role="button"
               >
-                <ProfileIcon className="h-5 w-5" />
+                <ProfileIcon className="h-10 w-10" />
                 {locale === "es" ? "Perfil" : "Profile"}
               </a>
               <div className="flex items-center gap-1 font-label text-sm uppercase tracking-[0.1em]">
                 <Link
-                  href="/en"
+                  href={switchHref("en")}
                   onClick={handleNavClick}
                   className={`transition-colors ${
                     locale === "en"
@@ -188,7 +233,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
                 </Link>
                 <span className="text-text-dim/30 mx-1">|</span>
                 <Link
-                  href="/es"
+                  href={switchHref("es")}
                   onClick={handleNavClick}
                   className={`transition-colors ${
                     locale === "es"

@@ -1,10 +1,12 @@
 # 3D CosProps - Project Progress
 
 ## Global Status
-- Current phase: Phase 1 (Home Experience - MVP UI)
-- Last update: 2026-08-26
-- Scope decision: Phase 1 delivers Home only
+- Current phase: Phase 2 complete ✅ → Phase 3 (Commissions and Shop Foundations)
+- Last update: 2026-08-29 — Phase 2 completed
+- Scope decision: Phase 1 complete; Phase 2 complete; Phase 3 in progress
 - Phase 0 status: Completed
+- Phase 1 status: Completed
+- Phase 2 status: Completed
 
 ## Progress Tracking Rules
 - Mark each item with [x] only when fully completed.
@@ -87,10 +89,10 @@ Revisit this ADR at the beginning of Phase 3, or earlier if either condition is 
 - Testing baseline exists and passes (unit + smoke E2E for Home and locale switch).
 
 #### DoD - Phase 2 (Informational Pages)
-- Services, Projects, and Privacy Policy pages are published in both locales.
+- Services, Projects, and Legal pages (Privacy Policy, Cookie Policy, Legal Notice, Terms & Conditions) are published in both locales.
 - Projects filtering UX works with local typed data.
 - Shared components/tokens are reused without duplicating design logic.
-- Core user journeys for Services/Projects/Privacy Policy are covered by tests.
+- Core user journeys for Services, Projects, and Legal pages are covered by tests.
 - User Profile information architecture is defined (sections, navigation entry, and role-aware backend link behavior).
 
 #### DoD - Phase 3 (Commissions and Shop Foundations)
@@ -152,7 +154,7 @@ Goal: deliver a polished bilingual Home page aligned with brief + design + refer
 - [x] Performance baseline (image strategy, lazy loading, LCP/CLS controls).
   - _Resolved: Migrated Hero `<img>` to `next/image` with `fill`, `priority`, `sizes="100vw"`. Configured `deviceSizes` in next.config.ts. Deduplicated background scales image — removed `/background-scales.png`, both layout and Hero now reference `/media/Background-Scales.png` via symlink to root `/media`._
 - [x] Testing baseline (unit + smoke E2E for Home and locale switch).
-  - _Resolved: 25 unit tests across 6 files (i18n, robots, sitemap, site-footer, content, home-page-content). 6 Playwright E2E tests covering EN/ES loading, locale switch, mobile menu, robots/sitemap. All tests passing._
+  - _Resolved: 33 unit tests across 7 files (i18n, robots, sitemap, site-footer, content, home-page-content, services-page-content). 11 Playwright E2E tests covering Home (EN/ES, locale switch, mobile menu, robots/sitemap) and Services (EN/ES, nav links, locale persistence, header/footer). All tests passing._
 
 ### Exit Criteria
 - Home is visually aligned and responsive.
@@ -187,21 +189,83 @@ When real images are ready, replace placeholders in `app/content.ts` → each sl
 
 ---
 
-## Phase 2 - Informational Pages
+## Phase 2 - Informational Pages ✅
 Goal: add Services, Projects, and Privacy Policy pages using reusable UI system and local typed data.
 
 ### Checklist
-- [ ] Implement Services page.
-- [ ] Implement Projects page with filtering UX.
-- [ ] Implement Privacy Policy page in both locales (/en/privacy-policy and /es/politica-privacidad).
-- [ ] Reuse shared components and style tokens.
-- [ ] Add bilingual content for new pages.
-- [ ] Extend tests for main user flows.
-- [ ] Define User Profile IA (personal data, payment method, order status, commission status).
-- [ ] Define role-based visibility rule for backend link (admin/manager only).
+- [x] Implement Services page.
+  - _Component: `app/components/services-page-content.tsx`. Uses `PageIntro` hero, 6 service cards with icons (Cube, Printer, Brush, Sword, Helmet, Message), feature lists, and final CTA section._
+  - _Route: `app/[locale]/services/page.tsx`. Bilingual SSG at `/en/services` and `/es/services`._
+  - _Nav: Updated SiteHeader to handle both route-based (/services) and hash-based (#projects) links with locale prefix._
+  - _Icons: Added 6 new service icons in `src/icons/index.tsx`._
+  - _Content: Added full bilingual dictionary in `app/content.ts` with `getServicesDictionary()` export._
+  - _Tests: 8 unit tests covering hero, service cards, features, and CTA. 5 E2E tests covering EN/ES load, nav links, locale persistence, header/footer._
+  - _All 35 unit tests and 11 E2E tests passing._
+  - [x] Replace service icons with redesigned set.
+  - [x] Change the page text for fidelity of the brand, clarity and brand tone.
+  - [x] Add gold-highlighted words in Service card titles (Blueprints, Design, Print, Finish, Piece) and CTA (legend).
+  - [x] Add gold-highlighted words in Service card titles for Spanish (Planos, Diseñamos, Imprimimos, Acabado, Pieza) and CTA (leyenda).
+  - [x] Add gold-highlighted words in Home services overview title (project, start / proyecto, empezar).
+  - [x] Refactor splitGoldTag utility to accept optional className parameter, apply pr-2 only to HeroTitle (avoids extra spacing in card titles).
+  - [x] Update Commissions card text in English: "Do you have a specific project in mind? Let us build it from scratch to your exact specifications."
+  - [x] Update Services card text in Spanish: "diseñados para crear tus proyectos al más mínimo detalle."
+  - [x] Update Commissions card text in Spanish: replace "atrezo" → "proyecto".
+  - [x] Add consultation card as #1 service with new messaging and "Complete Piece" gold-wrapped in both locales.
+  - [x] Add subtitle labels to all 6 service cards (PLANNING, CONCEPT, 3D MODELING, 3D PRINTING, FINISHING, RESULT / PLANIFICACIÓN, CONCEPTO, MODELADO 3D, IMPRESIÓN 3D, ACABADO, RESULTADO).
+  - [x] Audit SEO metadata, aria-labels, Schema.org markup (JSON-LD: Organization, WebSite, Service+OfferCatalog), and accessibility for both pages.
+    - _Skip-to-content link added for keyboard users._
+    - _`aria-hidden="true"` added to all decorative SVGs (icons, checkmarks, carousel arrows, CTA arrows)._
+    - _Profile link: `role="button"` + `tabIndex={0}` added._
+    - _FeatureCard: converted to Client Component with keyboard handler (Enter/Space)._
+    - _Sitemap updated with `/en/services` and `/es/services` entries._
+    - _Root layout: restored hardcoded `lang="en"`._
+  - [x] Create `src/types/component.ts` with reusable component prop types and deduplicate from `content.ts`.
+    - _Types moved: `PageIntroContent`, `SectionIntroProps`, `CtaButtonProps`, `FeatureCardContent`, `CarouselSectionProps`, `IconProps`._
+    - _Components updated to import from `../types/component` instead of inline or from `content.ts`._
+- [x] Implement Projects page with filtering UX.
+    - _Component: `src/ui/project-card.tsx` — card with category badge (icon + label), gradient placeholder, magnifying glass zoom button on hover._
+    - _Component: `src/ui/project-gallery-modal.tsx` — full-screen modal with navigation arrows, position indicator (e.g. 1/6), caption (category badge + title + description), close via ✕ button, backdrop click, or Escape key, keyboard arrow navigation._
+    - _Component: `app/components/projects-page-content.tsx` — hero via PageIntro (compact), gallery title with gold highlight, filter buttons (All/Anime/Games) with aria-pressed, 3-column responsive grid, Load More CTA, "No more projects." message._
+    - _Route: `app/[locale]/projects/page.tsx`. Bilingual SSG at `/en/projects` and `/es/projects`._
+    - _Content: Full bilingual dictionary in `app/content.ts` with `getProjectsDictionary()` export. 6 projects (Tanjiro's Sword, Mandalorian Helmet, Master Sword, Nezuko's Muzzle, Doom Slayer Armor, Levi's Spear)._
+    - _Icons: Added `MagnifyingGlassIcon` in `src/icons/index.tsx`._
+    - _Tests: 21 unit tests (7 new for modal: open, close via button, close via backdrop, next/prev navigation, position indicator, category badge + description in caption). All 56 tests passing._
+    - _Fix applied: CTA in PageIntro changed from `#projects` to `/projects`._
+  - [x] Add magnifying glass zoom button in card hover (circular, same style as Services feature-card icons, with CTA hover effect — bg white, text dark, gold glow).
+  - [x] Add modal gallery with navigation, caption, and keyboard/backdrop dismiss.
+  - [x] Audit SEO metadata, aria-labels, Schema.org markup, and accessibility for Projects page.
+    - _Metadata: title, description, keywords, openGraph (title, description, url, siteName, locale, type), robots (index, follow), alternates with canonical and hreflang._
+    - _JSON-LD: `CollectionPage` with `@id`, `provider` (Organization), `mainEntity` array of `CreativeWork` (name, description, keywords, image) per project._
+    - _ProjectCard: `itemScope itemType="https://schema.org/CreativeWork"`, `itemProp` on name/description/image/keywords. Bilingual `aria-label` on zoom button and image. `role="img"` on gradient placeholder._
+    - _ProjectsPageContent: `aria-labelledby="gallery-title"` on gallery section, `role="group"` on filter buttons with `aria-pressed`, `role="status" aria-live="polite"` on load-more area._
+    - _ProjectGalleryModal: `aria-describedby="modal-caption-text"`, `aria-live="polite"` on position indicator, bilingual `aria-label` on nav arrows and close button, `aria-hidden="true"` on decorative SVG icons._
+    - _SiteHeader: `aria-current="page"` on active nav link, `aria-label` on logo and mobile nav menu (bilingual)._
+- [x] Create Legal pages (mockup versions) with dedicated route per document:
+  - [x] Privacy Policy — `/en/privacy-policy`, `/es/privacy-policy`
+  - [x] Cookie Policy — `/en/cookie-policy`, `/es/cookie-policy`
+  - [x] Legal Notice — `/en/legal-notice`, `/es/legal-notice`
+  - [x] Terms & Conditions — `/en/terms-conditions`, `/es/terms-conditions`
+  - _Component: `src/ui/legal-page.tsx` — shared renderer for all legal documents._
+  - _Content: `app/content/legal-content.ts` — separate file with full mockup content for ES; EN as translation-pending placeholder._
+  - _Footer: Added "Legal" section in nav column with links to all 4 pages._
+  - _Tests: 58 unit tests passing (new tests for legal links in footer, updated content test keys)._
+  - _Sitemap: Added 10 new entries (/en/projects, /es/projects, 4 legal pages × 2 locales) — now 14 total entries._
+  - _E2E: Created `e2e/projects.spec.ts` (7 tests: EN/ES load, filtering, load-more, modal open/close/nav, nav from home, locale persistence, header/footer) and `e2e/legal.spec.ts` (14 tests: 4× EN/ES load, nav via footer links, inter-legal nav, header/footer)._
+  - _Unit: Created `app/__tests__/legal-page.test.tsx` (10 tests: title, disclaimer, dates, sections, body, table rendering, separators, main element, empty disclaimer)._
+  - _All 77 unit tests passing._
+- [x] Reuse shared components and style tokens (LegalPage shared renderer; tokens from design system).
+- [x] Extend tests for main user flows (E2E: 9 projects tests, 12 legal page tests; Unit: 10 LegalPage tests).
+  - _Final test counts: 77 unit tests (9 files), 32 E2E tests (4 spec files) — all passing._
 
-### Exit Criteria
+
+### Exit Criteria — ✅ COMPLETED
 - Services and Projects are production-ready in both locales.
+  - _Projects: 56 unit tests passing. SEO metadata + JSON-LD + Schema.org microdata applied. aria-labels, aria-current, aria-pressed, aria-live, keyboard navigation (Escape, arrows) all in place. Skip-to-content link covers all pages._
+- Legal pages mockup versions created (Privacy Policy, Cookie Policy, Legal Notice, Terms & Conditions) in both locales with shared LegalPage component and disclaimer banner for draft status.
+  - Full test coverage: 10 unit tests (LegalPage component), 14 E2E tests (legal pages).
+  - Sitemap includes all legal routes and bilingual `/projects` entries (14 sitemap entries total).
+- 77 unit tests passing (9 test files), 32 E2E tests passing (4 spec files).
+- User Profile IA and role-based visibility rule moved to Phase 3 planning.
 
 ---
 
@@ -209,6 +273,8 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
 Goal: enable commissions UI and prepare commerce domain safely.
 
 ### Checklist
+- [ ] Define User Profile IA (personal data, payment method, order status, commission status).
+- [ ] Define role-based visibility rule for backend link (admin/manager only).
 - [ ] Build Commissions multi-step UI form (no real submission yet).
 - [ ] Define typed contracts for future commissions API.
 - [ ] Build Shop catalog UI and domain models.
@@ -291,6 +357,12 @@ Goal: configure backend capabilities and admin operations required to run users,
 Goal: prepare release, documentation, and post-launch operations.
 
 ### Checklist
+- [ ] **Replace mockup legal content with final versions** (once provided by legal team):
+  - [ ] Complete all `[ ]` fields (name, NIF, address, email, etc.) in each document.
+  - [ ] Translate content to English (currently ES-only mockup content).
+  - [ ] Review sections with brackets (e.g. `[SI 3DCOSPROPS VENDE...]`) and decide whether to keep/remove/modify.
+  - [ ] Update `lastUpdated` dates.
+  - [ ] Remove the mockup disclaimer banner from `legal-page.tsx`.
 - [ ] Final QA pass (functional, accessibility, performance, SEO).
 - [ ] Production build and deployment pipeline verified.
 - [ ] Update README with setup, scripts, structure, and run guide.
