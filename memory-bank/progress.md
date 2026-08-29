@@ -2,7 +2,7 @@
 
 ## Global Status
 - Current phase: Phase 2 complete ✅ → Phase 3 (Commissions and Shop Foundations)
-- Last update: 2026-08-29 — Phase 2 completed
+- Last update: 2026-08-29 — Phase 3 started: payment gateway decided (Stripe + PayPal)
 - Scope decision: Phase 1 complete; Phase 2 complete; Phase 3 in progress
 - Phase 0 status: Completed
 - Phase 1 status: Completed
@@ -31,11 +31,12 @@ Goal: lock architecture, UX direction, quality gates, and delivery criteria befo
 - Quality criteria for accessibility, SEO, performance, and testing are documented.
 
 ### Blockers
-- Final payment provider for centralized checkout is still pending (Phase 3).
+- ~~Final payment provider for centralized checkout is still pending (Phase 3).~~ ✅ **Resolved: Stripe + PayPal**
 
 ### Decision Record (ADR-001)
 - Date: 2026-08-26
-- Status: Accepted (with scheduled re-evaluation)
+- Updated: 2026-08-29 — Payment provider decision made
+- Status: Accepted (re-evaluated and confirmed)
 - Owners: Product + Technical Direction
 
 #### Context
@@ -44,8 +45,11 @@ The project needs to launch quickly with strong SEO discoverability, controlled 
 #### Decision
 - Commerce strategy (near term): Hybrid model.
 	- Main website as the primary brand and SEO surface.
-	- External checkout/storefront can be used during early commerce rollout.
+	- External checkout/storefront can be used during early commerce rollout (e.g. Gumroad as separate sales channel, not integrated).
 - Commerce strategy (target): Evaluate migration to fully centralized checkout in this website during/after Phase 3.
+- **Payment providers**: Stripe (card payments) + PayPal (PayPal button), both integrated directly in the website.
+	- Customer chooses preferred method at checkout.
+	- Provider-agnostic adapter pattern for future flexibility.
 - Deployment platform: Vercel with owned domain.
 	- Production traffic should use owned domain and SEO-ready indexing setup.
 
@@ -53,22 +57,24 @@ The project needs to launch quickly with strong SEO discoverability, controlled 
 - Hybrid provides fastest time-to-market while keeping future flexibility.
 - Vercel minimizes infrastructure overhead and aligns well with Next.js App Router.
 - Owned domain strengthens branding and search discoverability.
+- Stripe + PayPal covers the vast majority of online payment preferences (card + digital wallet).
+- Provider-agnostic adapter allows adding/removing providers without checkout redesign.
 
 #### Consequences
 - Short term:
 	- Lower implementation risk and faster release.
-	- Some checkout UX may temporarily happen outside the main web.
+	- Some checkout UX may temporarily happen outside the main web (Gumroad as separate channel).
 - Mid term:
-	- Need a migration plan if/when centralized checkout is implemented.
-	- Payment provider choice remains open until Phase 3 decision gate.
+	- Need a migration plan if/when centralized checkout fully replaces external channels.
+	- Stripe + PayPal integration must be built using an adapter pattern for provider abstraction.
 
 #### Re-evaluation Trigger
-Revisit this ADR at the beginning of Phase 3, or earlier if either condition is met:
+~~Revisit this ADR at the beginning of Phase 3, or earlier if either condition is met:~~ ✅ **Re-evaluated and closed at Phase 3 start (2026-08-29).**
 - Conversion loss attributed to external checkout flow.
 - Operational or fee constraints from external storefront become significant.
 
 #### Open Items
-- Select centralized payment provider stack for Phase 3+: Stripe, PayPal, card acquiring strategy, or combination.
+- ~~Select centralized payment provider stack for Phase 3+: Stripe, PayPal, card acquiring strategy, or combination.~~ ✅ **Decided: Stripe + PayPal.**
 - Define compliance and fiscal requirements for centralized checkout rollout.
 
 ### Definition of Done (Per Phase)
@@ -272,18 +278,129 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
 ## Phase 3 - Commissions and Shop Foundations
 Goal: enable commissions UI and prepare commerce domain safely.
 
-### Checklist
-- [ ] Define User Profile IA (personal data, payment method, order status, commission status).
-- [ ] Define role-based visibility rule for backend link (admin/manager only).
+### Progress (Phase 3)
+- [x] **Decide payment gateway (Stripe + PayPal)** — Decision made. ADR-001 updated.
+- [x] **Define User Profile IA** — Sections defined and documented below.
+- [x] **Define cart/order boundaries** — Documented below.
+- [x] **Define commission lifecycle** — States updated in contracts.ts, flow documented below.
+- [ ] Define rule-based visibility rule for backend link (admin/manager only).
 - [ ] Build Commissions multi-step UI form (no real submission yet).
-- [ ] Define typed contracts for future commissions API.
+- [x] **Define typed contracts for future commissions API** — Commission, Product, Cart, CartItem, Order, OrderItem added to contracts.ts.
 - [ ] Build Shop catalog UI and domain models.
-- [ ] Define cart/order domain boundaries for future payment integration.
 - [ ] Build User Profile UI sections for editable personal data.
 - [ ] Build User Profile UI sections for payment method management (provider-agnostic placeholders).
 - [ ] Build User Profile order status and commission status tracking UI.
 - [ ] Add backend access link in User Profile UI and hide for non-admin/manager roles.
-- [ ] Decide payment gateway (Stripe/PayPal/other).
+
+### User Profile IA (defined 2026-08-29)
+
+#### User Profile Sections
+
+1. **My Data**
+   - Name, email, phone
+   - Shipping and billing address
+   - Informational note: *"Notifications will be sent to this email"*
+   - "Save changes" button → for personal data (name, phone, address)
+   - "Change password" button → opens separate form (current password + new + confirm)
+   - 🔒 Sensitive changes (email, address, payment method) require **current password confirmation**
+
+2. **My Orders**
+   - Purchase history with visible status
+   - Statuses: draft → pending_payment → paid → processing → ready_to_ship → shipped → delivered | cancelled | refunded
+
+3. **My Commissions**
+   - Custom work tracking
+   - Statuses: submitted → in_review → quoted → paid → standby → in_production → completed → ready_to_ship → shipped
+   - ⛔ **Once paid, it CANNOT be cancelled.** Payment implies acceptance of terms and commitment to the work.
+   - `cancelled` is only possible from pre-payment states (submitted, in_review, quoted).
+
+4. **My Payment Methods**
+   - Saved cards / linked PayPal (provider-tokenized, no raw data)
+   - 🔒 Requires password confirmation to add/remove
+
+5. **Control Panel**
+   - Link to backend/admin (visible to admin/manager only)
+   - Hidden for support, customer, and anonymous users
+
+6. **Delete Account**
+   - With confirmation and password validation
+
+7. **Log Out**
+   - Button to log out
+
+#### Security Notes
+- Changes to email, shipping/billing address, and payment methods require current password confirmation.
+- No raw card data is stored (only provider-tokenized references).
+- Account deletion requires double confirmation + password.
+
+### Cart/Order Boundaries (defined 2026-08-29)
+
+#### Storage
+- **Current phase**: Cart saved in local storage (user's browser).
+- **Future**: Migrate to server-side storage when backend is operational.
+
+#### Cart → Order Flow
+
+1. User adds products to cart (saved locally).
+2. User pays.
+3. Cart is automatically cleared.
+4. Order(s) are created with initial status `pending_payment` → `paid`.
+
+#### Cart with Multiple Product Types
+
+The cart can contain **3 separate internal lists**, each visible with its own explanatory note:
+
+| List | Type | Note to user | Delivery |
+|-------|------|-------------|---------|
+| 📦 **Physical Products** | Figures, 3D prints | "Estimated shipping: 7-15 business days" | Shipping tracking |
+| 💻 **Digital Products** | STLs, downloadable models | "Immediate download after payment" | Download link |
+| 🎨 **Commissions** | Custom work | "Timeline will be agreed upon budget acceptance" | Production tracking |
+
+Each list generates an **independent order** upon payment, so the user can track each one separately in their profile.
+
+#### Commissions: special payment flow
+
+Commissions are **not purchased directly** like catalog products. They follow this flow:
+
+```
+Client submits request ──▶ You review and quote ──▶ Client accepts
+                                                                    │
+                                                                    ▼
+                          ┌──────────────────────────────────────────┘
+                          ▼
+              Client sees in "My Commissions"
+              the accepted quote with a
+              "Pay now" button and X-day deadline
+                          │
+                          ▼
+              ┌──────────────────────┐
+              │  ✅ Pays             │
+              │  → Stand by (queue)  │
+              │  → In production     │
+              │  → Completed         │
+              │  → Ready to ship     │
+              │  → Shipped           │
+              └──────────────────────┘
+              ┌──────────────────────┐
+              │  ❌ Doesn't pay in X │
+              │  → Cancelled         │
+              └──────────────────────┘
+```
+
+#### Business rule: no cancellation after payment
+- Once a commission is `paid`, **it cannot be cancelled** (payment implies acceptance of terms).
+- `cancelled` is only possible from: `submitted`, `in_review`, `quoted`.
+
+#### Commission Lifecycle (defined 2026-08-29)
+
+```
+submitted ──▶ in_review ──▶ quoted ──▶ paid ──▶ standby ──▶ in_production ──▶ completed ──▶ ready_to_ship ──▶ shipped
+                                                                                                            │
+                                                                                                            ▼
+                                                                                                        done
+
+cancelled (only from submitted / in_review / quoted — before payment)
+```
 
 ### Exit Criteria
 - Commissions UI is complete.

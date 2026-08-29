@@ -10,10 +10,12 @@ export type CommissionStatus =
   | "submitted"
   | "in_review"
   | "quoted"
-  | "approved"
+  | "paid"
+  | "standby"
   | "in_production"
-  | "shipped"
   | "completed"
+  | "ready_to_ship"
+  | "shipped"
   | "cancelled";
 
 export type OrderStatus =
@@ -123,6 +125,60 @@ export interface Commission {
   dueDate?: string;
   status: CommissionStatus;
   internalNotes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── Catalog ────────────────────────────────────────────────────────────────
+
+export type ProductType = "physical" | "digital";
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  type: ProductType;
+  price: number;
+  images: string[];
+  stock?: number;
+  downloadUrl?: string;
+  featured: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── Cart ───────────────────────────────────────────────────────────────────
+
+export interface CartItem {
+  productId: string;
+  type: ProductType | "commission";
+  quantity: number;
+  priceAtAddition: number;
+}
+
+export interface Cart {
+  items: CartItem[];
+  total: number;
+  updatedAt: string;
+}
+
+// ─── Orders ─────────────────────────────────────────────────────────────────
+
+export interface OrderItem {
+  productId: string;
+  type: ProductType | "commission";
+  quantity: number;
+  price: number;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: OrderItem[];
+  status: OrderStatus;
+  shippingAddress?: Address;
+  trackingNumber?: string;
+  paidAt?: string;
   createdAt: string;
   updatedAt: string;
 }
