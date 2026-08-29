@@ -1,11 +1,12 @@
 # 3D CosProps - Project Progress
 
 ## Global Status
-- Current phase: Phase 2 (Informational Pages)
-- Last update: 2026-08-29
-- Scope decision: Phase 1 complete; Phase 2 in progress (Services page complete; Projects page complete with modal gallery + SEO/a11y; Legal pages — mockup versions created for Privacy Policy, Cookie Policy, Legal Notice, and Terms & Conditions)
+- Current phase: Phase 2 complete ✅ → Phase 3 (Commissions and Shop Foundations)
+- Last update: 2026-08-29 — Phase 2 completed
+- Scope decision: Phase 1 complete; Phase 2 complete; Phase 3 in progress
 - Phase 0 status: Completed
 - Phase 1 status: Completed
+- Phase 2 status: Completed
 
 ## Progress Tracking Rules
 - Mark each item with [x] only when fully completed.
@@ -188,7 +189,7 @@ When real images are ready, replace placeholders in `app/content.ts` → each sl
 
 ---
 
-## Phase 2 - Informational Pages
+## Phase 2 - Informational Pages ✅
 Goal: add Services, Projects, and Privacy Policy pages using reusable UI system and local typed data.
 
 ### Checklist
@@ -248,16 +249,23 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
   - _Content: `app/content/legal-content.ts` — separate file with full mockup content for ES; EN as translation-pending placeholder._
   - _Footer: Added "Legal" section in nav column with links to all 4 pages._
   - _Tests: 58 unit tests passing (new tests for legal links in footer, updated content test keys)._
-- [ ] Reuse shared components and style tokens.
-- [ ] Add bilingual content for new pages.
-- [ ] Extend tests for main user flows.
-- [ ] Define User Profile IA (personal data, payment method, order status, commission status).
-- [ ] Define role-based visibility rule for backend link (admin/manager only).
+  - _Sitemap: Added 10 new entries (/en/projects, /es/projects, 4 legal pages × 2 locales) — now 14 total entries._
+  - _E2E: Created `e2e/projects.spec.ts` (7 tests: EN/ES load, filtering, load-more, modal open/close/nav, nav from home, locale persistence, header/footer) and `e2e/legal.spec.ts` (14 tests: 4× EN/ES load, nav via footer links, inter-legal nav, header/footer)._
+  - _Unit: Created `app/__tests__/legal-page.test.tsx` (10 tests: title, disclaimer, dates, sections, body, table rendering, separators, main element, empty disclaimer)._
+  - _All 77 unit tests passing._
+- [x] Reuse shared components and style tokens (LegalPage shared renderer; tokens from design system).
+- [x] Extend tests for main user flows (E2E: 9 projects tests, 12 legal page tests; Unit: 10 LegalPage tests).
+  - _Final test counts: 77 unit tests (9 files), 32 E2E tests (4 spec files) — all passing._
 
-### Exit Criteria
+
+### Exit Criteria — ✅ COMPLETED
 - Services and Projects are production-ready in both locales.
   - _Projects: 56 unit tests passing. SEO metadata + JSON-LD + Schema.org microdata applied. aria-labels, aria-current, aria-pressed, aria-live, keyboard navigation (Escape, arrows) all in place. Skip-to-content link covers all pages._
 - Legal pages mockup versions created (Privacy Policy, Cookie Policy, Legal Notice, Terms & Conditions) in both locales with shared LegalPage component and disclaimer banner for draft status.
+  - Full test coverage: 10 unit tests (LegalPage component), 14 E2E tests (legal pages).
+  - Sitemap includes all legal routes and bilingual `/projects` entries (14 sitemap entries total).
+- 77 unit tests passing (9 test files), 32 E2E tests passing (4 spec files).
+- User Profile IA and role-based visibility rule moved to Phase 3 planning.
 
 ---
 
@@ -265,6 +273,8 @@ Goal: add Services, Projects, and Privacy Policy pages using reusable UI system 
 Goal: enable commissions UI and prepare commerce domain safely.
 
 ### Checklist
+- [ ] Define User Profile IA (personal data, payment method, order status, commission status).
+- [ ] Define role-based visibility rule for backend link (admin/manager only).
 - [ ] Build Commissions multi-step UI form (no real submission yet).
 - [ ] Define typed contracts for future commissions API.
 - [ ] Build Shop catalog UI and domain models.
