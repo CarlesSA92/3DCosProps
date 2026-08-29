@@ -33,6 +33,7 @@ export default function Home() {
       />
       <HomePageContent dict={dict} />
       <SiteFooter
+        locale="en"
         text={dict.footer}
         nav={dict.nav}
         footerNavTitle={dict.footerNavTitle}

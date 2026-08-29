@@ -28,45 +28,61 @@ export default async function LocaleLayout({
 
   const dictionary = getDictionary(locale as Locale);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "3D CosProps",
+    url: `https://3dcosprops.com/${locale}`,
+    logo: "https://3dcosprops.com/media/Icons/Logo-3DCosProps.png",
+    description:
+      locale === "es"
+        ? "Estudio de modelado e impresión 3D para props de alta fidelidad, encargos personalizados y acabados profesionales."
+        : "High-fidelity 3D modeling and printing studio. Premium replicas, production-ready craftsmanship, and custom commissions.",
+    sameAs: [
+      "https://www.facebook.com/3DCosProps/",
+      "https://twitter.com/3DCosprops",
+      "https://www.instagram.com/3dcosprops/",
+      "https://www.youtube.com/@3DCosProps",
+      "https://sketchfab.com/3dcosprops",
+    ],
+  };
+
   return (
-    <div className="relative min-h-screen bg-background">
-      <div
-        className="pointer-events-none fixed inset-0 -z-10"
-        aria-hidden="true"
-      >
-        <ScalesBackground opacity={0.04} />
-      </div>
-      <SiteHeader
-        locale={locale as Locale}
-        languageLabel={dictionary.languageLabel}
-        nav={dictionary.nav}
-      />
-      {children}
-      <SiteFooter
-        text={dictionary.footer}
-        nav={dictionary.nav}
-        footerNavTitle={dictionary.footerNavTitle}
-        footerFollowTitle={dictionary.footerFollowTitle}
-        footerPrivacyLabel={dictionary.footerPrivacyLabel}
-      />
+    <>
+      {/* JSON-LD structured data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "3D CosProps",
-            url: locale === "es" ? "https://3dcosprops.com/es" : "https://3dcosprops.com/en",
-            logo: "https://3dcosprops.com/media/Background-Scales.png",
-            description: dictionary.footer,
-            sameAs: [
-              "https://www.facebook.com/3DCosProps/",
-              "https://twitter.com/3DCosprops",
-              "https://www.instagram.com/3dcosprops/",
-            ],
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-    </div>
+      {/* Skip-to-content link for keyboard users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-background focus:font-label focus:text-sm focus:uppercase focus:tracking-widest focus:rounded focus:outline-none"
+      >
+        {locale === "es" ? "Saltar al contenido principal" : "Skip to main content"}
+      </a>
+      <div className="relative min-h-screen bg-background" id="main-content">
+        <div
+          className="pointer-events-none fixed inset-0 -z-10"
+          aria-hidden="true"
+        >
+          <ScalesBackground opacity={0.04} />
+        </div>
+        <SiteHeader
+          locale={locale as Locale}
+          languageLabel={dictionary.languageLabel}
+          nav={dictionary.nav}
+        />
+        {children}
+        <SiteFooter
+          locale={locale as Locale}
+          text={dictionary.footer}
+          nav={dictionary.nav}
+          footerNavTitle={dictionary.footerNavTitle}
+          footerFollowTitle={dictionary.footerFollowTitle}
+          footerPrivacyLabel={dictionary.footerPrivacyLabel}
+        />
+      </div>
+    </>
   );
 }

@@ -9,6 +9,7 @@ const mockNav = [
 
 describe("SiteFooter", () => {
   const defaultProps = {
+    locale: "en" as const,
     text: "3D CosProps. High-Fidelity 3D Craftsmanship.",
     nav: mockNav,
     footerNavTitle: "Navigation",
