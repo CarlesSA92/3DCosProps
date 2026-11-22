@@ -12,10 +12,12 @@ import {
   SprayIcon,
 } from "../../src/icons";
 import type { ServicesDictionary } from "../../src/types/content";
+import type { Locale } from "../i18n";
 import type { ReactNode } from "react";
 
 type ServicesPageContentProps = {
   dict: ServicesDictionary;
+  locale: Locale;
 };
 
 function getServiceIcon(id: string): ReactNode {
@@ -30,7 +32,7 @@ function getServiceIcon(id: string): ReactNode {
   return iconMap[id] ?? <CubeIcon />;
 }
 
-export function ServicesPageContent({ dict }: ServicesPageContentProps) {
+export function ServicesPageContent({ dict, locale }: ServicesPageContentProps) {
   return (
     <main id="top">
       {/* ── Hero Section ── */}
@@ -120,7 +122,7 @@ export function ServicesPageContent({ dict }: ServicesPageContentProps) {
             {renderBody(dict.ctaBody)}
           </div>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:w-auto">
-            <CtaButton href="/commissions" variant="primary">
+            <CtaButton href={`/${locale}/commissions`} variant="primary">
               {dict.ctaPrimary}
             </CtaButton>
           </div>

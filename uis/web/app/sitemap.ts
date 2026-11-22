@@ -12,6 +12,7 @@ const pages: PageEntry[] = [
   { path: "", priority: 1 },
   { path: "services", priority: 0.9 },
   { path: "projects", priority: 0.9 },
+  { path: "commissions", priority: 0.9 },
   { path: "privacy-policy", priority: 0.5 },
   { path: "cookie-policy", priority: 0.5 },
   { path: "legal-notice", priority: 0.5 },

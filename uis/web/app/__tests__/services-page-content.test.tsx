@@ -52,26 +52,26 @@ const mockDict: ServicesDictionary = {
 
 describe("ServicesPageContent", () => {
   it("should render the hero tag", () => {
-    render(<ServicesPageContent dict={mockDict} />);
+    render(<ServicesPageContent dict={mockDict} locale="en" />);
     expect(screen.getByText("Our expertise")).toBeInTheDocument();
   });
 
   it("should render the hero title with gold highlight", () => {
-    render(<ServicesPageContent dict={mockDict} />);
+    render(<ServicesPageContent dict={mockDict} locale="en" />);
     const goldSpan = screen.getByText("Reality");
     expect(goldSpan).toBeInTheDocument();
     expect(goldSpan).toHaveClass("bg-gradient-to-r");
   });
 
   it("should render the hero body", () => {
-    render(<ServicesPageContent dict={mockDict} />);
+    render(<ServicesPageContent dict={mockDict} locale="en" />);
     expect(
       screen.getByText("From the first sketch to the final coat of paint — we partner with you."),
     ).toBeInTheDocument();
   });
 
   it("should render both service cards with gold-highlighted words", () => {
-    render(<ServicesPageContent dict={mockDict} />);
+    render(<ServicesPageContent dict={mockDict} locale="en" />);
     const designGold = screen.getByText("Design");
     expect(designGold).toBeInTheDocument();
     expect(designGold).toHaveClass("bg-gradient-to-r");
@@ -82,7 +82,7 @@ describe("ServicesPageContent", () => {
   });
 
   it("should render service card descriptions", () => {
-    render(<ServicesPageContent dict={mockDict} />);
+    render(<ServicesPageContent dict={mockDict} locale="en" />);
     expect(
       screen.getByText("Every great piece starts with a great model."),
     ).toBeInTheDocument();
@@ -92,7 +92,7 @@ describe("ServicesPageContent", () => {
   });
 
   it("should render feature lists for each service", () => {
-    render(<ServicesPageContent dict={mockDict} />);
+    render(<ServicesPageContent dict={mockDict} locale="en" />);
     expect(screen.getByText("Custom 3D Modeling")).toBeInTheDocument();
     expect(screen.getByText("Model Adaptation & Optimization")).toBeInTheDocument();
     expect(screen.getByText("FDM & Resin Printing")).toBeInTheDocument();
@@ -100,7 +100,7 @@ describe("ServicesPageContent", () => {
   });
 
   it("should render the final CTA section title with gold highlight and body", () => {
-    render(<ServicesPageContent dict={mockDict} />);
+    render(<ServicesPageContent dict={mockDict} locale="en" />);
     const legendGold = screen.getByText("legend");
     expect(legendGold).toBeInTheDocument();
     expect(legendGold).toHaveClass("bg-gradient-to-r");
@@ -108,7 +108,7 @@ describe("ServicesPageContent", () => {
   });
 
   it("should render the final CTA button with correct label", () => {
-    render(<ServicesPageContent dict={mockDict} />);
+    render(<ServicesPageContent dict={mockDict} locale="en" />);
     // Hero CTAs are hidden — only the bottom CTA button shows
     expect(screen.getByText("Start Commission")).toBeInTheDocument();
   });

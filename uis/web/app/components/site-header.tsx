@@ -32,6 +32,9 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
 
   const isActive = useCallback(
     (href: string) => {
+      if (href === "#commissions" && pathname === `/${locale}/commissions`) {
+        return true;
+      }
       if (href.startsWith("/")) {
         // Route-based link: match pathname
         const fullPath = `/${locale}${href}`;
@@ -79,6 +82,9 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
     (href: string) => {
       if (href.startsWith("/")) {
         return `/${locale}${href}`;
+      }
+      if (href === "#commissions") {
+        return `/${locale}/commissions`;
       }
       return href;
     },

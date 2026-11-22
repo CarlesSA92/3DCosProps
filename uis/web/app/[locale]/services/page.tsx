@@ -88,7 +88,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ServicesPageContent dict={dict} />
+      <ServicesPageContent dict={dict} locale={locale as Locale} />
     </>
   );
 }

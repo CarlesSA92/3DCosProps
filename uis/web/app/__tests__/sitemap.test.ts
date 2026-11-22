@@ -11,6 +11,8 @@ describe("sitemap.xml", () => {
     { path: "/es/services", priority: 0.9 },
     { path: "/en/projects", priority: 0.9 },
     { path: "/es/projects", priority: 0.9 },
+    { path: "/en/commissions", priority: 0.9 },
+    { path: "/es/commissions", priority: 0.9 },
     { path: "/en/privacy-policy", priority: 0.5 },
     { path: "/es/privacy-policy", priority: 0.5 },
     { path: "/en/cookie-policy", priority: 0.5 },
@@ -21,7 +23,7 @@ describe("sitemap.xml", () => {
     { path: "/es/terms-conditions", priority: 0.5 },
   ];
 
-  it("should return all locale entries (home + services + projects + legal)", () => {
+  it("should return all locale entries (home + services + projects + commissions + legal)", () => {
     expect(entries).toHaveLength(expectedRoutes.length);
   });
 

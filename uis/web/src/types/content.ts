@@ -135,3 +135,60 @@ export type ProjectsDictionary = PageContent & {
   loadMore: string;
   noMoreProjects: string;
 };
+
+export type CommissionPageDictionary = PageContent & {
+  heroTag: string;
+  heroTitle: string;
+  heroBody: string;
+  formTitle: string;
+  formSteps: [string, string, string];
+  formStepDescriptions: [string, string, string];
+  projectTypes: Array<{ value: string; label: string }>;
+  budgetOptions: Array<{ value: string; label: string }>;
+  timelineOptions: Array<{ value: string; label: string }>;
+  labels: {
+    projectTitle: string;
+    projectType: string;
+    details: string;
+    budget: string;
+    enterBudget: string;
+    timeline: string;
+    references: string;
+    name: string;
+    email: string;
+    agreement: string;
+  };
+  hints: {
+    projectTitle: string;
+    details: string;
+    references: string;
+    referencesHelp: string;
+    payment: string;
+    timeline: string;
+  };
+  actions: {
+    back: string;
+    next: string;
+    submit: string;
+    removeFile: string;
+  };
+  validation: {
+    projectTitle: string;
+    projectType: string;
+    details: string;
+    name: string;
+    email: string;
+    agreement: string;
+    fileSize: string;
+    fileType: string;
+    fileCount: string;
+  };
+  successTitle: string;
+  successBody: string;
+  processTitle: string;
+  processSteps: Array<{ title: string; body: string }>;
+  paymentTitle: string;
+  paymentBody: string;
+  faqTitle: string;
+  faqs: Array<{ question: string; answer: string }>;
+};

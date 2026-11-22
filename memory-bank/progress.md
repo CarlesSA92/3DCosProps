@@ -284,7 +284,8 @@ Goal: enable commissions UI and prepare commerce domain safely.
 - [x] **Define cart/order boundaries** — Documented below.
 - [x] **Define commission lifecycle** — States updated in contracts.ts, flow documented below.
 - [x] **Define rule-based visibility rule for backend link (admin/manager only).** — Rule documented; UI implementation in User Profile and server-side RBAC enforcement remain pending.
-- [ ] Build Commissions multi-step UI form (no real submission yet).
+- [x] Build Commissions multi-step UI form (no real submission yet).
+  - _Bilingual `/en/commissions` and `/es/commissions` page with guided brief, project process, FAQ, and quote-before-payment explanation. Payment and request submission remain inactive pending Phase 4 integration._
 - [x] **Define typed contracts for future commissions API** — Commission, Product, Cart, CartItem, Order, OrderItem added to `contracts.ts`; commerce contracts consolidated 2026-10-20 (see decisions below).
 - [ ] Build Shop catalog UI and domain models.
 - [ ] Build User Profile UI sections for editable personal data.
