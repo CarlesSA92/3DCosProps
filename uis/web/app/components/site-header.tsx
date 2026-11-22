@@ -164,15 +164,13 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
             </Link>
           </div>
 
-          <a
-            href="#"
+          <Link
+            href={`/${locale}/profile`}
             className="hidden md:flex text-primary transition-colors hover:text-[#d4af37]"
-            aria-label="User profile"
-            tabIndex={0}
-            role="button"
+            aria-label={locale === "es" ? "Perfil de usuario" : "User profile"}
           >
             <ProfileIcon className="h-[1.5625rem] w-[1.5625rem]" />
-          </a>
+          </Link>
 
           {/* Mobile hamburger */}
           <button
@@ -213,17 +211,15 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
             })}
             {/* Mobile locale switcher + profile */}
             <div className="flex items-center justify-between pt-4 border-t border-white/10">
-              <a
-                href="#"
+              <Link
+                href={`/${locale}/profile`}
                 onClick={handleNavClick}
                 className="flex items-center gap-3 font-label text-sm uppercase tracking-[0.1em] text-primary hover:text-[#d4af37] transition-colors"
-                aria-label="User profile"
-                tabIndex={0}
-                role="button"
+                aria-label={locale === "es" ? "Perfil de usuario" : "User profile"}
               >
                 <ProfileIcon className="h-10 w-10" />
                 {locale === "es" ? "Perfil" : "Profile"}
-              </a>
+              </Link>
               <div className="flex items-center gap-1 font-label text-sm uppercase tracking-[0.1em]">
                 <Link
                   href={switchHref("en")}

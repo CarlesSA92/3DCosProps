@@ -2,7 +2,7 @@
 
 ## Global Status
 - Current phase: Phase 2 complete ✅ → Phase 3 (Commissions and Shop Foundations)
-- Last update: 2026-10-20 — Phase 3 commerce contracts consolidated; implementation decisions clarified
+- Last update: 2026-11-22 — Phase 3 audit and full automated validation completed; agreed account/checkout integrations remain deferred
 - Scope decision: Phase 1 complete; Phase 2 complete; Phase 3 in progress
 - Phase 0 status: Completed
 - Phase 1 status: Completed
@@ -288,14 +288,25 @@ Goal: enable commissions UI and prepare commerce domain safely.
   - _Bilingual `/en/commissions` and `/es/commissions` page with guided brief, project process, FAQ, and quote-before-payment explanation. Payment and request submission remain inactive pending Phase 4 integration._
 - [x] **Define typed contracts for future commissions API** — Commission, Product, Cart, CartItem, Order, OrderItem added to `contracts.ts`; commerce contracts consolidated 2026-10-20 (see decisions below).
 - [x] Build Shop catalog UI and domain models.
-  - _Bilingual `/en/shop` and `/es/shop` catalog with category filters, sorting, progressive loading, product cards, and localStorage cart using the typed commerce contracts. Product artwork remains placeholder until catalog images are supplied; checkout is out of scope for this phase._
+  - _Bilingual `/en/shop` and `/es/shop` catalog with category filters, sorting, progressive loading, product cards, and localStorage cart using the typed commerce contracts. The catalog/cart UI and cart/order domain boundaries belong to Phase 3; implementing the checkout flow, payment, order creation and server-side validation belongs to Phase 4. Product artwork remains placeholder until catalog images are supplied._
 - [x] Build reusable product detail mockup (2026-11-22).
   - _Bilingual `/en/shop/[productId]` and `/es/shop/[productId]` routes use each catalog product's data. Reuses header, PageIntro hero, footer, fonts and colors. Includes gallery placeholders, a disabled configuration selector with no invented variants, quantity controls, shared localStorage cart, accessible detail tabs and related products chosen by universe/category. Mock detail routes remain noindex until the catalog is finalized. Verified with 102 unit tests, TypeScript and 6 Shop E2E tests including desktop/mobile screenshots and unknown-product 404._
   - _Pending: product photography, definitive materials/specifications, option types and variants, backend catalog/relationships, authoritative pricing and stock, shipping/tax rules, and checkout integration. Thumbnail areas are reserved placeholders until gallery images are supplied._
-- [ ] Build User Profile UI sections for editable personal data.
-- [ ] Build User Profile UI sections for payment method management (provider-agnostic placeholders).
-- [ ] Build User Profile order status and commission status tracking UI.
-- [ ] Add backend access link in User Profile UI and hide for non-admin/manager roles.
+- [x] Build User Profile UI sections for editable personal data (demo UI).
+  - _Bilingual `/es/profile` and `/en/profile` demo: editable in-memory contact details and shipping/billing address fields; billing-same-as-shipping checkbox; save feedback, security/password placeholder. The current tab is kept in `?tab=` so browser Back restores the selected section after visiting the shop. No account data is persisted; authentication and sensitive-change confirmation remain pending._
+- [x] Build User Profile UI sections for payment method management (provider-agnostic placeholders).
+  - _Card and PayPal placeholders explain that methods are not connected; no payment credentials are collected or stored. Provider integration and secure add/remove flows remain pending._
+- [x] Build User Profile order status and commission status tracking UI (sample UI).
+  - _The fourth tab now shows separate bilingual sample order/commission cards with IDs, current statuses and timelines based on the defined lifecycle states. Data is explicitly marked as demo; live order/commission history and updates remain Phase 4 backend work._
+- [x] Build User Profile downloads-library UI (demo placeholder).
+  - _Bilingual downloads tab has four compact downloadable-file cards in a two-column layout, with thumbnail, download action and expandable description. Files/actions are visual placeholders only and are not purchase entitlements; real purchase-linked downloads are deferred to Phase 4. The source/storage decision (database vs external object/file storage) remains open and must be made before integration._
+- [x] Defer role-aware backoffice access until account registration/sign-in is implemented.
+  - _For the current unauthenticated profile demo the Backoffice preview card remains visible and non-navigable. User registration/sign-in and account access to Profile are future work; once authentication and user roles exist, show the real admin/backoffice destination only to authorized roles (admin/manager) and enforce authorization server-side. This is an accepted deferral, not a Phase 3 blocker._
+- [x] Validate recent User Profile UI changes.
+  - _Profile unit tests (3), profile navigation E2E at desktop/mobile (2), TypeScript, ESLint, and `git diff --check` passed after the recent profile UI changes._
+- [x] Audit Phase 3 scope and run the full automated validation gate (2026-11-22).
+  - _Audit: commissions UI and API contracts, shop catalog/cart/order foundations, bilingual profile demo, status timelines, Stripe + PayPal decision, and hybrid-to-centralized checkout path are present. Checkout/payment, registration/sign-in, role-aware Backoffice access, and purchase-linked digital downloads are explicitly later-phase work; download asset storage (database vs external object/file storage) remains an architecture decision for Phase 4 integration._
+  - _Validation from `uis/web`: 109 unit tests passed (13 files); `npx tsc --noEmit` passed; `npm run lint` completed with 0 errors and 5 warnings (unused symbols in `services-page-content.tsx`, `site-header.tsx`, `app/content.ts`, and `src/types/content.ts`); `npm run build` succeeded and generated 42 static pages; all 45 Playwright E2E tests passed. These UI tests do not imply real checkout, backend, authentication, or protected download flows._
 
 ### User Profile IA (defined 2026-08-29)
 
@@ -415,14 +426,25 @@ cancelled (only from submitted / in_review / quoted — before payment)
 - `done` is a manual archive/close state set by an admin or manager after fulfillment; it is not an automatic synonym for `shipped`.
 - Orders also support `done` as an admin/manager-applied archive state after fulfillment.
 
-### Implementation notes to carry forward (clarified 2026-10-20)
-- Backend/control-panel link rule is already defined: visible only to `admin` and `manager`, hidden for support, customer, and anonymous users. UI implementation in the future User Profile and server-side RBAC enforcement remain pending; the rule itself is not pending definition.
+### Implementation notes to carry forward (clarified 2026-11-22)
+- Backoffice access rule is defined: after registration/sign-in and role support exist, show the destination only to `admin` and `manager`, hidden from support, customer, and anonymous users. Role-aware rendering and server-side RBAC are deferred until the account/authentication and backend phases; the current demo card remains visible but disabled.
+- Cart/catalog UI and cart/order domain boundaries are Phase 3 foundations. Checkout UI/flow, payment processing, order creation and server-side price/stock validation are Phase 4 Full Commerce work.
+- The Profile downloads cards and STL are visual placeholders only. Production downloads must be tied to confirmed purchase entitlements. Before integration, decide whether digital assets are stored/served from a database-backed system or external object/file storage; do not store large binary assets directly in a relational database without evaluating the storage design.
 - The website remains partly mockup: Home carousel and Projects gallery use placeholder/mock content to validate behavior; Services is largely complete but can receive a final copy/concept review; legal pages remain mockups pending real business details and English translations. Phase 2 completion refers to its current UI/functionality scope, not final production content for all pages.
-- The 2026-08-29 update date was accurate before this work; this progress file is now updated as of 2026-10-20.
+- This progress file was updated 2026-11-22 to record the current Profile demo scope and the accepted Phase 4/authentication deferrals.
 
 ### Exit Criteria
 - Commissions UI is complete.
 - Shop domain is ready for payment implementation.
+- All Phase 3 checklist items are either completed or explicitly accepted as deferred, with validation evidence recorded.
+- Full automated Phase 3 validation gate is recorded above; lint has warnings to clean up, but no errors.
+- This exit criteria certifies the agreed foundation/UI scope only, not production commerce readiness.
+
+### Remaining work to close Phase 3
+- No unaccepted Phase 3 scope blockers remain after the 2026-11-22 audit; checkout, accounts/roles and production downloads are explicitly deferred to later phases.
+- Optional cleanup: resolve the five existing ESLint unused-symbol warnings before enforcing a warning-free lint gate.
+- Product photography and finalized product specifications/options remain content/catalog inputs; they do not block the current foundation/mockup scope but are needed before production catalog sign-off.
+- If a manual visual/accessibility sign-off beyond automated coverage is required, record that review separately before declaring production readiness. Phase 3 completion means the agreed foundation/UI scope, not production commerce launch readiness.
 
 ---
 
