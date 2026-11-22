@@ -39,6 +39,10 @@ export default function Home() {
         footerNavTitle={dict.footerNavTitle}
         footerFollowTitle={dict.footerFollowTitle}
         footerPrivacyLabel={dict.footerPrivacyLabel}
+        footerLegalTitle={dict.footerLegalTitle}
+        footerLegalNoticeLabel={dict.footerLegalNoticeLabel}
+        footerCookiePolicyLabel={dict.footerCookiePolicyLabel}
+        footerTermsLabel={dict.footerTermsLabel}
       />
     </div>
   );

@@ -23,6 +23,10 @@ const mockDict: ProjectsDictionary = {
   filterGames: "Games",
   loadMore: "Load More Projects",
   noMoreProjects: "No more projects.",
+  footerLegalTitle: "Legal",
+  footerLegalNoticeLabel: "Legal Notice",
+  footerCookiePolicyLabel: "Cookie Policy",
+  footerTermsLabel: "Terms & Conditions",
   projects: [
     {
       id: "tanjiro-sword",

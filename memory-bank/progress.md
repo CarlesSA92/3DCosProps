@@ -2,7 +2,7 @@
 
 ## Global Status
 - Current phase: Phase 2 complete ✅ → Phase 3 (Commissions and Shop Foundations)
-- Last update: 2026-08-29 — Phase 3 started: payment gateway decided (Stripe + PayPal)
+- Last update: 2026-10-20 — Phase 3 commerce contracts consolidated; implementation decisions clarified
 - Scope decision: Phase 1 complete; Phase 2 complete; Phase 3 in progress
 - Phase 0 status: Completed
 - Phase 1 status: Completed
@@ -283,9 +283,9 @@ Goal: enable commissions UI and prepare commerce domain safely.
 - [x] **Define User Profile IA** — Sections defined and documented below.
 - [x] **Define cart/order boundaries** — Documented below.
 - [x] **Define commission lifecycle** — States updated in contracts.ts, flow documented below.
-- [ ] Define rule-based visibility rule for backend link (admin/manager only).
+- [x] **Define rule-based visibility rule for backend link (admin/manager only).** — Rule documented; UI implementation in User Profile and server-side RBAC enforcement remain pending.
 - [ ] Build Commissions multi-step UI form (no real submission yet).
-- [x] **Define typed contracts for future commissions API** — Commission, Product, Cart, CartItem, Order, OrderItem added to contracts.ts.
+- [x] **Define typed contracts for future commissions API** — Commission, Product, Cart, CartItem, Order, OrderItem added to `contracts.ts`; commerce contracts consolidated 2026-10-20 (see decisions below).
 - [ ] Build Shop catalog UI and domain models.
 - [ ] Build User Profile UI sections for editable personal data.
 - [ ] Build User Profile UI sections for payment method management (provider-agnostic placeholders).
@@ -306,11 +306,11 @@ Goal: enable commissions UI and prepare commerce domain safely.
 
 2. **My Orders**
    - Purchase history with visible status
-   - Statuses: draft → pending_payment → paid → processing → ready_to_ship → shipped → delivered | cancelled | refunded
+  - Statuses: draft → pending_payment → paid → preparing / in_production → ready_to_ship → shipped → delivered → done (manual archive) | cancelled | refunded
 
 3. **My Commissions**
    - Custom work tracking
-   - Statuses: submitted → in_review → quoted → paid → standby → in_production → completed → ready_to_ship → shipped
+  - Statuses: submitted → in_review → quoted → pending_payment → paid → standby → in_production → completed → ready_to_ship → shipped → done (manual archive)
    - ⛔ **Once paid, it CANNOT be cancelled.** Payment implies acceptance of terms and commitment to the work.
    - `cancelled` is only possible from pre-payment states (submitted, in_review, quoted).
 
@@ -333,7 +333,7 @@ Goal: enable commissions UI and prepare commerce domain safely.
 - No raw card data is stored (only provider-tokenized references).
 - Account deletion requires double confirmation + password.
 
-### Cart/Order Boundaries (defined 2026-08-29)
+### Cart/Order Boundaries (defined 2026-08-29; clarified 2026-10-20)
 
 #### Storage
 - **Current phase**: Cart saved in local storage (user's browser).
@@ -341,14 +341,14 @@ Goal: enable commissions UI and prepare commerce domain safely.
 
 #### Cart → Order Flow
 
-1. User adds products to cart (saved locally).
-2. User pays.
-3. Cart is automatically cleared.
-4. Order(s) are created with initial status `pending_payment` → `paid`.
+1. User adds catalog products to the cart (saved locally); displayed prices are indicative and must be revalidated server-side at checkout.
+2. Checkout creates pending order(s), grouped by fulfillment type (physical, digital, commission), with item and price snapshots. A commission request itself is not a catalog purchase.
+3. An order becomes `paid` only after the payment provider confirms successful payment. Clear the cart only after successful confirmation.
+4. The profile tracks every order from payment through fulfillment. Guest checkout may remain possible, but profile tracking requires an account/ownership association.
 
 #### Cart with Multiple Product Types
 
-The cart can contain **3 separate internal lists**, each visible with its own explanatory note:
+The cart/checkout can handle **3 fulfillment groups**, each visible with its own explanatory note. Commissions enter checkout only after the store accepts the request, sends a quote, and the customer accepts; they are not added as ordinary catalog products:
 
 | List | Type | Note to user | Delivery |
 |-------|------|-------------|---------|
@@ -356,21 +356,29 @@ The cart can contain **3 separate internal lists**, each visible with its own ex
 | 💻 **Digital Products** | STLs, downloadable models | "Immediate download after payment" | Download link |
 | 🎨 **Commissions** | Custom work | "Timeline will be agreed upon budget acceptance" | Production tracking |
 
-Each list generates an **independent order** upon payment, so the user can track each one separately in their profile.
+Each fulfillment group generates an **independent order** at checkout, so physical, digital, and commission fulfillment can be tracked separately in the profile. A commission payment order is created only after the store accepts the request, sends a quote, and the customer accepts it.
+
+#### Fulfillment and profile tracking (clarified 2026-10-20)
+- **Digital products**: download entitlement/link becomes available only after successful payment confirmation.
+- **Physical products**: track preparation/production, ready-to-ship, shipment, delivery, and manual archive completion.
+- **Commissions**: customer submits a request; the store reviews and accepts it, sends a quote, and the customer accepts the quote. Then the checkout/payment link is generated. The quote payment is represented by a separate order linked to the commission request. The profile shows request/quote/payment and subsequent production/delivery progress.
+- A commission is not directly purchasable from the catalog. Only an accepted quote can be paid through checkout.
+- Order line items preserve a snapshot of catalog identity/title and unit price at order creation; checkout must revalidate prices server-side.
+- Money is represented as integer minor units (e.g. cents) with an explicit currency.
 
 #### Commissions: special payment flow
 
 Commissions are **not purchased directly** like catalog products. They follow this flow:
 
 ```
-Client submits request ──▶ You review and quote ──▶ Client accepts
+Client submits request ──▶ Store reviews/accepts ──▶ Store sends quote ──▶ Client accepts
                                                                     │
                                                                     ▼
                           ┌──────────────────────────────────────────┘
                           ▼
               Client sees in "My Commissions"
-              the accepted quote with a
-              "Pay now" button and X-day deadline
+              the accepted quote and checkout link
+              with a payment deadline (if configured)
                           │
                           ▼
               ┌──────────────────────┐
@@ -391,16 +399,21 @@ Client submits request ──▶ You review and quote ──▶ Client accepts
 - Once a commission is `paid`, **it cannot be cancelled** (payment implies acceptance of terms).
 - `cancelled` is only possible from: `submitted`, `in_review`, `quoted`.
 
-#### Commission Lifecycle (defined 2026-08-29)
+#### Commission Lifecycle (defined 2026-08-29; clarified 2026-10-20)
 
 ```
-submitted ──▶ in_review ──▶ quoted ──▶ paid ──▶ standby ──▶ in_production ──▶ completed ──▶ ready_to_ship ──▶ shipped
-                                                                                                            │
-                                                                                                            ▼
-                                                                                                        done
+submitted ──▶ in_review ──▶ quoted ──▶ pending_payment ──▶ paid ──▶ standby ──▶ in_production ──▶ completed ──▶ ready_to_ship ──▶ shipped ──▶ done
 
 cancelled (only from submitted / in_review / quoted — before payment)
 ```
+
+- `done` is a manual archive/close state set by an admin or manager after fulfillment; it is not an automatic synonym for `shipped`.
+- Orders also support `done` as an admin/manager-applied archive state after fulfillment.
+
+### Implementation notes to carry forward (clarified 2026-10-20)
+- Backend/control-panel link rule is already defined: visible only to `admin` and `manager`, hidden for support, customer, and anonymous users. UI implementation in the future User Profile and server-side RBAC enforcement remain pending; the rule itself is not pending definition.
+- The website remains partly mockup: Home carousel and Projects gallery use placeholder/mock content to validate behavior; Services is largely complete but can receive a final copy/concept review; legal pages remain mockups pending real business details and English translations. Phase 2 completion refers to its current UI/functionality scope, not final production content for all pages.
+- The 2026-08-29 update date was accurate before this work; this progress file is now updated as of 2026-10-20.
 
 ### Exit Criteria
 - Commissions UI is complete.

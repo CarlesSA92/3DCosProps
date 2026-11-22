@@ -44,6 +44,10 @@ const mockDict: ServicesDictionary = {
   footerNavTitle: "Navigation",
   footerFollowTitle: "Follow Us",
   footerPrivacyLabel: "Privacy Policy",
+  footerLegalTitle: "Legal",
+  footerLegalNoticeLabel: "Legal Notice",
+  footerCookiePolicyLabel: "Cookie Policy",
+  footerTermsLabel: "Terms & Conditions",
 };
 
 describe("ServicesPageContent", () => {
