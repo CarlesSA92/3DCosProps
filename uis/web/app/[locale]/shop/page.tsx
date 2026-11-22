@@ -7,6 +7,7 @@ import { ShopPageContent } from "../../components/shop-page-content";
 
 type ShopPageProps = {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ collection?: string }>;
 };
 
 export async function generateMetadata({ params }: ShopPageProps): Promise<Metadata> {
@@ -38,8 +39,8 @@ export async function generateMetadata({ params }: ShopPageProps): Promise<Metad
   };
 }
 
-export default async function ShopPage({ params }: ShopPageProps) {
-  const { locale } = await params;
+export default async function ShopPage({ params, searchParams }: ShopPageProps) {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
   if (!isLocale(locale)) notFound();
 
   const dict = getShopDictionary(locale as Locale);
@@ -75,7 +76,7 @@ export default async function ShopPage({ params }: ShopPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ShopPageContent dict={dict} locale={locale as Locale} />
+      <ShopPageContent dict={dict} locale={locale as Locale} initialCollection={query.collection} />
     </>
   );
 }

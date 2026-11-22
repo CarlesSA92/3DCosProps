@@ -58,6 +58,20 @@ describe("ShopPageContent", () => {
     expect(screen.queryByText("Custom Helmet Kit")).not.toBeInTheDocument();
   });
 
+  it("initializes the active collection from the detail breadcrumb query", () => {
+    render(<ShopPageContent dict={dict} locale="en" initialCollection="the-mandalorian" />);
+    expect(screen.getByRole("button", { name: "The Mandalorian" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("Custom Helmet Kit")).toBeInTheDocument();
+    expect(screen.getByText("Weathered Sci-Fi Blaster")).toBeInTheDocument();
+    expect(screen.queryByText("Legendary Sword Files")).not.toBeInTheDocument();
+  });
+
+  it("ignores unknown initial collections", () => {
+    render(<ShopPageContent dict={dict} locale="en" initialCollection="unknown-universe" />);
+    expect(screen.getByRole("button", { name: /All universes/ })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("Legendary Sword Files")).toBeInTheDocument();
+  });
+
   it("sorts products by price from low to high", () => {
     render(<ShopPageContent dict={dict} locale="en" />);
 

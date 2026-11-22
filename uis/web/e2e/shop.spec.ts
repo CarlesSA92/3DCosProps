@@ -32,12 +32,24 @@ test.describe("Shop page", () => {
     await expect(page).toHaveURL(/\/en\/shop\/mando-helmet-kit$/);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Custom Helmet Kit");
     await expect(page.getByRole("combobox", { name: "Configuration" })).toBeDisabled();
+    await expect(page.getByText("Cart (", { exact: false })).toHaveCount(0);
+    await expect(page.getByRole("navigation", { name: "Product breadcrumb" }).getByRole("link", { name: "Filter by The Mandalorian" }))
+      .toHaveAttribute("href", "/en/shop?collection=the-mandalorian");
+    await page.getByRole("navigation", { name: "Product breadcrumb" }).getByRole("link", { name: "Filter by The Mandalorian" }).click();
+    await expect(page).toHaveURL(/\/en\/shop\?collection=the-mandalorian$/);
+    await expect(page.getByRole("button", { name: "The Mandalorian" })).toHaveAttribute("aria-pressed", "true");
+    await page.goto("/en/shop/mando-helmet-kit");
+    await page.getByRole("button", { name: "Enlarge Custom Helmet Kit" }).click();
+    await expect(page.getByRole("dialog", { name: "Enlarged image of Custom Helmet Kit" })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
     await page.getByRole("button", { name: "Increase quantity" }).click();
     await page.getByRole("button", { name: "Add to cart", exact: true }).click();
     await expect(page.getByRole("status")).toHaveText("Added Custom Helmet Kit to your cart.");
     await page.getByRole("tab", { name: "Material & finish" }).click();
     await expect(page.getByRole("tabpanel")).toContainText("Materials, finishes");
     await page.getByRole("link", { name: "Back to shop" }).click();
+    await expect(page).toHaveURL(/\/en\/shop$/);
     await expect(page.getByText("Cart (2)")).toBeVisible();
   });
 

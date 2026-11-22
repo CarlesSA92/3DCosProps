@@ -11,6 +11,7 @@ import type { Locale } from "../i18n";
 type ShopPageContentProps = {
   dict: ShopDictionary;
   locale: Locale;
+  initialCollection?: string | null;
 };
 
 type FilterType = "all" | ShopCategory;
@@ -25,9 +26,11 @@ function productCategoryLabel(product: ShopProductContent, dict: ShopDictionary)
   return dict.filterFinished;
 }
 
-export function ShopPageContent({ dict, locale }: ShopPageContentProps) {
+export function ShopPageContent({ dict, locale, initialCollection = null }: ShopPageContentProps) {
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
-  const [activeCollection, setActiveCollection] = useState<string | null>(null);
+  const [activeCollection, setActiveCollection] = useState<string | null>(() =>
+    dict.collections.some((collection) => collection.id === initialCollection) ? initialCollection : null,
+  );
   const [sortBy, setSortBy] = useState<SortType>("newest");
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
   const { cart, addProduct } = useShopCart();

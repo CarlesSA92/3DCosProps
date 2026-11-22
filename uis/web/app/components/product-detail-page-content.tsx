@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowIcon, CartIcon, CubeIcon, SettingsIcon } from "../../src/icons";
+import { ArrowIcon, CartIcon, CloseIcon, CubeIcon, MagnifyingGlassIcon, SettingsIcon } from "../../src/icons";
 import { PageIntro } from "../../src/ui/page-intro";
 import { splitGoldTag } from "../../src/utils/split-gold-tag";
 import { useShopCart } from "../../src/utils/use-shop-cart";
@@ -19,10 +19,11 @@ type ProductDetailPageContentProps = {
 
 export function ProductDetailPageContent({ product, dict, locale }: ProductDetailPageContentProps) {
   const text = getProductDetailDictionary(locale);
-  const { cart, addProduct } = useShopCart();
+  const { addProduct } = useShopCart();
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState(0);
   const [feedback, setFeedback] = useState("");
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const tabs = [text.specifications, text.materials, text.included, text.delivery];
   const collection = dict.collections.find((item) => item.id === product.collection)?.label ?? product.collection;
@@ -40,6 +41,21 @@ export function ProductDetailPageContent({ product, dict, locale }: ProductDetai
     [text.category, categoryLabels[product.category]],
     [text.format, product.type === "digital" ? text.digital : text.physical],
   ];
+
+  const closeExpandedImage = useCallback(() => setIsImageExpanded(false), []);
+  useEffect(() => {
+    if (!isImageExpanded) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeExpandedImage();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isImageExpanded, closeExpandedImage]);
 
   function selectTab(index: number) {
     setActiveTab(index);
@@ -63,19 +79,19 @@ export function ProductDetailPageContent({ product, dict, locale }: ProductDetai
               <ol className="flex flex-wrap items-center gap-2">
                 <li><Link href={`/${locale}/shop`} className="hover:text-primary">{locale === "es" ? "Tienda" : "Shop"}</Link></li>
                 <li aria-hidden="true">/</li>
-                <li>{collection}</li>
+                <li><Link href={`/${locale}/shop?collection=${encodeURIComponent(product.collection)}`} aria-label={text.filterCollection.replace("{collection}", collection)} className="text-text-dim hover:text-primary">{collection}</Link></li>
                 <li aria-hidden="true">/</li>
                 <li aria-current="page" className="text-primary">{product.title}</li>
               </ol>
             </nav>
             <Link href={`/${locale}/shop`} className="flex min-h-10 items-center gap-2 font-label text-[10px] uppercase text-text-dim hover:text-primary">
-              <span aria-hidden="true"><ArrowIcon className="h-5 w-5 rotate-180" /></span>{text.back}
+              <ArrowIcon className="h-9 w-9 rotate-180" />{text.back}
             </Link>
           </div>
 
           <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
             <div aria-label={text.gallery}>
-              <div className="relative flex aspect-square items-center justify-center overflow-hidden border border-white/10 bg-cover bg-center" style={{ backgroundImage: product.image.gradient }}>
+              <button type="button" onClick={() => setIsImageExpanded(true)} aria-label={locale === "es" ? `Ampliar ${product.title}` : `Enlarge ${product.title}`} aria-haspopup="dialog" className="group/product relative flex aspect-square w-full items-center justify-center overflow-hidden border border-white/10 bg-cover bg-center text-left focus-visible:outline-2 focus-visible:outline-primary" style={{ backgroundImage: product.image.gradient }}>
                 {product.image.src ? (
                   <Image src={product.image.src} alt={product.image.alt} fill sizes="(min-width: 1024px) 55vw, 100vw" className="object-contain" priority />
                 ) : (
@@ -86,7 +102,8 @@ export function ProductDetailPageContent({ product, dict, locale }: ProductDetai
                   </div>
                 )}
                 <span className="absolute left-4 top-4 border border-primary/30 bg-black/75 px-3 py-2 font-label text-[10px] uppercase text-primary">{categoryLabels[product.category]}</span>
-              </div>
+                <span aria-hidden="true" className="absolute bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-black/70 text-primary opacity-0 shadow-[0_0_15px_rgba(212,175,55,0.2)] backdrop-blur-sm transition group-hover/product:opacity-100 group-hover/product:bg-white group-hover/product:text-background group-focus-visible/product:opacity-100"><MagnifyingGlassIcon className="h-9 w-9" /></span>
+              </button>
               <div className="mt-3 grid grid-cols-4 gap-3" aria-hidden="true">
                 {[0, 1, 2, 3].map((index) => (
                   <div key={index} className={`flex aspect-[4/3] items-center justify-center border bg-surface ${index === 0 ? "border-primary/50" : "border-white/10"}`}>
@@ -100,7 +117,6 @@ export function ProductDetailPageContent({ product, dict, locale }: ProductDetai
             <div className="min-w-0 border-t-2 border-primary bg-white/[0.035] p-6 md:p-8">
               <div className="mb-5 flex flex-wrap items-center justify-between gap-3 font-label text-[10px] uppercase">
                 <span className="text-primary">{categoryLabels[product.category]} / {collection}</span>
-                <span className="text-text-dim">{dict.cartLabel} ({cart.items.reduce((count, item) => count + item.quantity, 0)})</span>
               </div>
               <h2 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">{product.title}</h2>
               <p className="mt-6 font-label text-[10px] uppercase text-text-dim">{text.price}</p>
@@ -143,7 +159,7 @@ export function ProductDetailPageContent({ product, dict, locale }: ProductDetai
                   event.preventDefault();
                   selectTab(event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length);
                 }} className={`flex min-h-12 items-center justify-center gap-2 border px-3 py-3 font-label text-[10px] uppercase leading-5 transition-colors ${activeTab === index ? "border-primary/50 bg-primary/10 text-primary" : "border-white/10 text-text-dim hover:text-white"}`}>
-                  <span aria-hidden="true"><SettingsIcon className="h-4 w-4 shrink-0" /></span>{tab}
+                  <span aria-hidden="true"><SettingsIcon className="h-8 w-8 shrink-0" /></span>{tab}
                 </button>
               ))}
             </div>
@@ -165,7 +181,7 @@ export function ProductDetailPageContent({ product, dict, locale }: ProductDetai
             <section className="pt-12 md:pt-16" aria-labelledby="related-products-title">
               <div className="mb-7 flex flex-wrap items-end justify-between gap-5">
                 <div><p className="mb-3 font-label text-[10px] uppercase text-primary">{text.relatedTag}</p><h2 id="related-products-title" className="font-display text-3xl font-semibold italic text-white">{splitGoldTag(text.related)}</h2></div>
-                <Link href={`/${locale}/shop`} className="flex min-h-10 items-center gap-2 font-label text-[10px] uppercase text-primary hover:text-white">{text.browse}<span aria-hidden="true"><ArrowIcon className="h-5 w-5" /></span></Link>
+                <Link href={`/${locale}/shop`} className="flex min-h-10 items-center gap-2 font-label text-[10px] uppercase text-primary hover:text-white">{text.browse}<ArrowIcon className="h-9 w-9" /></Link>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((item) => (
@@ -184,6 +200,17 @@ export function ProductDetailPageContent({ product, dict, locale }: ProductDetai
           )}
         </div>
       </section>
+      {isImageExpanded && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm md:p-8" role="dialog" aria-modal="true" aria-label={locale === "es" ? `Imagen ampliada de ${product.title}` : `Enlarged image of ${product.title}`} onClick={closeExpandedImage}>
+          <div className="relative w-full max-w-5xl" onClick={(event) => event.stopPropagation()}>
+            <button type="button" onClick={closeExpandedImage} aria-label={locale === "es" ? "Cerrar" : "Close"} className="absolute -top-12 right-0 z-10 text-white/80 transition-colors hover:text-primary"><CloseIcon className="h-8 w-8" /></button>
+            <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border border-white/10 bg-cover bg-center shadow-[0_0_40px_rgba(212,175,55,0.2)]" style={{ backgroundImage: product.image.gradient }}>
+              {product.image.src ? <Image src={product.image.src} alt={product.image.alt} fill sizes="100vw" className="object-contain" /> : <div className="flex flex-col items-center gap-4 text-white/25"><CubeIcon className="h-40 w-40 md:h-56 md:w-56" /><span className="font-display text-xl font-semibold italic">3D COSPROPS</span><span className="font-label text-[10px] uppercase text-white/60">{text.photoPending}</span></div>}
+            </div>
+            <p className="mt-4 text-center font-display text-lg text-white">{product.title}</p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

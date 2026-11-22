@@ -19,6 +19,7 @@ describe("Product detail", () => {
     expect(screen.getByRole("tabpanel")).toHaveTextContent(product.id);
     expect(screen.getByRole("combobox", { name: "Configuration" })).toBeDisabled();
     expect(screen.getByRole("combobox")).toHaveTextContent("To be defined");
+    expect(screen.queryByText(/Cart \(/)).not.toBeInTheDocument();
   });
 
   it("shares the local cart and adds the selected quantity", () => {
@@ -62,6 +63,24 @@ describe("Product detail", () => {
     expect(within(related).queryByRole("heading", { name: spanish.products[0].title })).not.toBeInTheDocument();
     expect(within(related).getByRole("link", { name: /Bláster de ciencia ficción/ })).toHaveAttribute("href", "/es/shop/weathered-blaster");
     expect(screen.getByRole("link", { name: "Volver a la tienda" })).toHaveAttribute("href", "/es/shop");
+    expect(screen.getByRole("link", { name: "Filtrar por universo The Mandalorian" })).toHaveAttribute("href", "/es/shop?collection=the-mandalorian");
+  });
+
+  it("opens an accessible enlarged product photo and closes with Escape", () => {
+    render(<ProductDetailPageContent dict={dict} product={product} locale="en" />);
+    fireEvent.click(screen.getByRole("button", { name: "Enlarge Custom Helmet Kit" }));
+    expect(screen.getByRole("dialog", { name: "Enlarged image of Custom Helmet Kit" })).toBeInTheDocument();
+    expect(document.body.style.overflow).toBe("hidden");
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(document.body.style.overflow).toBe("");
+  });
+
+  it("closes the enlarged photo when the backdrop is clicked", () => {
+    render(<ProductDetailPageContent dict={dict} product={product} locale="en" />);
+    fireEvent.click(screen.getByRole("button", { name: "Enlarge Custom Helmet Kit" }));
+    fireEvent.click(screen.getByRole("dialog"));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("generates a distinct localized route and metadata for every product", async () => {
