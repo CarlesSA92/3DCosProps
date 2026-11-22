@@ -1,4 +1,5 @@
 import type { Locale } from "../../app/i18n";
+import type { Product } from "../../../../src/models/api/contracts";
 
 export type NavItem = {
   href: string;
@@ -134,6 +135,48 @@ export type ProjectsDictionary = PageContent & {
   projects: ProjectItem[];
   loadMore: string;
   noMoreProjects: string;
+};
+
+export type ShopCategory = "blueprint" | "file" | "kit" | "finished";
+
+export type ShopCollection = {
+  id: string;
+  label: string;
+  gradient: string;
+};
+
+export type ShopProductContent = Product & {
+  category: ShopCategory;
+  collection: string;
+  image: {
+    gradient: string;
+    alt: string;
+  };
+};
+
+export type ShopDictionary = PageContent & {
+  heroTag: string;
+  heroTitle: string;
+  heroBody: string;
+  collectionsTitle: string;
+  collections: ShopCollection[];
+  allCollections: string;
+  filterAll: string;
+  filterBlueprints: string;
+  filterKits: string;
+  filterFiles: string;
+  filterFinished: string;
+  sortLabel: string;
+  sortNewest: string;
+  sortPriceLow: string;
+  sortPriceHigh: string;
+  addToCart: string;
+  addedToCart: string;
+  cartLabel: string;
+  loadMore: string;
+  noMoreProducts: string;
+  noProducts: string;
+  products: ShopProductContent[];
 };
 
 export type CommissionPageDictionary = PageContent & {

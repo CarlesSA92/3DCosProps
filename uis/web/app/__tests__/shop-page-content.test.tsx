@@ -1,0 +1,73 @@
+import { beforeEach, describe, expect, it } from "vitest";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+import { ShopPageContent } from "../components/shop-page-content";
+import { getShopDictionary } from "../content";
+
+const dict = getShopDictionary("en");
+
+describe("ShopPageContent", () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
+  it("renders the localized hero and first six products", () => {
+    render(<ShopPageContent dict={dict} locale="en" />);
+
+    expect(screen.getByText("The")).toBeInTheDocument();
+    expect(screen.getByText("Armory")).toBeInTheDocument();
+    expect(screen.getByText("Custom Helmet Kit")).toBeInTheDocument();
+    expect(screen.getByText("Cyber-Optic Goggles")).toBeInTheDocument();
+    expect(screen.queryByText("Universal Display Stand")).not.toBeInTheDocument();
+  });
+
+  it("filters products by category and resets pagination", () => {
+    render(<ShopPageContent dict={dict} locale="en" />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Finished" }));
+
+    expect(screen.getByText("Weathered Sci-Fi Blaster")).toBeInTheDocument();
+    expect(screen.getByText("Cyber-Optic Goggles")).toBeInTheDocument();
+    expect(screen.queryByText("Custom Helmet Kit")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Finished" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("sorts products by price from low to high", () => {
+    render(<ShopPageContent dict={dict} locale="en" />);
+
+    fireEvent.change(screen.getByLabelText("Sort by"), { target: { value: "price-asc" } });
+
+    const cards = screen.getAllByRole("article");
+    expect(within(cards[0]).getByRole("heading", { name: "Rune-Etched Dagger Files" })).toBeInTheDocument();
+  });
+
+  it("loads more products when requested", () => {
+    render(<ShopPageContent dict={dict} locale="en" />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Load more" }));
+
+    expect(screen.getByText("Universal Display Stand")).toBeInTheDocument();
+    expect(screen.getByText("Rune-Etched Dagger Files")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Load more" })).not.toBeInTheDocument();
+  });
+
+  it("adds products to the local cart and increments duplicate items", async () => {
+    render(<ShopPageContent dict={dict} locale="en" />);
+
+    const addButton = await screen.findByRole("button", { name: "Add to cart: Custom Helmet Kit" });
+    fireEvent.click(addButton);
+    fireEvent.click(addButton);
+
+    const savedCart = JSON.parse(window.localStorage.getItem("3d-cosprops-cart") ?? "{}");
+    expect(savedCart.items).toHaveLength(1);
+    expect(savedCart.items[0]).toMatchObject({
+      kind: "product",
+      productId: "mando-helmet-kit",
+      productType: "physical",
+      quantity: 2,
+      unitPriceCents: 14500,
+    });
+    expect(savedCart.subtotalCents).toBe(29000);
+    expect(screen.getByText("Cart (2)")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Added Custom Helmet Kit to your cart.");
+  });
+});

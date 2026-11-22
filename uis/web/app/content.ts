@@ -1,5 +1,5 @@
 import type { Locale } from "./i18n";
-import type { NavItem, HomeDictionary, ServicesDictionary, ProjectsDictionary } from "../src/types/content";
+import type { NavItem, HomeDictionary, ServicesDictionary, ProjectsDictionary, ShopDictionary } from "../src/types/content";
 
 const dictionaries: Record<Locale, HomeDictionary> = {
   en: {
@@ -8,7 +8,7 @@ const dictionaries: Record<Locale, HomeDictionary> = {
       { href: "/", label: "Home" },
       { href: "/services", label: "Services" },
       { href: "/projects", label: "Projects" },
-      { href: "#shop", label: "Shop" },
+      { href: "/shop", label: "Shop" },
       { href: "#commissions", label: "Commissions" },
     ],
     ctaPrimary: "Start Commission",
@@ -105,7 +105,7 @@ const dictionaries: Record<Locale, HomeDictionary> = {
       { href: "/", label: "Inicio" },
       { href: "/services", label: "Servicios" },
       { href: "/projects", label: "Proyectos" },
-      { href: "#shop", label: "Tienda" },
+      { href: "/shop", label: "Tienda" },
       { href: "#commissions", label: "Encargos" },
     ],
     ctaPrimary: "Iniciar Encargo",
@@ -205,7 +205,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       { href: "/", label: "Home" },
       { href: "/services", label: "Services" },
       { href: "/projects", label: "Projects" },
-      { href: "#shop", label: "Shop" },
+      { href: "/shop", label: "Shop" },
       { href: "#commissions", label: "Commissions" },
     ],
     ctaPrimary: "Start Commission",
@@ -295,7 +295,7 @@ const servicesDictionaries: Record<Locale, ServicesDictionary> = {
       { href: "/", label: "Inicio" },
       { href: "/services", label: "Servicios" },
       { href: "/projects", label: "Proyectos" },
-      { href: "#shop", label: "Tienda" },
+      { href: "/shop", label: "Tienda" },
       { href: "#commissions", label: "Encargos" },
     ],
     ctaPrimary: "Iniciar Encargo",
@@ -388,7 +388,7 @@ const projectsDictionaries: Record<Locale, ProjectsDictionary> = {
       { href: "/", label: "Home" },
       { href: "/services", label: "Services" },
       { href: "/projects", label: "Projects" },
-      { href: "#shop", label: "Shop" },
+      { href: "/shop", label: "Shop" },
       { href: "#commissions", label: "Commissions" },
     ],
     ctaPrimary: "Start Commission",
@@ -482,7 +482,7 @@ const projectsDictionaries: Record<Locale, ProjectsDictionary> = {
       { href: "/", label: "Inicio" },
       { href: "/services", label: "Servicios" },
       { href: "/projects", label: "Proyectos" },
-      { href: "#shop", label: "Tienda" },
+      { href: "/shop", label: "Tienda" },
       { href: "#commissions", label: "Encargos" },
     ],
     ctaPrimary: "Iniciar Encargo",
@@ -572,6 +572,153 @@ const projectsDictionaries: Record<Locale, ProjectsDictionary> = {
   },
 };
 
+function createShopProduct(
+  id: string,
+  title: string,
+  description: string,
+  category: ShopDictionary["products"][number]["category"],
+  collection: string,
+  type: ShopDictionary["products"][number]["type"],
+  priceCents: number,
+  createdAt: string,
+  gradient: string,
+): ShopDictionary["products"][number] {
+  return {
+    id,
+    slug: id,
+    title,
+    description,
+    category,
+    collection,
+    type,
+    priceCents,
+    currency: "USD",
+    imageUrls: [],
+    image: { gradient, alt: title },
+    tags: [category],
+    isVisible: true,
+    stock: type === "physical" ? 4 : undefined,
+    featured: id === "mando-helmet-kit",
+    createdAt,
+    updatedAt: createdAt,
+  };
+}
+
+const shopDictionaries: Record<Locale, ShopDictionary> = {
+  en: {
+    languageLabel: "Language",
+    nav: [
+      { href: "/", label: "Home" },
+      { href: "/services", label: "Services" },
+      { href: "/projects", label: "Projects" },
+      { href: "/shop", label: "Shop" },
+      { href: "#commissions", label: "Commissions" },
+    ],
+    ctaPrimary: "Start Commission",
+    ctaSecondary: "Explore Projects",
+    footer: "3D CosProps. High-Fidelity 3D Craftsmanship.",
+    footerNavTitle: "Navigation",
+    footerFollowTitle: "Follow Us",
+    footerPrivacyLabel: "Privacy Policy",
+    footerLegalTitle: "Legal",
+    footerLegalNoticeLabel: "Legal Notice",
+    footerCookiePolicyLabel: "Cookie Policy",
+    footerTermsLabel: "Terms & Conditions",
+    heroTag: "3D CosProps' supply room",
+    heroTitle: "The <gold>Workshop</gold>",
+    heroBody: "Explore detailed 3D-printable blueprints and files, hands-on kits, and finished props crafted with care. Find the right piece for your next build or collection.",
+    collectionsTitle: "Browse by universe",
+    collections: [
+      { id: "attack-on-titan", label: "Attack on Titan", gradient: "linear-gradient(145deg, #37302a, #171615 55%, #89704d)" },
+      { id: "demon-slayer", label: "Demon Slayer", gradient: "linear-gradient(145deg, #3b2929, #171516 55%, #87534b)" },
+      { id: "the-legend-of-zelda", label: "The Legend of Zelda", gradient: "linear-gradient(145deg, #27372b, #131714 55%, #667b4a)" },
+      { id: "the-mandalorian", label: "The Mandalorian", gradient: "linear-gradient(145deg, #303634, #111615 55%, #786c4d)" },
+    ],
+    allCollections: "All universes",
+    filterAll: "All",
+    filterBlueprints: "Blueprints",
+    filterKits: "Kits",
+    filterFiles: "3D Files",
+    filterFinished: "Finished",
+    sortLabel: "Sort by",
+    sortNewest: "Newest",
+    sortPriceLow: "Price: low to high",
+    sortPriceHigh: "Price: high to low",
+    addToCart: "Add to cart",
+    addedToCart: "Added {product} to your cart.",
+    cartLabel: "Cart",
+    loadMore: "Load more",
+    noMoreProducts: "You've reached the end of the collection.",
+    noProducts: "No products in this collection yet.",
+    products: [
+      createShopProduct("mando-helmet-kit", "Custom Helmet Kit", "Raw 3D-printed parts, ready for sanding and assembly. Precision modeled for a clean fit.", "kit", "the-mandalorian", "physical", 14500, "2026-10-12T10:00:00Z", "linear-gradient(145deg, #303634, #111615 55%, #786c4d)"),
+      createShopProduct("legendary-sword-files", "Legendary Sword Files", "High-resolution STL files optimized for resin printing, with pre-supported options.", "blueprint", "the-legend-of-zelda", "digital", 2500, "2026-10-02T10:00:00Z", "linear-gradient(145deg, #092b39, #10171b 55%, #147ca0)"),
+      createShopProduct("weathered-blaster", "Weathered Sci-Fi Blaster", "A fully assembled and hand-painted replica with layered weathering and display-ready finish.", "finished", "the-mandalorian", "physical", 35000, "2026-09-24T10:00:00Z", "linear-gradient(145deg, #3b3429, #171716 55%, #70533b)"),
+      createShopProduct("paladin-armor-plates", "Paladin Armor Blueprints", "A set of modular armor blueprints, sized for an average adult and ready for FDM printing.", "blueprint", "attack-on-titan", "digital", 8500, "2026-09-14T10:00:00Z", "linear-gradient(145deg, #343438, #171719 55%, #776e5d)"),
+      createShopProduct("archmage-staff-files", "Archmage Staff Topper", "An intricate organic STL, hollowed for optional LED wiring and optimized for SLA printing.", "file", "the-legend-of-zelda", "digital", 1500, "2026-09-02T10:00:00Z", "linear-gradient(145deg, #27342d, #121715 55%, #596d5c)"),
+      createShopProduct("cyber-optic-goggles", "Cyber-Optic Goggles", "Wearable prop with adjustable straps, mirrored lenses and a comfortable padded interior.", "finished", "demon-slayer", "physical", 12000, "2026-08-22T10:00:00Z", "linear-gradient(145deg, #372936, #17151b 55%, #765472)"),
+      createShopProduct("display-stand-kit", "Universal Display Stand", "A sturdy modular stand kit for showcasing your finished props and collectible builds.", "kit", "attack-on-titan", "physical", 3200, "2026-08-12T10:00:00Z", "linear-gradient(145deg, #3a3023, #171614 55%, #71613c)"),
+      createShopProduct("rune-etched-dagger-files", "Rune-Etched Dagger Files", "A printable fantasy dagger with separate parts for easy assembly and custom finishing.", "file", "demon-slayer", "digital", 900, "2026-08-01T10:00:00Z", "linear-gradient(145deg, #293139, #141719 55%, #6b7478)"),
+    ],
+  },
+  es: {
+    languageLabel: "Idioma",
+    nav: [
+      { href: "/", label: "Inicio" },
+      { href: "/services", label: "Servicios" },
+      { href: "/projects", label: "Proyectos" },
+      { href: "/shop", label: "Tienda" },
+      { href: "#commissions", label: "Encargos" },
+    ],
+    ctaPrimary: "Iniciar Encargo",
+    ctaSecondary: "Explorar Proyectos",
+    footer: "3D CosProps. Artesanía 3D de alta fidelidad.",
+    footerNavTitle: "Navegación",
+    footerFollowTitle: "Síguenos",
+    footerPrivacyLabel: "Política de Privacidad",
+    footerLegalTitle: "Legal",
+    footerLegalNoticeLabel: "Aviso Legal",
+    footerCookiePolicyLabel: "Política de Cookies",
+    footerTermsLabel: "Términos y Condiciones",
+    heroTag: "El espacio de suministros de 3D CosProps",
+    heroTitle: "El <gold>Taller</gold>",
+    heroBody: "Descubre planos y archivos 3D listos para imprimir, kits para montar y atrezo terminado con acabados artesanales. Encuentra la pieza ideal para tu próximo proyecto o colección.",
+    collectionsTitle: "Explora por universo",
+    collections: [
+      { id: "attack-on-titan", label: "Attack on Titan", gradient: "linear-gradient(145deg, #37302a, #171615 55%, #89704d)" },
+      { id: "demon-slayer", label: "Demon Slayer", gradient: "linear-gradient(145deg, #3b2929, #171516 55%, #87534b)" },
+      { id: "the-legend-of-zelda", label: "The Legend of Zelda", gradient: "linear-gradient(145deg, #27372b, #131714 55%, #667b4a)" },
+      { id: "the-mandalorian", label: "The Mandalorian", gradient: "linear-gradient(145deg, #303634, #111615 55%, #786c4d)" },
+    ],
+    allCollections: "Todos los universos",
+    filterAll: "Todo",
+    filterBlueprints: "Planos",
+    filterKits: "Kits",
+    filterFiles: "Archivos 3D",
+    filterFinished: "Terminados",
+    sortLabel: "Ordenar por",
+    sortNewest: "Más recientes",
+    sortPriceLow: "Precio: menor a mayor",
+    sortPriceHigh: "Precio: mayor a menor",
+    addToCart: "Añadir al carrito",
+    addedToCart: "Se ha añadido {product} al carrito.",
+    cartLabel: "Carrito",
+    loadMore: "Cargar más",
+    noMoreProducts: "Has llegado al final de la colección.",
+    noProducts: "Todavía no hay productos en esta colección.",
+    products: [
+      createShopProduct("mando-helmet-kit", "Kit de casco personalizado", "Piezas impresas en 3D en bruto, listas para lijar y montar. Modelado de precisión para un ajuste limpio.", "kit", "the-mandalorian", "physical", 14500, "2026-10-12T10:00:00Z", "linear-gradient(145deg, #303634, #111615 55%, #786c4d)"),
+      createShopProduct("legendary-sword-files", "Archivos de espada legendaria", "Archivos STL de alta resolución optimizados para impresión en resina, con opciones de soportes.", "blueprint", "the-legend-of-zelda", "digital", 2500, "2026-10-02T10:00:00Z", "linear-gradient(145deg, #092b39, #10171b 55%, #147ca0)"),
+      createShopProduct("weathered-blaster", "Bláster de ciencia ficción", "Réplica montada y pintada a mano, con desgaste por capas y acabado listo para exposición.", "finished", "the-mandalorian", "physical", 35000, "2026-09-24T10:00:00Z", "linear-gradient(145deg, #3b3429, #171716 55%, #70533b)"),
+      createShopProduct("paladin-armor-plates", "Planos de armadura de paladín", "Planos de armadura modular, adaptada a una talla adulta media y lista para impresión FDM.", "blueprint", "attack-on-titan", "digital", 8500, "2026-09-14T10:00:00Z", "linear-gradient(145deg, #343438, #171719 55%, #776e5d)"),
+      createShopProduct("archmage-staff-files", "Remate de bastón de archimago", "Archivo STL orgánico y detallado, ahuecado para cableado LED opcional y optimizado para SLA.", "file", "the-legend-of-zelda", "digital", 1500, "2026-09-02T10:00:00Z", "linear-gradient(145deg, #27342d, #121715 55%, #596d5c)"),
+      createShopProduct("cyber-optic-goggles", "Gafas ciberópticas", "Atrezo ponible con correas ajustables, lentes espejadas y acolchado interior cómodo.", "finished", "demon-slayer", "physical", 12000, "2026-08-22T10:00:00Z", "linear-gradient(145deg, #372936, #17151b 55%, #765472)"),
+      createShopProduct("display-stand-kit", "Soporte de exposición universal", "Kit de soporte modular y resistente para mostrar atrezo terminado y piezas de colección.", "kit", "attack-on-titan", "physical", 3200, "2026-08-12T10:00:00Z", "linear-gradient(145deg, #3a3023, #171614 55%, #71613c)"),
+      createShopProduct("rune-etched-dagger-files", "Archivos de daga rúnica", "Daga fantástica imprimible con piezas separadas para facilitar el montaje y el acabado personalizado.", "file", "demon-slayer", "digital", 900, "2026-08-01T10:00:00Z", "linear-gradient(145deg, #293139, #141719 55%, #6b7478)"),
+    ],
+  },
+};
+
 export function getDictionary(locale: Locale): HomeDictionary {
   return dictionaries[locale];
 }
@@ -582,4 +729,8 @@ export function getServicesDictionary(locale: Locale): ServicesDictionary {
 
 export function getProjectsDictionary(locale: Locale): ProjectsDictionary {
   return projectsDictionaries[locale];
+}
+
+export function getShopDictionary(locale: Locale): ShopDictionary {
+  return shopDictionaries[locale];
 }

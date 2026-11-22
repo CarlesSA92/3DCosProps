@@ -287,7 +287,8 @@ Goal: enable commissions UI and prepare commerce domain safely.
 - [x] Build Commissions multi-step UI form (no real submission yet).
   - _Bilingual `/en/commissions` and `/es/commissions` page with guided brief, project process, FAQ, and quote-before-payment explanation. Payment and request submission remain inactive pending Phase 4 integration._
 - [x] **Define typed contracts for future commissions API** — Commission, Product, Cart, CartItem, Order, OrderItem added to `contracts.ts`; commerce contracts consolidated 2026-10-20 (see decisions below).
-- [ ] Build Shop catalog UI and domain models.
+- [x] Build Shop catalog UI and domain models.
+  - _Bilingual `/en/shop` and `/es/shop` catalog with category filters, sorting, progressive loading, product cards, and localStorage cart using the typed commerce contracts. Product artwork remains placeholder until catalog images are supplied; checkout is out of scope for this phase._
 - [ ] Build User Profile UI sections for editable personal data.
 - [ ] Build User Profile UI sections for payment method management (provider-agnostic placeholders).
 - [ ] Build User Profile order status and commission status tracking UI.
