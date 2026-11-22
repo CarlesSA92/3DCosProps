@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { PageIntro } from "../../src/ui/page-intro";
-import type { Cart, ProductCartItem } from "../../../../src/models/api/contracts";
+import { useShopCart } from "../../src/utils/use-shop-cart";
+import { CartIcon } from "../../src/icons";
 import type { ShopCategory, ShopDictionary, ShopProductContent } from "../../src/types/content";
 import type { Locale } from "../i18n";
 
@@ -14,64 +16,10 @@ type ShopPageContentProps = {
 type FilterType = "all" | ShopCategory;
 type SortType = "newest" | "price-asc" | "price-desc";
 
-const CART_STORAGE_KEY = "3d-cosprops-cart";
 const INITIAL_VISIBLE = 6;
 
-const EMPTY_CART: Cart = {
-  currency: "USD",
-  items: [],
-  subtotalCents: 0,
-  updatedAt: "",
-};
-
-let cachedCartJson: string | null | undefined;
-let cachedCart = EMPTY_CART;
-const cartListeners = new Set<() => void>();
-
-function getCartSnapshot(): Cart {
-  let savedCart: string | null;
-  try {
-    savedCart = window.localStorage.getItem(CART_STORAGE_KEY);
-  } catch {
-    return EMPTY_CART;
-  }
-
-  if (savedCart === cachedCartJson) return cachedCart;
-  cachedCartJson = savedCart;
-  try {
-    const parsedCart = savedCart ? JSON.parse(savedCart) as Cart : EMPTY_CART;
-    cachedCart = Array.isArray(parsedCart.items) ? parsedCart : EMPTY_CART;
-  } catch {
-    cachedCart = EMPTY_CART;
-  }
-  return cachedCart;
-}
-
-function subscribeToCart(listener: () => void) {
-  cartListeners.add(listener);
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === CART_STORAGE_KEY || event.key === null) {
-      cachedCartJson = undefined;
-      listener();
-    }
-  };
-  window.addEventListener("storage", handleStorage);
-
-  return () => {
-    cartListeners.delete(listener);
-    window.removeEventListener("storage", handleStorage);
-  };
-}
-
-function saveCart(cart: Cart) {
-  const serializedCart = JSON.stringify(cart);
-  window.localStorage.setItem(CART_STORAGE_KEY, serializedCart);
-  cachedCartJson = serializedCart;
-  cachedCart = cart;
-  cartListeners.forEach((listener) => listener());
-}
-
 function productCategoryLabel(product: ShopProductContent, dict: ShopDictionary): string {
+  if (product.category === "blueprint") return dict.filterBlueprints;
   if (product.category === "kit") return dict.filterKits;
   if (product.category === "file") return dict.filterFiles;
   return dict.filterFinished;
@@ -79,20 +27,24 @@ function productCategoryLabel(product: ShopProductContent, dict: ShopDictionary)
 
 export function ShopPageContent({ dict, locale }: ShopPageContentProps) {
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+  const [activeCollection, setActiveCollection] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<SortType>("newest");
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
-  const cart = useSyncExternalStore(subscribeToCart, getCartSnapshot, () => EMPTY_CART);
+  const { cart, addProduct } = useShopCart();
   const [feedback, setFeedback] = useState("");
 
   const filters: { key: FilterType; label: string }[] = [
     { key: "all", label: dict.filterAll },
+    { key: "blueprint", label: dict.filterBlueprints },
     { key: "kit", label: dict.filterKits },
     { key: "file", label: dict.filterFiles },
     { key: "finished", label: dict.filterFinished },
   ];
 
-  const filteredProducts = dict.products.filter(
-    (product) => activeFilter === "all" || product.category === activeFilter,
+  const collections = [...dict.collections].sort((a, b) => a.label.localeCompare(b.label, locale));
+  const filteredProducts = dict.products.filter((product) =>
+    (activeFilter === "all" || product.category === activeFilter)
+    && (activeCollection === null || product.collection === activeCollection),
   );
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === "price-asc") return a.priceCents - b.priceCents;
@@ -108,44 +60,18 @@ export function ShopPageContent({ dict, locale }: ShopPageContentProps) {
     setVisibleCount(INITIAL_VISIBLE);
   }
 
+  function handleCollection(collection: string | null) {
+    setActiveCollection(collection);
+    setVisibleCount(INITIAL_VISIBLE);
+  }
+
   function handleSort(value: SortType) {
     setSortBy(value);
     setVisibleCount(INITIAL_VISIBLE);
   }
 
   function handleAddToCart(product: ShopProductContent) {
-    const existing = cart.items.find(
-      (item): item is ProductCartItem => item.kind === "product" && item.productId === product.id,
-    );
-    const nextItems = existing
-      ? cart.items.map((item) =>
-          item.kind === "product" && item.productId === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        )
-      : [
-          ...cart.items,
-          {
-            kind: "product" as const,
-            productId: product.id,
-            productType: product.type,
-            quantity: 1,
-            unitPriceCents: product.priceCents,
-          },
-        ];
-    const nextCart: Cart = {
-      ...cart,
-      items: nextItems,
-      subtotalCents: cart.subtotalCents + product.priceCents,
-      updatedAt: new Date().toISOString(),
-    };
-
-    try {
-      saveCart(nextCart);
-      setFeedback(dict.addedToCart.replace("{product}", product.title));
-    } catch {
-      setFeedback("");
-    }
+    setFeedback(addProduct(product) ? dict.addedToCart.replace("{product}", product.title) : "");
   }
 
   const formatPrice = (product: ShopProductContent) =>
@@ -168,15 +94,40 @@ export function ShopPageContent({ dict, locale }: ShopPageContentProps) {
         compact
       />
 
-      <section className="bg-background px-4 py-4 md:px-8 md:py-8" aria-labelledby="shop-title">
+      <section className="bg-background px-4 pb-4 pt-2 md:px-8 md:pb-8 md:pt-3" aria-label={dict.collectionsTitle}>
         <div className="mx-auto max-w-7xl">
-          <h2 id="shop-title" className="mb-6 text-center font-display text-xl text-white md:mb-8 md:text-3xl">
-            {dict.catalogTitle}
-          </h2>
+          <div className="mb-5 flex flex-wrap justify-center gap-3 pb-3 md:mb-7 md:gap-4" role="group" aria-label={dict.collectionsTitle}>
+            <button
+              type="button"
+              onClick={() => handleCollection(null)}
+              aria-pressed={activeCollection === null}
+              className={`w-24 shrink-0 text-left md:w-32 ${activeCollection === null ? "text-primary" : "text-text-dim hover:text-white"}`}
+            >
+              <span className={`mb-2 block aspect-square border bg-surface p-2 transition-colors md:p-3 ${activeCollection === null ? "border-primary" : "border-white/10 hover:border-primary/50"}`}>
+                <span className="flex h-full items-center justify-center border border-white/10 font-label text-[9px] uppercase tracking-widest">3D CP</span>
+              </span>
+              <span className="font-label text-[9px] uppercase leading-tight md:text-[10px]">{dict.allCollections}</span>
+            </button>
+            {collections.map((collection) => (
+              <button
+                key={collection.id}
+                type="button"
+                onClick={() => handleCollection(collection.id)}
+                aria-pressed={activeCollection === collection.id}
+                aria-label={collection.label}
+                className={`w-24 shrink-0 text-left md:w-32 ${activeCollection === collection.id ? "text-primary" : "text-text-dim hover:text-white"}`}
+              >
+                <span className={`mb-2 block aspect-square border bg-cover bg-center p-2 transition-colors md:p-3 ${activeCollection === collection.id ? "border-primary" : "border-white/10 hover:border-primary/50"}`} style={{ backgroundImage: collection.gradient }}>
+                  <span className="flex h-full items-center justify-center border border-white/15 bg-black/20 font-display text-lg font-semibold uppercase italic text-white/35" aria-hidden="true">3D</span>
+                </span>
+                <span className="font-label text-[9px] uppercase leading-tight md:text-[10px]">{collection.label}</span>
+              </button>
+            ))}
+          </div>
 
           <div className="mb-8 flex flex-col gap-5 border-b border-white/10 pb-5 md:mb-8 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={dict.catalogTitle}>
-              {filters.map((filter) => (
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={dict.collectionsTitle}>
+              {[filters[0], filters[2], filters[3], filters[1], filters[4]].map((filter) => (
                 <button
                   key={filter.key}
                   type="button"
@@ -207,10 +158,7 @@ export function ShopPageContent({ dict, locale }: ShopPageContentProps) {
                 </select>
               </label>
               <p className="flex items-center gap-2 font-label text-[10px] uppercase text-primary" aria-label={`${dict.cartLabel}: ${cartCount}`}>
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                  <path d="M5 8h14l1 13H4L5 8Z" />
-                  <path d="M9 9V6a3 3 0 0 1 6 0v3" />
-                </svg>
+                <CartIcon className="h-4 w-4" />
                 {dict.cartLabel} ({cartCount})
               </p>
             </div>
@@ -226,6 +174,7 @@ export function ShopPageContent({ dict, locale }: ShopPageContentProps) {
                   className="group flex flex-col overflow-hidden border border-white/10 bg-white/[0.035] transition-colors duration-300 hover:border-primary/45"
                   style={{ animationDelay: `${(index % 3) * 90}ms` }}
                 >
+                  <Link href={`/${locale}/shop/${product.id}`} aria-label={product.title}>
                   <div
                     role="img"
                     aria-label={product.image.alt}
@@ -243,9 +192,10 @@ export function ShopPageContent({ dict, locale }: ShopPageContentProps) {
                       3D CosProps / {product.category}
                     </span>
                   </div>
+                  </Link>
 
                   <div className="flex flex-1 flex-col p-5 md:p-6">
-                    <h3 className="mb-2 font-display text-lg leading-snug text-white md:text-xl">{product.title}</h3>
+                    <h3 className="mb-2 font-display text-lg leading-snug text-white md:text-xl"><Link href={`/${locale}/shop/${product.id}`} className="hover:text-primary">{product.title}</Link></h3>
                     <p className="mb-6 flex-1 font-body text-sm leading-6 text-text-dim">{product.description}</p>
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <p className="font-label text-base font-semibold text-primary">{formatPrice(product)}</p>

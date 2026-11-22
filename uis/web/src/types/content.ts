@@ -149,6 +149,7 @@ export type ShopProductContent = Product & {
   category: ShopCategory;
   collection: string;
   image: {
+    src?: string;
     gradient: string;
     alt: string;
   };

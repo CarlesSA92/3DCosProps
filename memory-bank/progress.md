@@ -289,6 +289,9 @@ Goal: enable commissions UI and prepare commerce domain safely.
 - [x] **Define typed contracts for future commissions API** — Commission, Product, Cart, CartItem, Order, OrderItem added to `contracts.ts`; commerce contracts consolidated 2026-10-20 (see decisions below).
 - [x] Build Shop catalog UI and domain models.
   - _Bilingual `/en/shop` and `/es/shop` catalog with category filters, sorting, progressive loading, product cards, and localStorage cart using the typed commerce contracts. Product artwork remains placeholder until catalog images are supplied; checkout is out of scope for this phase._
+- [x] Build reusable product detail mockup (2026-11-22).
+  - _Bilingual `/en/shop/[productId]` and `/es/shop/[productId]` routes use each catalog product's data. Reuses header, PageIntro hero, footer, fonts and colors. Includes gallery placeholders, a disabled configuration selector with no invented variants, quantity controls, shared localStorage cart, accessible detail tabs and related products chosen by universe/category. Mock detail routes remain noindex until the catalog is finalized. Verified with 102 unit tests, TypeScript and 6 Shop E2E tests including desktop/mobile screenshots and unknown-product 404._
+  - _Pending: product photography, definitive materials/specifications, option types and variants, backend catalog/relationships, authoritative pricing and stock, shipping/tax rules, and checkout integration. Thumbnail areas are reserved placeholders until gallery images are supplied._
 - [ ] Build User Profile UI sections for editable personal data.
 - [ ] Build User Profile UI sections for payment method management (provider-agnostic placeholders).
 - [ ] Build User Profile order status and commission status tracking UI.

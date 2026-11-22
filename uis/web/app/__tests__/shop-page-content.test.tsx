@@ -14,7 +14,8 @@ describe("ShopPageContent", () => {
     render(<ShopPageContent dict={dict} locale="en" />);
 
     expect(screen.getByText("The")).toBeInTheDocument();
-    expect(screen.getByText("Armory")).toBeInTheDocument();
+    expect(screen.getByText("Workshop")).toBeInTheDocument();
+    expect(screen.getByText("3D CosProps' supply room")).toBeInTheDocument();
     expect(screen.getByText("Custom Helmet Kit")).toBeInTheDocument();
     expect(screen.getByText("Cyber-Optic Goggles")).toBeInTheDocument();
     expect(screen.queryByText("Universal Display Stand")).not.toBeInTheDocument();
@@ -29,6 +30,32 @@ describe("ShopPageContent", () => {
     expect(screen.getByText("Cyber-Optic Goggles")).toBeInTheDocument();
     expect(screen.queryByText("Custom Helmet Kit")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Finished" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("links every visible product to its localized detail page", () => {
+    render(<ShopPageContent dict={dict} locale="en" />);
+    dict.products.slice(0, 6).forEach((product) => {
+      screen.getAllByRole("link", { name: product.title }).forEach((link) => {
+        expect(link).toHaveAttribute("href", `/en/shop/${product.id}`);
+      });
+    });
+  });
+
+  it("renders alphabetized collection cards and combines collection and product filters", () => {
+    render(<ShopPageContent dict={dict} locale="en" />);
+
+    const collectionGroup = screen.getAllByRole("group", { name: "Browse by universe" })[0];
+    const collectionButtons = within(collectionGroup).getAllByRole("button");
+    expect(collectionButtons.slice(1).map((button) => button.getAttribute("aria-label"))).toEqual([
+      "Attack on Titan", "Demon Slayer", "The Legend of Zelda", "The Mandalorian",
+    ]);
+
+    fireEvent.click(screen.getByRole("button", { name: "The Legend of Zelda" }));
+    fireEvent.click(screen.getByRole("button", { name: "Blueprints" }));
+
+    expect(screen.getByText("Legendary Sword Files")).toBeInTheDocument();
+    expect(screen.queryByText("Archmage Staff Topper")).not.toBeInTheDocument();
+    expect(screen.queryByText("Custom Helmet Kit")).not.toBeInTheDocument();
   });
 
   it("sorts products by price from low to high", () => {
