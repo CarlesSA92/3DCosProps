@@ -145,7 +145,6 @@ export type CommissionPageDictionary = PageContent & {
   formStepDescriptions: [string, string, string];
   projectTypes: Array<{ value: string; label: string }>;
   budgetOptions: Array<{ value: string; label: string }>;
-  timelineOptions: Array<{ value: string; label: string }>;
   labels: {
     projectTitle: string;
     projectType: string;
@@ -182,6 +181,7 @@ export type CommissionPageDictionary = PageContent & {
     fileSize: string;
     fileType: string;
     fileCount: string;
+    budget: string;
   };
   successTitle: string;
   successBody: string;

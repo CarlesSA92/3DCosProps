@@ -50,6 +50,10 @@ body {
   border-radius: 4px;
 }
 
+#budget-amount:focus-visible {
+  outline: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

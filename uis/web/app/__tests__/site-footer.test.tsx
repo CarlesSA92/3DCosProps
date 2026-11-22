@@ -5,6 +5,7 @@ import { SiteFooter } from "../components/site-footer";
 const mockNav = [
   { href: "/", label: "Home" },
   { href: "#services", label: "Services" },
+  { href: "#commissions", label: "Commissions" },
 ];
 
 describe("SiteFooter", () => {
@@ -37,6 +38,17 @@ describe("SiteFooter", () => {
     render(<SiteFooter {...defaultProps} />);
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("Services")).toBeInTheDocument();
+  });
+
+  it("routes commissions and services links to localized pages", () => {
+    render(<SiteFooter {...defaultProps} />);
+    expect(screen.getByRole("link", { name: "Commissions" })).toHaveAttribute("href", "/en/commissions");
+    expect(screen.getByRole("link", { name: "Services" })).toHaveAttribute("href", "/en/services");
+  });
+
+  it("preserves the Spanish locale for the commissions link", () => {
+    render(<SiteFooter {...defaultProps} locale="es" />);
+    expect(screen.getByRole("link", { name: "Commissions" })).toHaveAttribute("href", "/es/commissions");
   });
 
   it("should render privacy policy link", () => {

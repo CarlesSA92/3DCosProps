@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ChangeEvent, type DragEvent, type FormEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type DragEvent, type FormEvent } from "react";
 import { PageIntro } from "../../src/ui/page-intro";
 import type { CommissionPageDictionary } from "../../src/types/content";
 
@@ -14,6 +14,7 @@ type Brief = {
   details: string;
   budget: string;
   timeline: string;
+  budgetAmount: string;
   name: string;
   email: string;
   agreement: boolean;
@@ -25,6 +26,7 @@ const initialBrief: Brief = {
   details: "",
   budget: "",
   timeline: "",
+  budgetAmount: "",
   name: "",
   email: "",
   agreement: false,
@@ -35,13 +37,34 @@ const inputClassName =
 const labelClassName =
   "font-label text-[11px] uppercase tracking-[0.12em] text-text-dim";
 
+function getMinimumDeliveryDate() {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  const targetMonth = date.getMonth() + 1;
+  const targetYear = date.getFullYear() + Math.floor(targetMonth / 12);
+  const normalizedMonth = targetMonth % 12;
+  const targetDay = Math.min(date.getDate(), new Date(targetYear, normalizedMonth + 1, 0).getDate());
+  date.setFullYear(targetYear, normalizedMonth, targetDay);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function isAllowedReference(file: File) {
+  const extension = file.name.split(".").pop()?.toLowerCase();
+  return ["jpg", "jpeg", "png", "pdf"].includes(extension ?? "") &&
+    ["image/jpeg", "image/png", "application/pdf"].includes(file.type);
+}
+
 export function CommissionsPageContent({ dict }: CommissionsPageContentProps) {
   const [step, setStep] = useState(0);
   const [brief, setBrief] = useState(initialBrief);
   const [files, setFiles] = useState<File[]>([]);
+  const [filePreviews, setFilePreviews] = useState<string[]>([]);
+  const previewUrls = useRef<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => () => previewUrls.current.forEach((preview) => URL.revokeObjectURL(preview)), []);
 
   function updateBrief<K extends keyof Brief>(key: K, value: Brief[K]) {
     setBrief((current) => ({ ...current, [key]: value }));
@@ -55,6 +78,15 @@ export function CommissionsPageContent({ dict }: CommissionsPageContentProps) {
       if (!brief.projectTitle.trim()) nextErrors.projectTitle = dict.validation.projectTitle;
       if (!brief.projectType) nextErrors.projectType = dict.validation.projectType;
       if (!brief.details.trim()) nextErrors.details = dict.validation.details;
+    }
+
+    if (currentStep === 1) {
+      if (brief.budget === "custom" && (!brief.budgetAmount || Number(brief.budgetAmount) <= 0)) {
+        nextErrors.budget = dict.validation.budget;
+      }
+      if (brief.timeline && brief.timeline < getMinimumDeliveryDate()) {
+        nextErrors.timeline = dict.hints.timeline;
+      }
     }
 
     if (currentStep === 2) {
@@ -76,16 +108,23 @@ export function CommissionsPageContent({ dict }: CommissionsPageContentProps) {
 
   function addFiles(addedFiles: File[]) {
     const nextFiles = [...files, ...addedFiles];
-    const error = nextFiles.length > 5
+    const error = nextFiles.length > 10
       ? dict.validation.fileCount
-      : nextFiles.some((file) => !["image/jpeg", "image/png", "application/pdf"].includes(file.type))
+      : nextFiles.some((file) => !isAllowedReference(file))
         ? dict.validation.fileType
         : nextFiles.reduce((total, file) => total + file.size, 0) > 10 * 1024 * 1024
           ? dict.validation.fileSize
           : "";
 
     setErrors((current) => ({ ...current, references: error }));
-    if (!error) setFiles(nextFiles);
+    if (!error) {
+      const previews = addedFiles.map((file) =>
+        file.type.startsWith("image/") ? URL.createObjectURL(file) : "",
+      );
+      previewUrls.current.push(...previews.filter(Boolean));
+      setFiles(nextFiles);
+      setFilePreviews((current) => [...current, ...previews]);
+    }
   }
 
   function handleFilesChange(event: ChangeEvent<HTMLInputElement>) {
@@ -100,7 +139,12 @@ export function CommissionsPageContent({ dict }: CommissionsPageContentProps) {
   }
 
   function removeFile(index: number) {
+    if (filePreviews[index]) {
+      URL.revokeObjectURL(filePreviews[index]);
+      previewUrls.current = previewUrls.current.filter((preview) => preview !== filePreviews[index]);
+    }
     setFiles((current) => current.filter((_, fileIndex) => fileIndex !== index));
+    setFilePreviews((current) => current.filter((_, fileIndex) => fileIndex !== index));
     setErrors((current) => ({ ...current, references: "" }));
   }
 
@@ -217,13 +261,38 @@ export function CommissionsPageContent({ dict }: CommissionsPageContentProps) {
                           <option value="">—</option>
                           {dict.budgetOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                         </select>
+                        {brief.budget === "custom" && (
+                          <div className="mt-4">
+                            <label className={labelClassName} htmlFor="budget-amount">{dict.labels.enterBudget}</label>
+                            <div className="mt-2 flex min-w-0 items-center rounded-sm border border-white/15 bg-black/20 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background">
+                              <span className="pl-3 font-body text-sm text-text-dim" aria-hidden="true">€</span>
+                              <input
+                                className="min-w-0 flex-1 bg-transparent px-2 py-3 font-body text-sm text-white outline-none"
+                                id="budget-amount"
+                                type="number"
+                                min="1"
+                                step="1"
+                                inputMode="decimal"
+                                value={brief.budgetAmount}
+                                onChange={(event) => updateBrief("budgetAmount", event.target.value)}
+                              />
+                            </div>
+                            {errors.budget && <p className="mt-2 text-sm text-red-300" role="alert">{errors.budget}</p>}
+                          </div>
+                        )}
                       </div>
                       <div>
                         <label className={labelClassName} htmlFor="project-timeline">{dict.labels.timeline}</label>
-                        <select className={inputClassName} id="project-timeline" value={brief.timeline} onChange={(event) => updateBrief("timeline", event.target.value)}>
-                          <option value="">—</option>
-                          {dict.timelineOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-                        </select>
+                        <input
+                          className={inputClassName}
+                          id="project-timeline"
+                          type="date"
+                          min={getMinimumDeliveryDate()}
+                          value={brief.timeline}
+                          onChange={(event) => updateBrief("timeline", event.target.value)}
+                          aria-describedby="timeline-help"
+                        />
+                        <p id="timeline-help" className="mt-2 font-body text-xs leading-5 text-text-dim/75">{dict.hints.timeline}</p>
                       </div>
                     </div>
 
@@ -242,17 +311,26 @@ export function CommissionsPageContent({ dict }: CommissionsPageContentProps) {
                         </svg>
                         <span className="font-body text-sm text-text-dim">{dict.hints.references}</span>
                         <span className="mt-2 font-label text-[10px] text-text-dim/65">{dict.hints.referencesHelp}</span>
-                        <input id="reference-files" className="sr-only" type="file" accept="image/jpeg,image/png,application/pdf" multiple onChange={handleFilesChange} />
+                        <input id="reference-files" className="sr-only" type="file" accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf" multiple onChange={handleFilesChange} />
                       </label>
                       {errors.references && <p className="mt-2 text-sm text-red-300" role="alert">{errors.references}</p>}
                       {files.length > 0 && (
-                        <ul className="mt-3 space-y-2" aria-label={dict.labels.references}>
+                        <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3" aria-label={dict.labels.references}>
                           {files.map((file, index) => (
-                            <li key={`${file.name}-${file.lastModified}`} className="flex items-center justify-between gap-3 border-b border-white/10 py-2 font-body text-xs text-text-dim">
-                              <span className="truncate">{file.name}</span>
-                              <button type="button" className="shrink-0 text-primary hover:text-white" onClick={() => removeFile(index)} aria-label={`${dict.actions.removeFile} ${file.name}`}>
-                                {dict.actions.removeFile}
-                              </button>
+                            <li key={`${file.name}-${file.lastModified}-${index}`} className="group relative overflow-hidden rounded border border-white/10 bg-black/30">
+                              {filePreviews[index] ? (
+                                // Local object URLs are used only for an in-form image preview.
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={filePreviews[index]} alt={file.name} className="h-28 w-full object-cover" />
+                              ) : (
+                                <div className="flex h-28 items-center justify-center font-label text-xs uppercase tracking-widest text-primary" aria-label={`PDF: ${file.name}`}>PDF</div>
+                              )}
+                              <div className="flex items-center justify-between gap-2 px-2 py-2">
+                                <span className="truncate font-body text-xs text-text-dim" title={file.name}>{file.name}</span>
+                                <button type="button" className="shrink-0 text-xs text-primary hover:text-white" onClick={() => removeFile(index)} aria-label={`${dict.actions.removeFile} ${file.name}`}>
+                                  {dict.actions.removeFile}
+                                </button>
+                              </div>
                             </li>
                           ))}
                         </ul>

@@ -22,8 +22,14 @@ type SiteFooterProps = {
 };
 
 function footerHref(locale: Locale, href: string): string {
+  if (href === "#commissions") {
+    return `/${locale}/commissions`;
+  }
+  if (href === "#services") {
+    return `/${locale}/services`;
+  }
   if (href.startsWith("/")) {
-    return `/${locale}${href}`;
+    return href === "/" ? `/${locale}` : `/${locale}${href}`;
   }
   return href;
 }

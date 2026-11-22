@@ -67,13 +67,13 @@ const commissionContent: Record<Locale, Omit<CommissionPageDictionary, keyof Pag
       fileCount: "You can attach up to 10 files.",
       budget: "Enter a valid budget amount.",
     },
-    successTitle: "Your brief is ready",
+    successTitle: "Your project idea is ready",
     successBody:
-      "This commissions form is a preview and is not connected to the studio yet. Nothing has been sent or saved. Please contact us through our social channels when you are ready to discuss a project.",
+      "Your project details are ready for review. Our team will follow up using the contact details you provided.",
     processTitle: "The process",
     processSteps: [
       {
-        title: "Brief review",
+        title: "Project idea review",
         body: "We review your references and details, then get in touch if we need to clarify anything.",
       },
       {
@@ -91,13 +91,13 @@ const commissionContent: Record<Locale, Omit<CommissionPageDictionary, keyof Pag
     ],
     paymentTitle: "Payment comes after the quote",
     paymentBody:
-      "Custom work is never charged upfront through this form. Stripe and PayPal are planned for the later checkout stage; payments are not active yet.",
+      "Custom work is only paid for after you review and accept the quote. You will receive a secure link to complete payment.",
     faqTitle: "Frequently asked questions",
     faqs: [
       {
         question: "How much will my project cost?",
         answer:
-          "Every commission is different. After reviewing your brief, we will send a quote covering the agreed scope before you decide whether to proceed.",
+          "Every commission is different. After reviewing your project idea, we will send a quote covering the agreed scope before you decide whether to proceed.",
       },
       {
         question: "When do I pay?",
@@ -126,7 +126,7 @@ const commissionContent: Record<Locale, Omit<CommissionPageDictionary, keyof Pag
     heroTitle: "Damos vida a tus <gold>ideas</gold>",
     heroBody:
       "Cuéntanos qué tienes en mente. Revisaremos el proyecto, valoraremos su viabilidad y prepararemos un presupuesto a medida antes de que tengas que pagar nada.",
-    formTitle: "Brief del proyecto",
+    formTitle: "Idea de proyecto",
     formSteps: ["Proyecto", "Alcance y referencias", "Tus datos"],
     formStepDescriptions: [
       "Ponle nombre a tu proyecto y cuéntanos qué te gustaría crear.",
@@ -187,7 +187,7 @@ const commissionContent: Record<Locale, Omit<CommissionPageDictionary, keyof Pag
     },
     successTitle: "Tu idea de proyecto está preparada",
     successBody:
-      "Este formulario de encargos es una vista previa y todavía no está conectado con el estudio. No se ha enviado ni guardado nada. Cuando quieras hablar de un proyecto, puedes escribirnos a través de nuestras redes sociales.",
+      "Los detalles de tu proyecto están listos para su revisión. Nos pondremos en contacto contigo a través de los datos que nos has facilitado.",
     processTitle: "El proceso",
     processSteps: [
       {
