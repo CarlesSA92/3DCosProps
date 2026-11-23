@@ -26,6 +26,81 @@ test.describe("Shop page", () => {
     await expect(page.getByRole("contentinfo")).toBeVisible();
   });
 
+  for (const width of [320, 390, 1440]) {
+    test(`universe carousel stays aligned at ${width}px`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/es/shop");
+      const carousel = page.getByRole("group", { name: "Explora por universo" }).first();
+      const cards = carousel.getByRole("button");
+      const boxes = await cards.evaluateAll((elements) => elements.map((element) => {
+        const image = element.firstElementChild!.getBoundingClientRect();
+        return { top: image.top, width: image.width, height: image.height };
+      }));
+      expect(boxes).toHaveLength(5);
+      for (const box of boxes) {
+        expect(box.top).toBeCloseTo(boxes[0].top, 0);
+        expect(box.width).toBeCloseTo(boxes[0].width, 0);
+        expect(box.height).toBeCloseTo(box.width, 0);
+      }
+      const previous = page.getByRole("button", { name: "Universos anteriores" });
+      const next = page.getByRole("button", { name: "Universos siguientes" });
+      for (const arrow of [previous, next]) {
+        const bounds = await arrow.boundingBox();
+        expect(bounds!.y + bounds!.height / 2).toBeCloseTo(boxes[0].top + boxes[0].height / 2, 0);
+      }
+      if (width >= 1024) {
+        const first = await cards.first().boundingBox();
+        const last = await cards.last().boundingBox();
+        expect((first!.x + last!.x + last!.width) / 2).toBeCloseTo(width / 2, 0);
+        expect(boxes[0].width).toBeLessThan(100);
+      }
+      await expect(previous).toBeDisabled();
+      if (width < 768) {
+        await expect(next).toBeEnabled();
+        await next.click();
+        await expect(previous).toBeEnabled();
+        await expect.poll(() => carousel.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+        await next.click();
+        await expect(next).toBeDisabled();
+        await carousel.getByRole("button", { name: "The Mandalorian" }).click();
+        await expect(carousel.getByRole("button", { name: "The Mandalorian" })).toHaveAttribute("aria-pressed", "true");
+        await expect(page.getByRole("heading", { name: "Kit de casco personalizado" })).toBeVisible();
+        await previous.click();
+        await expect(next).toBeEnabled();
+      } else {
+        await expect(next).toBeDisabled();
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      await page.screenshot({ path: testInfo.outputPath(`universe-carousel-${width}.png`), fullPage: true, animations: "disabled" });
+    });
+  }
+
+  test("shows a preselected universe in the mobile carousel", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/es/shop?collection=the-mandalorian");
+    const carousel = page.getByRole("group", { name: "Explora por universo" }).first();
+    const selected = carousel.getByRole("button", { name: "The Mandalorian" });
+    await expect(selected).toHaveAttribute("aria-pressed", "true");
+    await expect.poll(async () => {
+      const track = await carousel.boundingBox();
+      const card = await selected.boundingBox();
+      return card!.x >= track!.x && card!.x + card!.width <= track!.x + track!.width + 1;
+    }).toBe(true);
+  });
+
+  for (const width of [640, 768, 1024]) {
+    test(`universe arrows remain centered at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/es/shop");
+      const carousel = page.getByRole("group", { name: "Explora por universo" }).first();
+      const square = await carousel.getByRole("button").first().locator("span").first().boundingBox();
+      for (const name of ["Universos anteriores", "Universos siguientes"]) {
+        const arrow = await page.getByRole("button", { name }).boundingBox();
+        expect(arrow!.y + arrow!.height / 2).toBeCloseTo(square!.y + square!.height / 2, 0);
+      }
+    });
+  }
+
   test("opens the selected product and shares its cart with the catalog", async ({ page }) => {
     await page.goto("/en/shop");
     await page.getByRole("heading", { name: "Custom Helmet Kit" }).getByRole("link").click();

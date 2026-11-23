@@ -1,5 +1,5 @@
 import type { Locale } from "./i18n";
-import type { NavItem, HomeDictionary, ServicesDictionary, ProjectsDictionary, ShopDictionary } from "../src/types/content";
+import type { HomeDictionary, ServicesDictionary, ProjectsDictionary, ShopDictionary } from "../src/types/content";
 
 const dictionaries: Record<Locale, HomeDictionary> = {
   en: {
@@ -94,10 +94,12 @@ const dictionaries: Record<Locale, HomeDictionary> = {
     servicesCardBody:
       "Discover our 3D modeling, printing, and finishing services designed to create production-ready props.",
     servicesCardCta: "View Services",
+    servicesCardHref: "/en/services",
     commissionsCardTitle: "Commissions",
     commissionsCardBody:
       "Do you have a specific project in mind? Let us build it from scratch to your exact specifications.",
     commissionsCardCta: "Request Quote",
+    commissionsCardHref: "/en/commissions",
   },
   es: {
     languageLabel: "Idioma",
@@ -191,10 +193,12 @@ const dictionaries: Record<Locale, HomeDictionary> = {
     servicesCardBody:
       "Descubre nuestros servicios de modelado, impresión y acabado en 3D, diseñados para crear tus proyectos al más mínimo detalle.",
     servicesCardCta: "Ver Más",
+    servicesCardHref: "/es/services",
     commissionsCardTitle: "Encargos",
     commissionsCardBody:
       "¿Tienes en mente un proyecto concreto? Déjanos fabricarlo desde cero según tus especificaciones exactas.",
     commissionsCardCta: "Iniciar Encargo",
+    commissionsCardHref: "/es/commissions",
   },
 };
 

@@ -9,13 +9,11 @@ import { ProfileIcon, HamburgerIcon, CloseIcon } from "../../src/icons";
 
 type SiteHeaderProps = {
   locale: Locale;
-  languageLabel: string;
   nav: Array<{ href: string; label: string }>;
 };
 
-export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
+export function SiteHeader({ locale, nav }: SiteHeaderProps) {
   const pathname = usePathname();
-  const alternateLocale = locale === "en" ? "es" : "en";
 
   // Build locale-switch URL preserving the current path
   const switchHref = useCallback(
@@ -29,6 +27,8 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
 
   const [activeHash, setActiveHash] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [mobileProfileOpen, setMobileProfileOpen] = useState(false);
 
   const isActive = useCallback(
     (href: string) => {
@@ -75,6 +75,7 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
   // Close mobile menu when clicking a nav link
   const handleNavClick = useCallback(() => {
     setMobileMenuOpen(false);
+    setMobileProfileOpen(false);
   }, []);
 
   // Build href with locale prefix for route-based links
@@ -164,18 +165,17 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
             </Link>
           </div>
 
-          <Link
-            href={`/${locale}/profile`}
-            className="hidden md:flex text-primary transition-colors hover:text-[#d4af37]"
-            aria-label={locale === "es" ? "Perfil de usuario" : "User profile"}
-          >
-            <ProfileIcon className="h-[1.5625rem] w-[1.5625rem]" />
-          </Link>
+          <div className="relative hidden md:block">
+            <button type="button" onClick={() => setProfileMenuOpen((open) => !open)} aria-expanded={profileMenuOpen} aria-haspopup="menu" aria-label={locale === "es" ? "Menú de usuario" : "User menu"} className="flex text-primary transition-colors hover:text-[#d4af37]">
+              <ProfileIcon className="h-[1.5625rem] w-[1.5625rem]" />
+            </button>
+            {profileMenuOpen && <ProfileDropdown locale={locale} />}
+          </div>
 
           {/* Mobile hamburger */}
           <button
             className="flex md:hidden text-primary transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setMobileProfileOpen(false); }}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
           >
@@ -211,15 +211,12 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
             })}
             {/* Mobile locale switcher + profile */}
             <div className="flex items-center justify-between pt-4 border-t border-white/10">
-              <Link
-                href={`/${locale}/profile`}
-                onClick={handleNavClick}
-                className="flex items-center gap-3 font-label text-sm uppercase tracking-[0.1em] text-primary hover:text-[#d4af37] transition-colors"
-                aria-label={locale === "es" ? "Perfil de usuario" : "User profile"}
-              >
-                <ProfileIcon className="h-10 w-10" />
-                {locale === "es" ? "Perfil" : "Profile"}
-              </Link>
+              <div>
+                <button type="button" onClick={() => setMobileProfileOpen((open) => !open)} aria-expanded={mobileProfileOpen} aria-controls="mobile-profile-options" aria-label={locale === "es" ? "Menú de usuario" : "User menu"} className="flex items-center gap-3 font-label text-sm uppercase tracking-[0.1em] text-primary hover:text-[#d4af37] transition-colors">
+                  <ProfileIcon className="h-10 w-10" />
+                  {locale === "es" ? "Perfil" : "Profile"}
+                </button>
+              </div>
               <div className="flex items-center gap-1 font-label text-sm uppercase tracking-[0.1em]">
                 <Link
                   href={switchHref("en")}
@@ -248,9 +245,26 @@ export function SiteHeader({ locale, languageLabel, nav }: SiteHeaderProps) {
                 </Link>
               </div>
             </div>
+            {mobileProfileOpen && <div id="mobile-profile-options" className="flex w-full flex-col gap-5 border-t border-white/10 pt-5 font-label text-sm uppercase tracking-[0.1em]">
+              <Link href={`/${locale}/profile`} onClick={handleNavClick} className="text-text-dim transition-colors hover:text-[#d4af37]">{locale === "es" ? "Perfil de usuario" : "User profile"}</Link>
+              <Link href={`/${locale}/cart`} onClick={handleNavClick} className="text-text-dim transition-colors hover:text-[#d4af37]">{locale === "es" ? "Carrito" : "Cart"}</Link>
+              <button type="button" disabled title={locale === "es" ? "Disponible al conectar la cuenta" : "Available when your account is connected"} className="cursor-not-allowed text-left text-text-dim opacity-45">{locale === "es" ? "Cerrar sesión" : "Log out"}</button>
+            </div>}
           </nav>
         </div>
       )}
     </header>
   );
+}
+
+function ProfileDropdown({ locale, onNavigate }: { locale: Locale; onNavigate?: () => void }) {
+  const labels = locale === "es"
+    ? { profile: "Perfil de usuario", cart: "Carrito", logout: "Logout", unavailable: "Disponible al conectar la cuenta" }
+    : { profile: "User profile", cart: "Cart", logout: "Logout", unavailable: "Available when your account is connected" };
+  const itemClass = "block w-full px-4 py-3 text-left font-label text-[10px] uppercase tracking-wider text-text-dim transition-colors hover:bg-white/5 hover:text-primary";
+  return <div role="menu" className="absolute left-0 top-full z-50 mt-3 min-w-48 border border-white/15 bg-black shadow-xl md:left-auto md:right-0">
+    <Link role="menuitem" href={`/${locale}/profile`} onClick={onNavigate} className={itemClass}>{labels.profile}</Link>
+    <Link role="menuitem" href={`/${locale}/cart`} onClick={onNavigate} className={itemClass}>{labels.cart}</Link>
+    <button role="menuitem" type="button" disabled title={labels.unavailable} className={`${itemClass} cursor-not-allowed opacity-45`}>{labels.logout}</button>
+  </div>;
 }

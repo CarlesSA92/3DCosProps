@@ -1,4 +1,3 @@
-import type { Locale } from "../../app/i18n";
 import type { Product } from "../../../../src/models/api/contracts";
 
 export type NavItem = {
@@ -44,9 +43,11 @@ export type HomeDictionary = PageContent & {
   servicesCardTitle: string;
   servicesCardBody: string;
   servicesCardCta: string;
+  servicesCardHref: string;
   commissionsCardTitle: string;
   commissionsCardBody: string;
   commissionsCardCta: string;
+  commissionsCardHref: string;
 };
 
 /** A single slide in the gallery carousel */
@@ -90,9 +91,11 @@ export type HomePageContentDict = {
   servicesCardTitle: string;
   servicesCardBody: string;
   servicesCardCta: string;
+  servicesCardHref: string;
   commissionsCardTitle: string;
   commissionsCardBody: string;
   commissionsCardCta: string;
+  commissionsCardHref: string;
 };
 
 /** Content dictionary for the Services page */

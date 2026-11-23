@@ -44,6 +44,7 @@ export type FeatureCardContent = {
   body: string;
   /** Call-to-action label shown at the bottom */
   cta: string;
+  href: string;
 };
 
 /** Props for the GlassmorphismCard component 

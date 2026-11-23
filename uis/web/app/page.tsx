@@ -28,7 +28,6 @@ export default function Home() {
       />
       <SiteHeader
         locale="en"
-        languageLabel={dict.languageLabel}
         nav={dict.nav}
       />
       <HomePageContent dict={dict} />

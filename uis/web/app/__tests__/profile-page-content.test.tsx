@@ -19,7 +19,7 @@ describe("ProfilePageContent", () => {
     fireEvent.click(screen.getByRole("tab", { name: "Descarga de archivos" }));
     expect(screen.getByRole("link", { name: "Descargar archivo: Archivo digital de muestra" })).toHaveAttribute("download");
     expect(screen.getAllByText("STL · Archivo digital")).toHaveLength(4);
-    expect(screen.getAllByText("Detalles")).toHaveLength(5);
+    expect(screen.getAllByText("Detalles")).toHaveLength(4);
     expect(screen.getByRole("img", { name: "Kit de piezas imprimibles" })).toBeInTheDocument();
     expect(screen.queryByText(/Modelo 3D imprimible/)).not.toBeInTheDocument();
     fireEvent.click(screen.getAllByRole("button", { name: "Detalles" })[0]);

@@ -5,7 +5,6 @@ import { splitGoldTag } from "../../src/utils/split-gold-tag";
 import {
   CubeIcon,
   PrinterIcon,
-  BrushIcon,
   SwordIcon,
   HelmetIcon,
   MessageIcon,

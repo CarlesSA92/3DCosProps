@@ -61,7 +61,7 @@ export default async function LocaleLayout({
       >
         {locale === "es" ? "Saltar al contenido principal" : "Skip to main content"}
       </a>
-      <div className="relative min-h-screen bg-background" id="main-content">
+      <div className="relative min-h-screen bg-background">
         <div
           className="pointer-events-none fixed inset-0 -z-10"
           aria-hidden="true"
@@ -70,7 +70,6 @@ export default async function LocaleLayout({
         </div>
         <SiteHeader
           locale={locale as Locale}
-          languageLabel={dictionary.languageLabel}
           nav={dictionary.nav}
         />
         {children}

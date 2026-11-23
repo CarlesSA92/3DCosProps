@@ -25,9 +25,11 @@ const mockDict: HomePageContentDict = {
   servicesCardTitle: "Services",
   servicesCardBody: "Discover our services.",
   servicesCardCta: "View Services",
+  servicesCardHref: "/services",
   commissionsCardTitle: "Commissions",
   commissionsCardBody: "Let us build it from scratch.",
   commissionsCardCta: "Request Quote",
+  commissionsCardHref: "/commissions",
 };
 
 describe("HomePageContent", () => {

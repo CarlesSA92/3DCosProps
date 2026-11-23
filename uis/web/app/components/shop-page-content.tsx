@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PageIntro } from "../../src/ui/page-intro";
 import { useShopCart } from "../../src/utils/use-shop-cart";
-import { CartIcon } from "../../src/icons";
+import { ArrowIcon, CartIcon } from "../../src/icons";
 import type { ShopCategory, ShopDictionary, ShopProductContent } from "../../src/types/content";
 import type { Locale } from "../i18n";
 
@@ -35,6 +35,36 @@ export function ShopPageContent({ dict, locale, initialCollection = null }: Shop
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
   const { cart, addProduct } = useShopCart();
   const [feedback, setFeedback] = useState("");
+  const collectionsRef = useRef<HTMLDivElement>(null);
+  const [canScrollPrevious, setCanScrollPrevious] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  function updateCollectionScroll() {
+    const track = collectionsRef.current;
+    if (!track) return;
+    setCanScrollPrevious(track.scrollLeft > 1);
+    setCanScrollNext(track.scrollLeft + track.clientWidth < track.scrollWidth - 1);
+  }
+
+  useEffect(() => {
+    const track = collectionsRef.current;
+    const selected = track?.querySelector('[aria-pressed="true"]');
+    if (track && selected) {
+      const offset = selected.getBoundingClientRect().right - track.getBoundingClientRect().right;
+      if (offset > 0) track.scrollLeft += offset;
+    }
+    updateCollectionScroll();
+    window.addEventListener("resize", updateCollectionScroll);
+    return () => window.removeEventListener("resize", updateCollectionScroll);
+  }, [dict.collections.length]);
+
+  function scrollCollections(direction: number) {
+    const track = collectionsRef.current;
+    const firstItem = track?.firstElementChild;
+    if (!track || !firstItem) return;
+    const gap = parseFloat(window.getComputedStyle(track).columnGap) || 0;
+    track.scrollBy({ left: direction * (firstItem.getBoundingClientRect().width + gap), behavior: "smooth" });
+  }
 
   const filters: { key: FilterType; label: string }[] = [
     { key: "all", label: dict.filterAll },
@@ -99,17 +129,22 @@ export function ShopPageContent({ dict, locale, initialCollection = null }: Shop
 
       <section className="bg-background px-4 pb-4 pt-2 md:px-8 md:pb-8 md:pt-3" aria-label={dict.collectionsTitle}>
         <div className="mx-auto max-w-7xl">
-          <div className="mb-5 flex flex-wrap justify-center gap-3 pb-3 md:mb-7 md:gap-4" role="group" aria-label={dict.collectionsTitle}>
+          <div className="@container mx-auto mb-5 pb-3 md:mb-7 lg:w-[calc((100%_+_104px)/2)]">
+          <div className="flex items-start gap-1 md:gap-3">
+            <button type="button" onClick={() => scrollCollections(-1)} disabled={!canScrollPrevious} aria-label={locale === "es" ? "Universos anteriores" : "Previous universes"} title={locale === "es" ? "Universos anteriores" : "Previous universes"} className="relative top-[calc((100cqw_-_96px)/6)] flex h-10 w-8 shrink-0 -translate-y-1/2 items-center justify-center text-primary disabled:opacity-30 sm:top-[calc((100cqw_-_108px)/8)] md:top-[calc((100cqw_-_140px)/8)] md:h-12 md:w-10 lg:top-[calc((100cqw_-_164px)/12)]">
+              <ArrowIcon className="h-6 w-6 rotate-180" />
+            </button>
+            <div ref={collectionsRef} onScroll={updateCollectionScroll} className={`flex min-w-0 flex-1 snap-x snap-mandatory items-start gap-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${collections.length < 6 ? "lg:justify-center" : ""}`} role="group" aria-label={dict.collectionsTitle}>
             <button
               type="button"
               onClick={() => handleCollection(null)}
               aria-pressed={activeCollection === null}
-              className={`w-24 shrink-0 text-left md:w-32 ${activeCollection === null ? "text-primary" : "text-text-dim hover:text-white"}`}
+              className={`w-[calc((100%_-_24px)/3)] shrink-0 snap-start text-left sm:w-[calc((100%_-_36px)/4)] lg:w-[calc((100%_-_60px)/6)] ${activeCollection === null ? "text-primary" : "text-text-dim hover:text-white"}`}
             >
               <span className={`mb-2 block aspect-square border bg-surface p-2 transition-colors md:p-3 ${activeCollection === null ? "border-primary" : "border-white/10 hover:border-primary/50"}`}>
                 <span className="flex h-full items-center justify-center border border-white/10 font-label text-[9px] uppercase tracking-widest">3D CP</span>
               </span>
-              <span className="font-label text-[9px] uppercase leading-tight md:text-[10px]">{dict.allCollections}</span>
+              <span className="block break-words font-label text-[9px] uppercase leading-tight md:text-[10px]">{dict.allCollections}</span>
             </button>
             {collections.map((collection) => (
               <button
@@ -118,14 +153,19 @@ export function ShopPageContent({ dict, locale, initialCollection = null }: Shop
                 onClick={() => handleCollection(collection.id)}
                 aria-pressed={activeCollection === collection.id}
                 aria-label={collection.label}
-                className={`w-24 shrink-0 text-left md:w-32 ${activeCollection === collection.id ? "text-primary" : "text-text-dim hover:text-white"}`}
+                className={`w-[calc((100%_-_24px)/3)] shrink-0 snap-start text-left sm:w-[calc((100%_-_36px)/4)] lg:w-[calc((100%_-_60px)/6)] ${activeCollection === collection.id ? "text-primary" : "text-text-dim hover:text-white"}`}
               >
                 <span className={`mb-2 block aspect-square border bg-cover bg-center p-2 transition-colors md:p-3 ${activeCollection === collection.id ? "border-primary" : "border-white/10 hover:border-primary/50"}`} style={{ backgroundImage: collection.gradient }}>
                   <span className="flex h-full items-center justify-center border border-white/15 bg-black/20 font-display text-lg font-semibold uppercase italic text-white/35" aria-hidden="true">3D</span>
                 </span>
-                <span className="font-label text-[9px] uppercase leading-tight md:text-[10px]">{collection.label}</span>
+                <span className="block break-words font-label text-[9px] uppercase leading-tight md:text-[10px]">{collection.label}</span>
               </button>
             ))}
+            </div>
+            <button type="button" onClick={() => scrollCollections(1)} disabled={!canScrollNext} aria-label={locale === "es" ? "Universos siguientes" : "Next universes"} title={locale === "es" ? "Universos siguientes" : "Next universes"} className="relative top-[calc((100cqw_-_96px)/6)] flex h-10 w-8 shrink-0 -translate-y-1/2 items-center justify-center text-primary disabled:opacity-30 sm:top-[calc((100cqw_-_108px)/8)] md:top-[calc((100cqw_-_140px)/8)] md:h-12 md:w-10 lg:top-[calc((100cqw_-_164px)/12)]">
+              <ArrowIcon className="h-6 w-6" />
+            </button>
+          </div>
           </div>
 
           <div className="mb-8 flex flex-col gap-5 border-b border-white/10 pb-5 md:mb-8 md:flex-row md:items-center md:justify-between">

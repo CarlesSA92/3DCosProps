@@ -1,12 +1,17 @@
 # 3D CosProps - Project Progress
 
 ## Global Status
-- Current phase: Phase 2 complete ✅ → Phase 3 (Commissions and Shop Foundations)
-- Last update: 2026-11-22 — Phase 3 audit and full automated validation completed; agreed account/checkout integrations remain deferred
-- Scope decision: Phase 1 complete; Phase 2 complete; Phase 3 in progress
+- Current phase: Phase 3 foundation/UI scope complete ✅; Phase 4 (Full Commerce and Services Integration) next
+- Last update: 2026-11-23 — aligned payment-provider status; completed a static accessibility/structured-data review and automated validation
+- Scope decision: Phase 1 complete; Phase 2 complete for documented UI scope; Phase 3 foundation/UI scope complete; Phase 4 not started
 - Phase 0 status: Completed
 - Phase 1 status: Completed
 - Phase 2 status: Completed
+- Phase 3 status: Foundation/UI scope completed (not production commerce readiness)
+- Phase 4 status: Not started
+- Payment-provider status: Stripe (cards) + PayPal selected; real checkout integration, compliance, and backend flows remain Phase 4 work.
+- Accessibility/SEO audit note: all implemented localized page families were inspected for landmarks, labels, keyboard semantics, metadata, and structured data. Automated verification: TypeScript passed; 109/109 unit tests passed; ESLint completed with five existing warnings and no errors; `git diff --check` passed. This is a code review, not a manual WCAG conformance or screen-reader sign-off.
+- Audit follow-up: verify product-specific structured data and runtime accessibility (keyboard/focus/dialog behavior) during Phase 4 QA; the product detail currently relies on global Organization data rather than Product JSON-LD.
 
 ## Progress Tracking Rules
 - Mark each item with [x] only when fully completed.
@@ -307,6 +312,10 @@ Goal: enable commissions UI and prepare commerce domain safely.
 - [x] Audit Phase 3 scope and run the full automated validation gate (2026-11-22).
   - _Audit: commissions UI and API contracts, shop catalog/cart/order foundations, bilingual profile demo, status timelines, Stripe + PayPal decision, and hybrid-to-centralized checkout path are present. Checkout/payment, registration/sign-in, role-aware Backoffice access, and purchase-linked digital downloads are explicitly later-phase work; download asset storage (database vs external object/file storage) remains an architecture decision for Phase 4 integration._
   - _Validation from `uis/web`: 109 unit tests passed (13 files); `npx tsc --noEmit` passed; `npm run lint` completed with 0 errors and 5 warnings (unused symbols in `services-page-content.tsx`, `site-header.tsx`, `app/content.ts`, and `src/types/content.ts`); `npm run build` succeeded and generated 42 static pages; all 45 Playwright E2E tests passed. These UI tests do not imply real checkout, backend, authentication, or protected download flows._
+
+- [x] Clarify project phase status: Phase 3 foundation/UI scope is complete; Phase 4 is next. This is not a claim of production commerce readiness.
+- [x] Confirm payment decision consistency: Stripe (cards) + PayPal were selected in ADR-001 on 2026-08-29. Provider-agnostic adapter implementation, payment processing and compliance remain Phase 4 work.
+- [x] Accessibility/structured-data view audit started 2026-11-23; automated unit tests pass (109/109). Findings and any remediation are recorded below before declaring audit complete.
 
 ### User Profile IA (defined 2026-08-29)
 

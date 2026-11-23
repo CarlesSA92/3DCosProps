@@ -42,6 +42,7 @@ export function HomePageContent({ dict }: HomePageContentProps) {
                 title: dict.servicesCardTitle,
                 body: dict.servicesCardBody,
                 cta: dict.servicesCardCta,
+                href: dict.servicesCardHref,
               }}
               icon={<SettingsIcon />}
             />
@@ -50,6 +51,7 @@ export function HomePageContent({ dict }: HomePageContentProps) {
                 title: dict.commissionsCardTitle,
                 body: dict.commissionsCardBody,
                 cta: dict.commissionsCardCta,
+                href: dict.commissionsCardHref,
               }}
               icon={<PenIcon />}
             />

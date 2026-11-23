@@ -15,10 +15,10 @@ const copy = {
     fullName: "Nombre completo", email: "Correo electrónico", phone: "Teléfono", emailNote: "Las notificaciones se enviarán a este correo.",
     addressTag: "02 / DIRECCIONES", addresses: "Direcciones", shipping: "Dirección de envío", billing: "Dirección de facturación", sameAddress: "Facturación igual que la dirección de envío",
     save: "Guardar cambios", saved: "Cambios aplicados a esta vista de demostración. No se han guardado en una cuenta.",
-    securityTag: "03 / SEGURIDAD", security: "Seguridad de la cuenta", securityBody: "Gestiona tu contraseña y protege tu información personal.", password: "Cambiar contraseña", securityNote: "La gestión de contraseña y la confirmación de cambios sensibles estarán disponibles al conectar tu cuenta.",
+    securityTag: "03 / SEGURIDAD", security: "Seguridad de la cuenta", securityBody: "Gestiona tu contraseña y protege tu información personal.", password: "Cambiar contraseña", securityNote: "La gestión de contraseña y la confirmación de cambios sensibles estarán disponibles al conectar tu cuenta.", deleteAccountTag: "04 / ZONA DE PELIGRO", deleteAccount: "Eliminar cuenta", deleteAccountBody: "La eliminación de la cuenta requerirá una confirmación explícita y validar tu contraseña. Esta acción no está disponible todavía.", deleteAccountAction: "Eliminar mi cuenta",
     paymentTag: "01 / PAGOS", paymentTitle: "Métodos de pago", paymentBody: "Tus métodos de pago, reunidos en un solo lugar.", card: "Tarjeta", cardDetail: "Tarjeta de crédito o débito", paypal: "PayPal", paypalDetail: "Cuenta de PayPal vinculada", notConnected: "No disponible todavía", paymentNote: "La gestión segura de métodos de pago estará disponible cuando conectemos los proveedores de pago.",
     filesTag: "01 / TU BIBLIOTECA", filesTitle: "Descarga de archivos", filesBody: "Tus productos digitales estarán disponibles aquí después de confirmar el pago.", emptyFiles: "Todavía no hay archivos disponibles", emptyFilesBody: "Cuando compres un producto digital, podrás acceder a sus archivos desde aquí.", explore: "Explorar la tienda", fileProduct: "Archivo digital de muestra", fileDescription: "Modelo 3D imprimible para proyecto de cosplay. Archivo de demostración; la descarga no está conectada a una compra real.", fileFormat: "STL · Archivo digital", download: "Descargar archivo",
-    ordersTag: "01 / SEGUIMIENTO", ordersTitle: "Pedidos y encargos", ordersBody: "Sigue el recorrido de tus compras y proyectos personalizados.", orders: "Pedidos", commissions: "Encargos", noOrders: "Todavía no hay pedidos", noOrdersBody: "Aquí podrás consultar el estado de tus compras.", noCommissions: "Todavía no hay encargos", noCommissionsBody: "Aquí podrás seguir tus proyectos desde la solicitud hasta la entrega.", exploreCommissions: "Explorar encargos", details: "Detalles",
+    ordersTag: "01 / SEGUIMIENTO", ordersTitle: "Pedidos y encargos", ordersBody: "Sigue el recorrido de tus compras y proyectos personalizados.", orders: "Pedidos", commissions: "Encargos", noOrders: "Todavía no hay pedidos", noOrdersBody: "Aquí podrás consultar el estado de tus compras.", noCommissions: "Todavía no hay encargos", noCommissionsBody: "Aquí podrás seguir tus proyectos desde la solicitud hasta la entrega.", exploreCommissions: "Explorar encargos", trackingDetails: "Detalles",
   },
   en: {
     eyebrow: "Your space / 3D CosProps", title: "My profile", demo: "Demo view", member: "Community member", name: "Alex Morgan", id: "SAMPLE PROFILE",
@@ -29,10 +29,10 @@ const copy = {
     fullName: "Full name", email: "Email address", phone: "Phone number", emailNote: "Notifications will be sent to this email address.",
     addressTag: "02 / ADDRESSES", addresses: "Addresses", shipping: "Shipping address", billing: "Billing address", sameAddress: "Billing same as shipping address",
     save: "Save changes", saved: "Changes applied to this demo view. They have not been saved to an account.",
-    securityTag: "03 / SECURITY", security: "Account security", securityBody: "Manage your password and protect your personal information.", password: "Change password", securityNote: "Password management and confirmation of sensitive changes will be available when your account is connected.",
+    securityTag: "03 / SECURITY", security: "Account security", securityBody: "Manage your password and protect your personal information.", password: "Change password", securityNote: "Password management and confirmation of sensitive changes will be available when your account is connected.", deleteAccountTag: "04 / DANGER ZONE", deleteAccount: "Delete account", deleteAccountBody: "Deleting your account will require explicit confirmation and password validation. This action is not available yet.", deleteAccountAction: "Delete my account",
     paymentTag: "01 / PAYMENTS", paymentTitle: "Payment methods", paymentBody: "Your payment methods, together in one place.", card: "Card", cardDetail: "Credit or debit card", paypal: "PayPal", paypalDetail: "Linked PayPal account", notConnected: "Not available yet", paymentNote: "Secure payment method management will be available when payment providers are connected.",
     filesTag: "01 / YOUR LIBRARY", filesTitle: "File downloads", filesBody: "Your digital products will be available here once payment is confirmed.", emptyFiles: "No files available yet", emptyFilesBody: "When you purchase a digital product, you can access its files here.", explore: "Explore the shop", fileProduct: "Sample digital file", fileDescription: "Printable 3D model for a cosplay project. Demo file; this download is not connected to a real purchase.", fileFormat: "STL · Digital file", download: "Download file",
-    ordersTag: "01 / TRACKING", ordersTitle: "Orders & commissions", ordersBody: "Follow the progress of your purchases and custom projects.", orders: "Orders", commissions: "Commissions", noOrders: "No orders yet", noOrdersBody: "You can check the status of your purchases here.", noCommissions: "No commissions yet", noCommissionsBody: "You can follow your projects from request to delivery here.", exploreCommissions: "Explore commissions", details: "Details",
+    ordersTag: "01 / TRACKING", ordersTitle: "Orders & commissions", ordersBody: "Follow the progress of your purchases and custom projects.", orders: "Orders", commissions: "Commissions", noOrders: "No orders yet", noOrdersBody: "You can check the status of your purchases here.", noCommissions: "No commissions yet", noCommissionsBody: "You can follow your projects from request to delivery here.", exploreCommissions: "Explore commissions", trackingDetails: "Details",
   },
 } as const;
 
@@ -120,7 +120,6 @@ export function ProfilePageContent({ locale }: { locale: Locale }) {
 
         <div role="tabpanel" id={`profile-panel-${activeTab}`} aria-labelledby={`profile-tab-${activeTab}`} tabIndex={0} className="mt-6 md:mt-8">
             <form hidden={activeTab !== 0} onSubmit={(event) => { event.preventDefault(); setSavedName(name); setSaved(true); }} className={activeTab === 0 ? "grid items-start gap-6 lg:grid-cols-[1.4fr_0.85fr]" : "hidden"}>
-              <div className="space-y-6">
                 <section className="border border-white/10 bg-surface-grey p-6 md:p-8">
                   <p className="font-label text-[10px] uppercase text-primary">{text.detailsTag}</p>
                   <h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.details}</h2>
@@ -131,7 +130,7 @@ export function ProfilePageContent({ locale }: { locale: Locale }) {
                     <label className={`${labelClass} sm:col-span-2`}>{text.email}<input className={fieldClass} type="email" placeholder="alex@example.com" onChange={() => setSaved(false)} /><span className="mt-2 block font-body text-xs normal-case text-text-dim">{text.emailNote}</span></label>
                   </div>
                 </section>
-                <section className="border border-white/10 bg-surface-grey p-6 md:p-8">
+                <section className="border border-white/10 bg-surface-grey p-6 md:p-8 lg:col-start-1 lg:row-start-2">
                   <p className="font-label text-[10px] uppercase text-primary">{text.addressTag}</p>
                   <h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.addresses}</h2>
                   <div className="mt-7 grid gap-5">
@@ -142,19 +141,24 @@ export function ProfilePageContent({ locale }: { locale: Locale }) {
                   <button type="submit" className={`${buttonClass} mt-7`}>{text.save}</button>
                   <p role="status" className="mt-3 text-sm text-primary">{saved ? text.saved : ""}</p>
                 </section>
-              </div>
-              <section className="border border-white/10 bg-surface-grey p-6 md:p-8">
+              <section className="border border-white/10 bg-surface-grey p-6 md:p-8 lg:col-start-2 lg:row-start-1">
                 <p className="font-label text-[10px] uppercase text-primary">{text.securityTag}</p>
                 <h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.security}</h2>
                 <p className="mt-3 text-sm leading-6 text-text-dim">{text.securityBody}</p>
                 <div className="mt-7 border-t border-white/10 pt-6"><p className="font-label text-[10px] uppercase text-primary">{text.notConnected}</p><p className="mt-3 text-sm leading-6 text-text-dim">{text.securityNote}</p><button type="button" disabled className="mt-6 min-h-11 border border-white/15 px-5 font-label text-[10px] uppercase text-text-dim/60">{text.password}</button></div>
               </section>
+              <section className="border border-red-500/25 bg-surface-grey p-6 md:p-8 lg:col-start-2 lg:row-start-2">
+                <p className="font-label text-[10px] uppercase text-red-400">{text.deleteAccountTag}</p>
+                <h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.deleteAccount}</h2>
+                <p className="mt-3 text-sm leading-6 text-text-dim">{text.deleteAccountBody}</p>
+                <button type="button" disabled className="mt-6 min-h-11 cursor-not-allowed border border-red-400/30 px-5 font-label text-[10px] uppercase text-red-300/50" aria-disabled="true">{text.deleteAccountAction}</button>
+              </section>
             </form>
           {activeTab === 1 && <section className="border border-white/10 bg-surface-grey p-6 md:p-8"><p className="font-label text-[10px] uppercase text-primary">{text.paymentTag}</p><h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.paymentTitle}</h2><p className="mt-2 text-sm leading-6 text-text-dim">{text.paymentBody}</p><div className="mt-7 divide-y divide-white/10 border-y border-white/10">{[[text.card, text.cardDetail], [text.paypal, text.paypalDetail]].map(([title, detail]) => <div key={title} className="flex flex-wrap items-center justify-between gap-3 py-5"><div><h3 className="font-display text-lg font-semibold text-white">{title}</h3><p className="mt-1 text-sm text-text-dim">{detail}</p></div><span className="font-label text-[10px] uppercase text-text-dim">{text.notConnected}</span></div>)}</div><p className="mt-6 max-w-2xl text-sm leading-6 text-text-dim">{text.paymentNote}</p></section>}
           {activeTab === 2 && <section className="border border-white/10 bg-surface-grey p-6 md:p-8"><p className="font-label text-[10px] uppercase text-primary">{text.filesTag}</p><h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.filesTitle}</h2><p className="mt-2 text-sm leading-6 text-text-dim">{text.filesBody}</p><div className="mt-8 grid grid-cols-1 items-stretch gap-3 lg:grid-cols-2">{[0, 1, 2, 3].map((item) => <DownloadCard key={item} title={locale === "es" ? [text.fileProduct, "Plano de armadura sci-fi", "Accesorios de cosplay", "Kit de piezas imprimibles"][item] : [text.fileProduct, "Sci-fi armor blueprint", "Cosplay accessories", "Printable parts kit"][item]} description={text.fileDescription} format={text.fileFormat} downloadLabel={text.download} detailsLabel={locale === "es" ? "Detalles" : "Details"} href="/media/sample-cosplay-model.stl" />)}</div><Link className={`${buttonClass} mt-6`} href={`/${locale}/shop`}>{text.explore}</Link></section>}
           {activeTab === 3 && <section className="border border-white/10 bg-surface-grey p-6 md:p-8"><p className="font-label text-[10px] uppercase text-primary">{text.ordersTag}</p><h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.ordersTitle}</h2><p className="mt-2 text-sm leading-6 text-text-dim">{text.ordersBody}</p><div className="mt-8 grid items-start gap-6 xl:grid-cols-2">
-            <TrackingCard locale={locale} title={text.sampleOrder} item={text.orderItem} id={text.orderId} status={text.orderStatus} updated={text.updated} progressTitle={text.tracking} steps={text.orderSteps} activeStep={2} currentLabel={text.current} demoData={text.demoData} detailsLabel={text.details} />
-            <TrackingCard locale={locale} title={text.sampleCommission} item={text.commissionItem} id={text.commissionId} status={text.commissionStatus} updated={text.updated} progressTitle={text.commissionTracking} steps={text.commissionSteps} activeStep={4} currentLabel={text.current} demoData={text.demoData} detailsLabel={text.details} />
+            <TrackingCard locale={locale} title={text.sampleOrder} item={text.orderItem} id={text.orderId} status={text.orderStatus} updated={text.updated} progressTitle={text.tracking} steps={text.orderSteps} activeStep={2} currentLabel={text.current} demoData={text.demoData} detailsLabel={text.trackingDetails} />
+            <TrackingCard locale={locale} title={text.sampleCommission} item={text.commissionItem} id={text.commissionId} status={text.commissionStatus} updated={text.updated} progressTitle={text.commissionTracking} steps={text.commissionSteps} activeStep={4} currentLabel={text.current} demoData={text.demoData} detailsLabel={text.trackingDetails} />
           </div></section>}
         </div>
       </div>
@@ -193,12 +197,13 @@ function TrackingCard({ locale, title, item, id, status, updated, progressTitle,
 }) {
   const [expanded, setExpanded] = useState(false);
   return <article className="border border-white/10 bg-black/20 p-5 md:p-6">
-    <div className="flex flex-wrap items-start justify-between gap-4">
-      <div className="min-w-0"><p className="font-label text-[9px] uppercase text-text-dim">{title} / {id}</p><h3 className="mt-2 font-display text-lg font-semibold text-white">{item}</h3></div>
+    <div className="flex items-center justify-between gap-3">
+      <p className="min-w-0 break-words font-label text-[9px] uppercase text-text-dim">{title} / {id}</p>
       <button type="button" aria-expanded={expanded} onClick={() => setExpanded((open) => !open)} className="flex min-h-9 shrink-0 items-center justify-center gap-1 border border-white/20 px-3 text-center font-label text-[8px] uppercase text-text-dim transition-colors hover:border-primary hover:text-primary sm:text-[9px]">
         {detailsLabel}<span aria-hidden="true" className={`inline-block transition-transform ${expanded ? "rotate-180" : ""}`}>⌄</span>
       </button>
     </div>
+    <h3 className="mt-2 break-words font-display text-lg font-semibold text-white">{item}</h3>
     <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4"><span className="border border-primary/35 bg-primary/10 px-3 py-2 font-label text-[9px] uppercase text-primary">{status}</span><span className="font-label text-[9px] text-text-dim">{updated}</span></div>
     {expanded && <>
     <div className="mt-5 flex items-center justify-between gap-3"><h4 className="font-label text-[10px] uppercase text-white">{progressTitle}</h4></div>
