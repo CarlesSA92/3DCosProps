@@ -1,4 +1,4 @@
-import type { Locale } from "../../app/i18n";
+import type { Product } from "../../../../src/models/api/contracts";
 
 export type NavItem = {
   href: string;
@@ -20,6 +20,10 @@ export type PageContent = {
   footerNavTitle: string;
   footerFollowTitle: string;
   footerPrivacyLabel: string;
+  footerLegalTitle: string;
+  footerLegalNoticeLabel: string;
+  footerCookiePolicyLabel: string;
+  footerTermsLabel: string;
 };
 
 export type HomeDictionary = PageContent & {
@@ -39,28 +43,11 @@ export type HomeDictionary = PageContent & {
   servicesCardTitle: string;
   servicesCardBody: string;
   servicesCardCta: string;
+  servicesCardHref: string;
   commissionsCardTitle: string;
   commissionsCardBody: string;
   commissionsCardCta: string;
-};
-
-export type FeatureCardContent = {
-  title: string;
-  body: string;
-  cta: string;
-};
-
-export type PageIntroContent = {
-  tag: string;
-  title: string;
-  body: string;
-  ctaSecondary: string;
-  ctaPrimary: string;
-};
-
-export type SectionIntroContent = {
-  title: string;
-  body: string;
+  commissionsCardHref: string;
 };
 
 /** A single slide in the gallery carousel */
@@ -82,6 +69,15 @@ export type GallerySection = {
   slides: CarouselSlide[];
 };
 
+/** A single service offering */
+export type ServiceItem = {
+  id: string;
+  subtitle: string;
+  title: string;
+  body: string;
+  features: string[];
+};
+
 /** Flat dictionary shape expected by HomePageContent — no nested objects */
 export type HomePageContentDict = {
   heroTag: string;
@@ -95,7 +91,151 @@ export type HomePageContentDict = {
   servicesCardTitle: string;
   servicesCardBody: string;
   servicesCardCta: string;
+  servicesCardHref: string;
   commissionsCardTitle: string;
   commissionsCardBody: string;
   commissionsCardCta: string;
+  commissionsCardHref: string;
+};
+
+/** Content dictionary for the Services page */
+export type ServicesDictionary = PageContent & {
+  heroTag: string;
+  heroTitle: string;
+  heroBody: string;
+  ctaPrimary: string;
+  ctaSecondary: string;
+  services: ServiceItem[];
+  ctaTitle: string;
+  ctaBody: string;
+  ctaLabel: string;
+};
+
+/** A single project item in the gallery */
+export type ProjectItem = {
+  id: string;
+  title: string;
+  description: string;
+  category: "anime" | "games" | "movies";
+  image: {
+    /** Placeholder gradient until real images are provided */
+    gradient: string;
+    alt: string;
+  };
+};
+
+/** Projects page dictionary */
+export type ProjectsDictionary = PageContent & {
+  heroTag: string;
+  heroTitle: string;
+  heroBody: string;
+  heroCtaPrimary: string;
+  heroCtaSecondary: string;
+  galleryTitle: string;
+  filterAll: string;
+  filterAnime: string;
+  filterGames: string;
+  projects: ProjectItem[];
+  loadMore: string;
+  noMoreProjects: string;
+};
+
+export type ShopCategory = "blueprint" | "file" | "kit" | "finished";
+
+export type ShopCollection = {
+  id: string;
+  label: string;
+  gradient: string;
+};
+
+export type ShopProductContent = Product & {
+  category: ShopCategory;
+  collection: string;
+  image: {
+    src?: string;
+    gradient: string;
+    alt: string;
+  };
+};
+
+export type ShopDictionary = PageContent & {
+  heroTag: string;
+  heroTitle: string;
+  heroBody: string;
+  collectionsTitle: string;
+  collections: ShopCollection[];
+  allCollections: string;
+  filterAll: string;
+  filterBlueprints: string;
+  filterKits: string;
+  filterFiles: string;
+  filterFinished: string;
+  sortLabel: string;
+  sortNewest: string;
+  sortPriceLow: string;
+  sortPriceHigh: string;
+  addToCart: string;
+  addedToCart: string;
+  cartLabel: string;
+  loadMore: string;
+  noMoreProducts: string;
+  noProducts: string;
+  products: ShopProductContent[];
+};
+
+export type CommissionPageDictionary = PageContent & {
+  heroTag: string;
+  heroTitle: string;
+  heroBody: string;
+  formTitle: string;
+  formSteps: [string, string, string];
+  formStepDescriptions: [string, string, string];
+  projectTypes: Array<{ value: string; label: string }>;
+  budgetOptions: Array<{ value: string; label: string }>;
+  labels: {
+    projectTitle: string;
+    projectType: string;
+    details: string;
+    budget: string;
+    enterBudget: string;
+    timeline: string;
+    references: string;
+    name: string;
+    email: string;
+    agreement: string;
+  };
+  hints: {
+    projectTitle: string;
+    details: string;
+    references: string;
+    referencesHelp: string;
+    payment: string;
+    timeline: string;
+  };
+  actions: {
+    back: string;
+    next: string;
+    submit: string;
+    removeFile: string;
+  };
+  validation: {
+    projectTitle: string;
+    projectType: string;
+    details: string;
+    name: string;
+    email: string;
+    agreement: string;
+    fileSize: string;
+    fileType: string;
+    fileCount: string;
+    budget: string;
+  };
+  successTitle: string;
+  successBody: string;
+  processTitle: string;
+  processSteps: Array<{ title: string; body: string }>;
+  paymentTitle: string;
+  paymentBody: string;
+  faqTitle: string;
+  faqs: Array<{ question: string; answer: string }>;
 };

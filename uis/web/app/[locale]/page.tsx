@@ -47,5 +47,34 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
 
   const dict = getDictionary(locale as Locale);
 
-  return <HomePageContent dict={dict} />;
+  const pageDescription =
+    locale === "es"
+      ? "Estudio de modelado e impresión 3D para props de alta fidelidad, encargos personalizados y acabados profesionales."
+      : "3D modeling and printing studio for high-fidelity props, custom commissions, and professional finishing.";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "3D CosProps",
+    url: `https://3dcosprops.com/${locale}`,
+    description: pageDescription,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `https://3dcosprops.com/${locale}/search?q={search_term}`,
+      },
+      "query-input": "required name=search_term",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <HomePageContent dict={dict} />
+    </>
+  );
 }

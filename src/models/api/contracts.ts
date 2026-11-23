@@ -10,20 +10,27 @@ export type CommissionStatus =
   | "submitted"
   | "in_review"
   | "quoted"
-  | "approved"
+  | "pending_payment"
+  | "paid"
+  | "standby"
   | "in_production"
-  | "shipped"
   | "completed"
+  | "ready_to_ship"
+  | "shipped"
+  | "done"
   | "cancelled";
 
 export type OrderStatus =
   | "draft"
   | "pending_payment"
   | "paid"
+  | "preparing"
+  | "in_production"
   | "processing"
   | "ready_to_ship"
   | "shipped"
   | "delivered"
+  | "done"
   | "cancelled"
   | "refunded";
 
@@ -121,24 +128,126 @@ export interface Commission {
   details: string;
   budgetRange?: string;
   dueDate?: string;
+  quote?: CommissionQuote;
+  /** Order created for the accepted quote; commissions are not ordinary catalog items. */
+  paymentOrderId?: string;
   status: CommissionStatus;
   internalNotes?: string;
   createdAt: string;
   updatedAt: string;
 }
 
+export interface CommissionQuote {
+  amountCents: number;
+  currency: string;
+  expiresAt?: string;
+  /** Short-lived checkout link, issued after the customer accepts the quote. */
+  paymentUrl?: string;
+}
+
+// ─── Catalog ────────────────────────────────────────────────────────────────
+
+export type ProductType = "physical" | "digital";
+
 export interface Product {
   id: string;
   slug: string;
   title: string;
   description: string;
+  type: ProductType;
   priceCents: number;
   currency: string;
-  stock: number;
-  isVisible: boolean;
-  featured: boolean;
-  tags: string[];
   imageUrls: string[];
+  tags: string[];
+  isVisible: boolean;
+  /** Relevant to physical products; omitted for digital products. */
+  stock?: number;
+  featured: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── Cart ───────────────────────────────────────────────────────────────────
+
+export interface ProductCartItem {
+  kind: "product";
+  productId: string;
+  productType: ProductType;
+  quantity: number;
+  /** Snapshot for display only; the server must revalidate price at checkout. */
+  unitPriceCents: number;
+}
+
+/** Only a quoted commission can enter checkout, linked to its separate request. */
+export interface CommissionCartItem {
+  kind: "commission";
+  commissionId: string;
+  quantity: 1;
+  unitPriceCents: number;
+}
+
+export type CartItem = ProductCartItem | CommissionCartItem;
+
+export interface Cart {
+  id?: string;
+  currency: string;
+  items: CartItem[];
+  subtotalCents: number;
+  updatedAt: string;
+}
+
+// ─── Orders ─────────────────────────────────────────────────────────────────
+
+export interface ProductOrderItem {
+  kind: "product";
+  productId: string;
+  productType: ProductType;
+  /** Product details and price are snapshotted when the order is created. */
+  title: string;
+  quantity: number;
+  unitPriceCents: number;
+  /** Present only for digital products and available only after payment succeeds. */
+  downloads?: DownloadEntitlement[];
+}
+
+export interface DownloadEntitlement {
+  id: string;
+  fileName: string;
+  availableAt: string;
+  /** Short-lived, authorized URL; do not persist it as the permanent asset URL. */
+  downloadUrl?: string;
+}
+
+export interface CommissionOrderItem {
+  kind: "commission";
+  commissionId: string;
+  title: string;
+  quantity: number;
+  unitPriceCents: number;
+}
+
+export type OrderItem = ProductOrderItem | CommissionOrderItem;
+
+export type OrderFulfillmentType = "physical" | "digital" | "commission";
+
+export interface Order {
+  id: string;
+  userId?: string;
+  /** One fulfillment type per order; mixed carts are split into independent orders. */
+  fulfillmentType: OrderFulfillmentType;
+  items: OrderItem[];
+  subtotalCents: number;
+  shippingCents: number;
+  totalCents: number;
+  currency: string;
+  status: OrderStatus;
+  shippingAddress?: Address;
+  trackingNumber?: string;
+  paymentProvider?: string;
+  paymentReference?: string;
+  shippingProvider?: string;
+  shippingReference?: string;
+  paidAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -153,23 +262,6 @@ export interface PortfolioItem {
   imageUrls: string[];
   featured: boolean;
   publishedAt?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Order {
-  id: string;
-  userId?: string;
-  productIds: string[];
-  subtotalCents: number;
-  shippingCents: number;
-  totalCents: number;
-  currency: string;
-  status: OrderStatus;
-  paymentProvider?: string;
-  paymentReference?: string;
-  shippingProvider?: string;
-  shippingReference?: string;
   createdAt: string;
   updatedAt: string;
 }

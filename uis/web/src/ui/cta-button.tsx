@@ -1,13 +1,4 @@
-import type { ReactNode } from "react";
-
-type CtaButtonProps = {
-  children: ReactNode;
-  href: string;
-  /** "primary" = gold filled, "secondary" = ghost/outlined */
-  variant?: "primary" | "secondary";
-  /** Optional extra class names */
-  className?: string;
-};
+import type { CtaButtonProps } from "../types/component";
 
 /**
  * Reusable CTA button with two brand variants:

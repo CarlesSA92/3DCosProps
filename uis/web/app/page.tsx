@@ -28,16 +28,20 @@ export default function Home() {
       />
       <SiteHeader
         locale="en"
-        languageLabel={dict.languageLabel}
         nav={dict.nav}
       />
       <HomePageContent dict={dict} />
       <SiteFooter
+        locale="en"
         text={dict.footer}
         nav={dict.nav}
         footerNavTitle={dict.footerNavTitle}
         footerFollowTitle={dict.footerFollowTitle}
         footerPrivacyLabel={dict.footerPrivacyLabel}
+        footerLegalTitle={dict.footerLegalTitle}
+        footerLegalNoticeLabel={dict.footerLegalNoticeLabel}
+        footerCookiePolicyLabel={dict.footerCookiePolicyLabel}
+        footerTermsLabel={dict.footerTermsLabel}
       />
     </div>
   );

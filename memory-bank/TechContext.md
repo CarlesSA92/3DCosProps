@@ -75,7 +75,7 @@
 - Versioned API base path: /api/v1
 - Shared DTO contracts must be defined first in src/models/api before endpoint implementation.
 - Views must connect through domain endpoints (products, portfolio, commissions, orders, users, metrics) to avoid cross-domain coupling.
-- Checkout must remain provider-agnostic through an adapter approach until final payment decision.
+	- Checkout must remain provider-agnostic through an adapter approach; the selected providers are Stripe (card) and PayPal (see ADR-001). Real payment integration is Phase 4.
 - Admin operations require role-based access control (admin, manager, support, customer).
 - User Profile view must support: profile editing, payment method management, order tracking, commission tracking, and role-gated backend access link.
 - Backend access link visibility from profile:
@@ -97,6 +97,6 @@
 
 ## Open Technical Decisions
 - Deployment platform: Vercel with owned domain (decided in ADR-001)
-- Payment provider for full checkout (pending)
+- Payment providers: Stripe + PayPal selected in ADR-001; adapter implementation and compliance requirements remain Phase 4 work.
 - CMS adoption vs repository-based content (pending)
 

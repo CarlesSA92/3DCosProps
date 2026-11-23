@@ -2,15 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import type { CarouselSlide } from "../types/content";
-
-type CarouselSectionProps = {
-  /** Optional section title. Omit or pass empty string to hide it. */
-  title?: string;
-  slides: CarouselSlide[];
-  /** Auto-play interval in milliseconds. Default 5000 (5s). Set to 0 to disable. */
-  autoPlayInterval?: number;
-};
+import type { CarouselSectionProps } from "../types/component";
+import { usePathname } from "next/navigation";
 
 /** Chevron-left icon */
 function ChevronLeftIcon({ className = "h-5 w-5" }: { className?: string }) {
@@ -73,6 +66,8 @@ export function CarouselSection({
   slides,
   autoPlayInterval = 5000,
 }: CarouselSectionProps) {
+  const pathname = usePathname();
+  const locale = pathname?.split("/")[1] === "es" ? "es" : "en";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -200,9 +195,9 @@ export function CarouselSection({
             type="button"
             onClick={prevSlide}
             className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background/70 backdrop-blur-sm border border-white/10 text-white hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 focus-visible:outline-2 focus-visible:outline-primary"
-            aria-label="Previous slide"
+            aria-label={locale === "es" ? "Diapositiva anterior" : "Previous slide"}
           >
-            <ChevronLeftIcon />
+            <span aria-hidden="true"><ChevronLeftIcon /></span>
           </button>
 
           {/* Next arrow */}
@@ -210,16 +205,16 @@ export function CarouselSection({
             type="button"
             onClick={nextSlide}
             className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background/70 backdrop-blur-sm border border-white/10 text-white hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 focus-visible:outline-2 focus-visible:outline-primary"
-            aria-label="Next slide"
+            aria-label={locale === "es" ? "Diapositiva siguiente" : "Next slide"}
           >
-            <ChevronRightIcon />
+            <span aria-hidden="true"><ChevronRightIcon /></span>
           </button>
 
           {/* Dots navigation */}
           <div
             className="absolute bottom-4 right-4 md:bottom-6 md:right-8 z-20 flex items-center gap-2"
             role="tablist"
-            aria-label="Slide navigation"
+            aria-label={locale === "es" ? "Navegación de diapositivas" : "Slide navigation"}
           >
             {slides.map((slide, index) => (
               <button
@@ -227,7 +222,7 @@ export function CarouselSection({
                 type="button"
                 role="tab"
                 aria-selected={index === currentIndex}
-                aria-label={`Go to slide ${index + 1}: ${slide.label}`}
+                aria-label={locale === "es" ? `Ir a la diapositiva ${index + 1}: ${slide.label}` : `Go to slide ${index + 1}: ${slide.label}`}
                 onClick={() => goToSlide(index)}
                 className={`h-2 rounded-full transition-all duration-300 focus-visible:outline-2 focus-visible:outline-primary ${
                   index === currentIndex
@@ -241,7 +236,7 @@ export function CarouselSection({
           {/* Pause indicator */}
           {isPaused && (
             <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 rounded-full bg-background/70 backdrop-blur-sm px-3 py-1.5 text-xs text-text-dim font-label border border-white/10">
-              <PauseIcon /> <span>Paused</span>
+              <span aria-hidden="true"><PauseIcon /></span> <span>{locale === "es" ? "En pausa" : "Paused"}</span>
             </div>
           )}
         </div>
