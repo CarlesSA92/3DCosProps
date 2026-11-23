@@ -18,7 +18,7 @@ const copy = {
     securityTag: "03 / SEGURIDAD", security: "Seguridad de la cuenta", securityBody: "Gestiona tu contraseña y protege tu información personal.", password: "Cambiar contraseña", securityNote: "La gestión de contraseña y la confirmación de cambios sensibles estarán disponibles al conectar tu cuenta.",
     paymentTag: "01 / PAGOS", paymentTitle: "Métodos de pago", paymentBody: "Tus métodos de pago, reunidos en un solo lugar.", card: "Tarjeta", cardDetail: "Tarjeta de crédito o débito", paypal: "PayPal", paypalDetail: "Cuenta de PayPal vinculada", notConnected: "No disponible todavía", paymentNote: "La gestión segura de métodos de pago estará disponible cuando conectemos los proveedores de pago.",
     filesTag: "01 / TU BIBLIOTECA", filesTitle: "Descarga de archivos", filesBody: "Tus productos digitales estarán disponibles aquí después de confirmar el pago.", emptyFiles: "Todavía no hay archivos disponibles", emptyFilesBody: "Cuando compres un producto digital, podrás acceder a sus archivos desde aquí.", explore: "Explorar la tienda", fileProduct: "Archivo digital de muestra", fileDescription: "Modelo 3D imprimible para proyecto de cosplay. Archivo de demostración; la descarga no está conectada a una compra real.", fileFormat: "STL · Archivo digital", download: "Descargar archivo",
-    ordersTag: "01 / SEGUIMIENTO", ordersTitle: "Pedidos y encargos", ordersBody: "Sigue el recorrido de tus compras y proyectos personalizados.", orders: "Pedidos", commissions: "Encargos", noOrders: "Todavía no hay pedidos", noOrdersBody: "Aquí podrás consultar el estado de tus compras.", noCommissions: "Todavía no hay encargos", noCommissionsBody: "Aquí podrás seguir tus proyectos desde la solicitud hasta la entrega.", exploreCommissions: "Explorar encargos",
+    ordersTag: "01 / SEGUIMIENTO", ordersTitle: "Pedidos y encargos", ordersBody: "Sigue el recorrido de tus compras y proyectos personalizados.", orders: "Pedidos", commissions: "Encargos", noOrders: "Todavía no hay pedidos", noOrdersBody: "Aquí podrás consultar el estado de tus compras.", noCommissions: "Todavía no hay encargos", noCommissionsBody: "Aquí podrás seguir tus proyectos desde la solicitud hasta la entrega.", exploreCommissions: "Explorar encargos", details: "Detalles",
   },
   en: {
     eyebrow: "Your space / 3D CosProps", title: "My profile", demo: "Demo view", member: "Community member", name: "Alex Morgan", id: "SAMPLE PROFILE",
@@ -32,7 +32,7 @@ const copy = {
     securityTag: "03 / SECURITY", security: "Account security", securityBody: "Manage your password and protect your personal information.", password: "Change password", securityNote: "Password management and confirmation of sensitive changes will be available when your account is connected.",
     paymentTag: "01 / PAYMENTS", paymentTitle: "Payment methods", paymentBody: "Your payment methods, together in one place.", card: "Card", cardDetail: "Credit or debit card", paypal: "PayPal", paypalDetail: "Linked PayPal account", notConnected: "Not available yet", paymentNote: "Secure payment method management will be available when payment providers are connected.",
     filesTag: "01 / YOUR LIBRARY", filesTitle: "File downloads", filesBody: "Your digital products will be available here once payment is confirmed.", emptyFiles: "No files available yet", emptyFilesBody: "When you purchase a digital product, you can access its files here.", explore: "Explore the shop", fileProduct: "Sample digital file", fileDescription: "Printable 3D model for a cosplay project. Demo file; this download is not connected to a real purchase.", fileFormat: "STL · Digital file", download: "Download file",
-    ordersTag: "01 / TRACKING", ordersTitle: "Orders & commissions", ordersBody: "Follow the progress of your purchases and custom projects.", orders: "Orders", commissions: "Commissions", noOrders: "No orders yet", noOrdersBody: "You can check the status of your purchases here.", noCommissions: "No commissions yet", noCommissionsBody: "You can follow your projects from request to delivery here.", exploreCommissions: "Explore commissions",
+    ordersTag: "01 / TRACKING", ordersTitle: "Orders & commissions", ordersBody: "Follow the progress of your purchases and custom projects.", orders: "Orders", commissions: "Commissions", noOrders: "No orders yet", noOrdersBody: "You can check the status of your purchases here.", noCommissions: "No commissions yet", noCommissionsBody: "You can follow your projects from request to delivery here.", exploreCommissions: "Explore commissions", details: "Details",
   },
 } as const;
 
@@ -153,8 +153,8 @@ export function ProfilePageContent({ locale }: { locale: Locale }) {
           {activeTab === 1 && <section className="border border-white/10 bg-surface-grey p-6 md:p-8"><p className="font-label text-[10px] uppercase text-primary">{text.paymentTag}</p><h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.paymentTitle}</h2><p className="mt-2 text-sm leading-6 text-text-dim">{text.paymentBody}</p><div className="mt-7 divide-y divide-white/10 border-y border-white/10">{[[text.card, text.cardDetail], [text.paypal, text.paypalDetail]].map(([title, detail]) => <div key={title} className="flex flex-wrap items-center justify-between gap-3 py-5"><div><h3 className="font-display text-lg font-semibold text-white">{title}</h3><p className="mt-1 text-sm text-text-dim">{detail}</p></div><span className="font-label text-[10px] uppercase text-text-dim">{text.notConnected}</span></div>)}</div><p className="mt-6 max-w-2xl text-sm leading-6 text-text-dim">{text.paymentNote}</p></section>}
           {activeTab === 2 && <section className="border border-white/10 bg-surface-grey p-6 md:p-8"><p className="font-label text-[10px] uppercase text-primary">{text.filesTag}</p><h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.filesTitle}</h2><p className="mt-2 text-sm leading-6 text-text-dim">{text.filesBody}</p><div className="mt-8 grid grid-cols-1 items-stretch gap-3 lg:grid-cols-2">{[0, 1, 2, 3].map((item) => <DownloadCard key={item} title={locale === "es" ? [text.fileProduct, "Plano de armadura sci-fi", "Accesorios de cosplay", "Kit de piezas imprimibles"][item] : [text.fileProduct, "Sci-fi armor blueprint", "Cosplay accessories", "Printable parts kit"][item]} description={text.fileDescription} format={text.fileFormat} downloadLabel={text.download} detailsLabel={locale === "es" ? "Detalles" : "Details"} href="/media/sample-cosplay-model.stl" />)}</div><Link className={`${buttonClass} mt-6`} href={`/${locale}/shop`}>{text.explore}</Link></section>}
           {activeTab === 3 && <section className="border border-white/10 bg-surface-grey p-6 md:p-8"><p className="font-label text-[10px] uppercase text-primary">{text.ordersTag}</p><h2 className="mt-3 font-display text-2xl font-semibold text-white md:text-3xl">{text.ordersTitle}</h2><p className="mt-2 text-sm leading-6 text-text-dim">{text.ordersBody}</p><div className="mt-8 grid items-start gap-6 xl:grid-cols-2">
-            <TrackingCard locale={locale} title={text.sampleOrder} item={text.orderItem} id={text.orderId} status={text.orderStatus} updated={text.updated} progressTitle={text.tracking} steps={text.orderSteps} activeStep={2} currentLabel={text.current} demoData={text.demoData} />
-            <TrackingCard locale={locale} title={text.sampleCommission} item={text.commissionItem} id={text.commissionId} status={text.commissionStatus} updated={text.updated} progressTitle={text.commissionTracking} steps={text.commissionSteps} activeStep={4} currentLabel={text.current} demoData={text.demoData} />
+            <TrackingCard locale={locale} title={text.sampleOrder} item={text.orderItem} id={text.orderId} status={text.orderStatus} updated={text.updated} progressTitle={text.tracking} steps={text.orderSteps} activeStep={2} currentLabel={text.current} demoData={text.demoData} detailsLabel={text.details} />
+            <TrackingCard locale={locale} title={text.sampleCommission} item={text.commissionItem} id={text.commissionId} status={text.commissionStatus} updated={text.updated} progressTitle={text.commissionTracking} steps={text.commissionSteps} activeStep={4} currentLabel={text.current} demoData={text.demoData} detailsLabel={text.details} />
           </div></section>}
         </div>
       </div>
@@ -187,16 +187,21 @@ function DownloadCard({ title, description, format, downloadLabel, detailsLabel,
   </article>;
 }
 
-function TrackingCard({ locale, title, item, id, status, updated, progressTitle, steps, activeStep, currentLabel, demoData }: {
+function TrackingCard({ locale, title, item, id, status, updated, progressTitle, steps, activeStep, currentLabel, demoData, detailsLabel }: {
   locale: Locale; title: string; item: string; id: string; status: string; updated: string;
-  progressTitle: string; steps: readonly string[]; activeStep: number; currentLabel: string; demoData: string;
+  progressTitle: string; steps: readonly string[]; activeStep: number; currentLabel: string; demoData: string; detailsLabel: string;
 }) {
+  const [expanded, setExpanded] = useState(false);
   return <article className="border border-white/10 bg-black/20 p-5 md:p-6">
-    <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 pb-4">
-      <div><p className="font-label text-[9px] uppercase text-text-dim">{title} / {id}</p><h3 className="mt-2 font-display text-lg font-semibold text-white">{item}</h3></div>
-      <span className="border border-primary/35 bg-primary/10 px-3 py-2 font-label text-[9px] uppercase text-primary">{status}</span>
+    <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="min-w-0"><p className="font-label text-[9px] uppercase text-text-dim">{title} / {id}</p><h3 className="mt-2 font-display text-lg font-semibold text-white">{item}</h3></div>
+      <button type="button" aria-expanded={expanded} onClick={() => setExpanded((open) => !open)} className="flex min-h-9 shrink-0 items-center justify-center gap-1 border border-white/20 px-3 text-center font-label text-[8px] uppercase text-text-dim transition-colors hover:border-primary hover:text-primary sm:text-[9px]">
+        {detailsLabel}<span aria-hidden="true" className={`inline-block transition-transform ${expanded ? "rotate-180" : ""}`}>⌄</span>
+      </button>
     </div>
-    <div className="mt-5 flex items-center justify-between gap-3"><h4 className="font-label text-[10px] uppercase text-white">{progressTitle}</h4><span className="font-label text-[9px] text-text-dim">{updated}</span></div>
+    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4"><span className="border border-primary/35 bg-primary/10 px-3 py-2 font-label text-[9px] uppercase text-primary">{status}</span><span className="font-label text-[9px] text-text-dim">{updated}</span></div>
+    {expanded && <>
+    <div className="mt-5 flex items-center justify-between gap-3"><h4 className="font-label text-[10px] uppercase text-white">{progressTitle}</h4></div>
     <ol className="mt-5 space-y-0" aria-label={progressTitle}>{steps.map((step, index) => {
       const complete = index < activeStep;
       const active = index === activeStep;
@@ -209,5 +214,6 @@ function TrackingCard({ locale, title, item, id, status, updated, progressTitle,
     <p className="mt-1 border-t border-white/10 pt-3 font-label text-[10px] uppercase text-primary"><span className="text-text-dim">{currentLabel}:</span> {status}</p>
     <p className="mt-4 border-t border-white/10 pt-3 font-body text-[11px] leading-5 text-text-dim">{demoData}</p>
     <Link href={`/${locale}/${title === (locale === "es" ? "Pedido de muestra" : "Sample order") ? "shop" : "commissions"}`} className="mt-4 inline-block font-label text-[9px] uppercase text-primary underline underline-offset-4 hover:text-white">{locale === "es" ? "Ver sección" : "View section"}</Link>
+    </>}
   </article>;
 }

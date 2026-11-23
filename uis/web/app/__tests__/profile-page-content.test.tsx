@@ -19,22 +19,28 @@ describe("ProfilePageContent", () => {
     fireEvent.click(screen.getByRole("tab", { name: "Descarga de archivos" }));
     expect(screen.getByRole("link", { name: "Descargar archivo: Archivo digital de muestra" })).toHaveAttribute("download");
     expect(screen.getAllByText("STL · Archivo digital")).toHaveLength(4);
-    expect(screen.getAllByText("Detalles")).toHaveLength(4);
+    expect(screen.getAllByText("Detalles")).toHaveLength(5);
     expect(screen.getByRole("img", { name: "Kit de piezas imprimibles" })).toBeInTheDocument();
     expect(screen.queryByText(/Modelo 3D imprimible/)).not.toBeInTheDocument();
     fireEvent.click(screen.getAllByRole("button", { name: "Detalles" })[0]);
     expect(screen.getByText(/Modelo 3D imprimible/)).toBeInTheDocument();
     expect(window.location.search).toBe("?tab=downloads");
     fireEvent.click(screen.getByRole("tab", { name: "Pedidos y encargos" }));
-    expect(screen.getAllByText("En preparación")).toHaveLength(3);
-    expect(screen.getAllByText("En producción")).toHaveLength(3);
-    expect(screen.getAllByText("Estado actual:", { exact: false })).toHaveLength(2);
-    expect(screen.getAllByRole("list", { name: /Progreso/ })).toHaveLength(2);
+    expect(screen.getByText("En preparación")).toBeInTheDocument();
+    expect(screen.getByText("En producción")).toBeInTheDocument();
+    expect(screen.getAllByText("Actualizado hoy")).toHaveLength(2);
+    expect(screen.queryByRole("list", { name: /Progreso/ })).not.toBeInTheDocument();
+    const detailsButtons = screen.getAllByRole("button", { name: "Detalles" });
+    expect(detailsButtons).toHaveLength(2);
+    fireEvent.click(detailsButtons[0]);
+    expect(screen.getByRole("list", { name: "Progreso del pedido" })).toBeInTheDocument();
     expect(screen.getByText(/2026-0142/)).toBeInTheDocument();
+    expect(screen.getByText("Pago recibido", { exact: true })).toBeInTheDocument();
+    expect(screen.getByText(/progreso no está conectado/i)).toBeInTheDocument();
+    fireEvent.click(detailsButtons[1]);
+    expect(screen.getByRole("list", { name: "Progreso del encargo" })).toBeInTheDocument();
     expect(screen.getByText(/2026-0038/)).toBeInTheDocument();
-    expect(screen.getAllByText("Pago recibido", { exact: true })).toHaveLength(2);
     expect(screen.getByText("Presupuesto aceptado", { exact: true })).toBeInTheDocument();
-    expect(screen.getAllByText(/progreso no está conectado/i)).toHaveLength(2);
   });
 
   it("edits demo details without claiming persistence", () => {
