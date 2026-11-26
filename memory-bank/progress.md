@@ -12,6 +12,7 @@
 - Payment-provider status: Stripe (cards) + PayPal selected; real checkout integration, compliance, and backend flows remain Phase 4 work.
 - Accessibility/SEO audit note: all implemented localized page families were inspected for landmarks, labels, keyboard semantics, metadata, and structured data. Automated verification: TypeScript passed; 109/109 unit tests passed; ESLint completed with five existing warnings and no errors; `git diff --check` passed. This is a code review, not a manual WCAG conformance or screen-reader sign-off.
 - Audit follow-up: verify product-specific structured data and runtime accessibility (keyboard/focus/dialog behavior) during Phase 4 QA; the product detail currently relies on global Organization data rather than Product JSON-LD.
+- Backoffice planning decision (2026-11-23): plan a private operational backoffice before Phase 4 implementation. Planning only; no backend implementation is authorized. Define roles/permissions, workflows, state transitions, dashboard metric definitions, auditability, and API/data implications first.
 
 ## Progress Tracking Rules
 - Mark each item with [x] only when fully completed.
@@ -133,6 +134,47 @@ The project needs to launch quickly with strong SEO discoverability, controlled 
 - Portfolio database CRUD is implemented and connected to Projects page rendering.
 - Role/permission model is defined for admin access and sensitive actions.
 - Backend access link from User Profile is visible only for admin/manager and enforced server-side by RBAC.
+
+### Backoffice Planning (Pre-Phase 4; planning only)
+Goal: agree on operational workflows and access boundaries before backend and commerce integration work. This planning does not change phase status or authorize backend coding.
+
+#### Principles
+- Treat the backoffice as a private, role-protected operational area; hiding UI controls is not authorization. Enforce permissions on the server/API.
+- Use explicit, domain-specific states and permitted transitions. Record actor, timestamp, action, and relevant before/after values for sensitive changes.
+- Separate internal operational notes from customer-visible messages. Require confirmation and safeguards for destructive, financial, or publication actions.
+- Define dashboard metrics (calculation, time range, timezone, and treatment of cancellations/refunds) before presenting them.
+- Prefer review/preview and controlled publishing for public-facing catalog and portfolio changes.
+
+#### Initial roles and permission questions
+- **Administrator:** full operational access, configuration and user/role administration, exceptional overrides, and sensitive reporting.
+- **Manager:** day-to-day handling of orders/commissions and content/catalog within assigned scope; authority to publish, refund, archive, or reassign remains to be decided per workflow.
+- **Open:** decide whether editor/support roles are needed, manager scopes, and which actions require a second approver. Specify permissions per action, not only per page.
+
+#### Workflow drafts to validate (not final state contracts)
+- **Products:** Draft → In review → Published → Archived. Inventory/availability are separate operational fields, not publication states. Clarify review/publish authority, price-change safeguards, stock adjustments, and handling of products referenced by existing orders.
+- **Portfolio projects:** Draft → In review → Published → Archived. Define required media/alt text/localized content, preview, approval, and what happens to public URLs when unpublishing.
+- **Orders:** Received → Payment pending/paid (payment state tracked distinctly) → Confirmed → Preparing → Shipped/Ready for delivery → Delivered → Closed. Exceptions include cancellation, failed payment, return/refund, and partial fulfillment where applicable. Provider events are not ordinary manual status edits; define reconciliation and authorized refund flow.
+- **Commissions (functional workflow agreed 2026-11-23; storage/resale and legal terms deferred):** Customer submits the website form → request appears in the backoffice for review → store determines feasibility. If not feasible, staff sends the customer an explanation and closes/declines the request. If feasible, staff prepares and presents a product quote (materials + production), excluding shipping because final weight is unknown; the customer is told shipping will be quoted separately. The product quote is valid for 14 calendar days. If no response/payment is received by expiry, it is treated as rejected and the request is closed. Acceptance is payment in full of the product quote in advance (not a deposit). Once paid, the order is final: no customer-requested cancellation or changes, as materials procurement and production proceed. Production duration depends on project size; no fixed ETA is promised. Staff shares progress photos during production to reassure the customer and show progress. When the product is ready, staff informs the customer and sends a second quote with shipping options/prices from different carriers so the customer can choose. If the customer does not contract shipping, this is treated as rejection of the finished product. Storage duration and any subsequent resale policy are explicitly deferred for later decision; do not implement or communicate an assumed storage period or resale action until that policy is agreed and legally reviewed.
+  - **Draft states:** Received → Under review → (Not feasible → Declined/Closed) OR (Feasible → Product quote prepared → Product quote sent / Awaiting payment) → (14-day expiry without response/payment or customer rejection → Rejected/Closed) OR (Paid / Accepted → Materials procurement → In production ↔ Progress photos/updates → Product ready → Shipping options/quote sent → Awaiting carrier choice/payment) → (Carrier selected → Shipping paid/arranged → Shipped → Delivered/Closed) OR (Customer declines/no shipping contracted → Product rejected; storage/resale disposition pending policy decision).
+  - Product payment and shipping payment are separate financial events. Track product quote/version, itemized materials/production costs, currency, sent/expiry timestamps, payment status/reference, and shipping quote/options/carrier selection/payment separately. Progress photos and customer messages are timeline events, not status transitions. Keep internal notes separate from customer-visible messages/media. Do not imply a fixed production deadline; duration depends on project scope.
+  - **Deferred/open policy decisions:** storage duration and process after customer declines/does not arrange shipping; whether and under what conditions the product may be offered for resale; legal wording and any applicable consumer/refund exceptions for advance payment and the no-cancellation/no-changes rule. Also define whether a product quote may be revised before payment, shipping quote validity/price changes, handling failed/returned shipments, and photo consent/privacy, retention, and allowed file types. No deposit, post-payment cancellation/change path, fixed production ETA, or revision-round policy is assumed.
+
+#### Cross-workflow requirements to plan
+- Lists should support search, filters, sorting, pagination, clear status/owner, and useful empty/loading/error states.
+- Detail views should show chronological activity, internal notes, assignment, customer-visible communication, and linked records.
+- Define notification triggers and recipients for customers and staff separately; internal-only transitions should not accidentally notify customers.
+- Define audit-log access/retention and data masking. Do not store card details in the backoffice.
+- Dashboard MVP candidate: paid sales totals (net/gross definition TBD), order counts and pending orders, commissions needing action, low-stock items, content awaiting review, and recent activity. KPI definitions remain open.
+- Before implementation, map transitions and permissions to API contracts, validation/error cases, concurrency behavior, and test scenarios. Keep unresolved payment/legal/tax/refund policies explicit.
+
+#### Planning checklist (complete before backend implementation)
+- [ ] Confirm actors/roles, action-level permissions, scopes, and approval requirements.
+- [x] Validate commission intake, feasibility decision, 14-day product quote, advance payment, production updates, and separate shipping quote at workflow level.
+- [ ] Validate remaining workflows and operational exceptions/recovery paths, including deferred commission storage/resale policy.
+- [ ] Decide customer-visible vs internal fields, notes, notifications, and templates.
+- [ ] Define dashboard KPIs and reporting semantics.
+- [ ] Specify audit events, sensitive-data boundaries, and retention expectations.
+- [ ] Derive API/data contract requirements and acceptance tests from approved workflows (documentation only until implementation is authorized).
 
 #### DoD - Phase 6 (Launch Readiness)
 - Full QA sign-off is completed (functional, accessibility, SEO, performance).
