@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { CubeIcon, ProfileIcon } from "../../src/icons";
+import { CubeIcon, ProfileIcon } from "@shared/icons";
 import type { Locale } from "../i18n";
 
 const copy = {
@@ -38,7 +38,7 @@ const copy = {
 
 const fieldClass = "mt-2 min-h-12 w-full border border-white/10 bg-black/20 px-4 font-body text-sm normal-case text-white outline-none transition-colors focus:border-primary";
 const labelClass = "block font-label text-[10px] uppercase leading-5 text-text-dim";
-const buttonClass = "inline-flex min-h-11 items-center justify-center border border-primary bg-primary px-6 font-label text-[10px] uppercase text-background transition-colors hover:bg-white hover:border-white";
+const buttonClass = "inline-flex w-full items-center justify-center gap-3 bg-primary px-6 py-3 font-label text-xs uppercase tracking-widest text-[#0d0d0d] shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all duration-300 hover:bg-white hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] sm:w-auto sm:px-8 sm:py-4";
 const tabSlugs = ["personal", "payments", "downloads", "orders"] as const;
 
 export function ProfilePageContent({ locale }: { locale: Locale }) {
@@ -114,7 +114,7 @@ export function ProfilePageContent({ locale }: { locale: Locale }) {
                 event.preventDefault();
                 selectTab(event.key === "Home" ? 0 : event.key === "End" ? text.tabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + text.tabs.length) % text.tabs.length);
               }
-            }} className={`min-h-12 px-3 py-3 text-left font-label text-[10px] uppercase leading-4 transition-colors md:text-center ${activeTab === index ? "bg-primary text-background" : "text-text-dim hover:bg-white/5 hover:text-white"}`}>{tab}</button>
+            }} className={`min-h-12 px-3 py-3 text-left font-label text-[10px] uppercase leading-4 transition-all duration-300 md:text-center ${activeTab === index ? "bg-primary text-background" : "border border-transparent text-text-dim backdrop-blur-sm hover:border-white/20 hover:bg-white hover:text-[#0d0d0d] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]"}`}>{tab}</button>
           ))}
         </div>
 
@@ -181,7 +181,7 @@ function DownloadCard({ title, description, format, downloadLabel, detailsLabel,
         <h3 className="font-display text-sm font-semibold leading-snug text-white sm:text-base">{title}</h3>
         <div className="mt-3 grid grid-cols-2 gap-2">
           <a href={href} download className={`${buttonClass} min-h-9 px-2 text-center text-[8px] sm:text-[9px]`} aria-label={`${downloadLabel}: ${title}`}>{downloadLabel}</a>
-          <button type="button" aria-expanded={expanded} onClick={() => setExpanded((open) => !open)} className="flex min-h-9 cursor-pointer items-center justify-center gap-1 border border-white/20 px-2 text-center font-label text-[8px] uppercase text-text-dim transition-colors hover:border-primary hover:text-primary sm:text-[9px]">
+          <button type="button" aria-expanded={expanded} onClick={() => setExpanded((open) => !open)} className="flex min-h-9 cursor-pointer items-center justify-center gap-1 border border-white/20 px-2 text-center font-label text-[8px] uppercase text-text-dim backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-[#0d0d0d] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] sm:text-[9px]">
             {detailsLabel}<span aria-hidden="true" className={`inline-block transition-transform ${expanded ? "rotate-180" : ""}`}>⌄</span>
           </button>
         </div>
@@ -199,7 +199,7 @@ function TrackingCard({ locale, title, item, id, status, updated, progressTitle,
   return <article className="border border-white/10 bg-black/20 p-5 md:p-6">
     <div className="flex items-center justify-between gap-3">
       <p className="min-w-0 break-words font-label text-[9px] uppercase text-text-dim">{title} / {id}</p>
-      <button type="button" aria-expanded={expanded} onClick={() => setExpanded((open) => !open)} className="flex min-h-9 shrink-0 items-center justify-center gap-1 border border-white/20 px-3 text-center font-label text-[8px] uppercase text-text-dim transition-colors hover:border-primary hover:text-primary sm:text-[9px]">
+      <button type="button" aria-expanded={expanded} onClick={() => setExpanded((open) => !open)} className="flex min-h-9 shrink-0 items-center justify-center gap-1 border border-white/20 px-3 text-center font-label text-[8px] uppercase text-text-dim backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-[#0d0d0d] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] sm:text-[9px]">
         {detailsLabel}<span aria-hidden="true" className={`inline-block transition-transform ${expanded ? "rotate-180" : ""}`}>⌄</span>
       </button>
     </div>

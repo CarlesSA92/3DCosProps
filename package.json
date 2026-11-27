@@ -1,0 +1,24 @@
+{
+  "name": "3dcosprops-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "uis/web"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=web",
+    "build:web": "npm run build --workspace=web",
+    "test:web": "npm test --workspace=web",
+    "lint:web": "npm run lint --workspace=web",
+    "typecheck:web": "npm exec --workspace=web -- tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.3.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}

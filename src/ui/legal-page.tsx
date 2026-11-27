@@ -1,4 +1,14 @@
-import type { LegalDocument } from "../../app/content/legal-content";
+export type LegalSection = {
+  title: string;
+  body: string | string[];
+};
+
+export type LegalDocument = {
+  title: string;
+  lastUpdated: string;
+  disclaimer: string;
+  sections: LegalSection[];
+};
 
 type LegalPageProps = {
   document: LegalDocument;

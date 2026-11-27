@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { LegalPage } from "../../src/ui/legal-page";
+import { LegalPage } from "@shared/ui/legal-page";
 import type { LegalDocument } from "../../app/content/legal-content";
 
 const mockDocument: LegalDocument = {

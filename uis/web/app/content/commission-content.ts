@@ -1,6 +1,6 @@
 import type { Locale } from "../i18n";
 import { getDictionary } from "../content";
-import type { CommissionPageDictionary, PageContent } from "../../src/types/content";
+import type { CommissionPageDictionary, PageContent } from "@shared/types/content";
 
 const commissionContent: Record<Locale, Omit<CommissionPageDictionary, keyof PageContent>> = {
   en: {

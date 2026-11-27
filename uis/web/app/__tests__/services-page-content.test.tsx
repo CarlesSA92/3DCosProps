@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ServicesPageContent } from "../components/services-page-content";
-import type { ServicesDictionary } from "../../src/types/content";
+import type { ServicesDictionary } from "@shared/types/content";
 
 const mockDict: ServicesDictionary = {
   languageLabel: "Language",

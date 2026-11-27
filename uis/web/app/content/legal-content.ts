@@ -1,20 +1,11 @@
 import type { Locale } from "../i18n";
+import type { LegalDocument, LegalSection } from "@shared/ui/legal-page";
 
 /**
  * Legal document sections represented as paragraphs.
  * A section has a title and a body (can be plain text or an array of paragraphs).
  */
-export type LegalSection = {
-  title: string;
-  body: string | string[];
-};
-
-export type LegalDocument = {
-  title: string;
-  lastUpdated: string;
-  disclaimer: string;
-  sections: LegalSection[];
-};
+export type { LegalDocument, LegalSection };
 
 export type LegalDictionaries = {
   privacyPolicy: LegalDocument;

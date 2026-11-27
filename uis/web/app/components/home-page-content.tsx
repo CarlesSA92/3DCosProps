@@ -1,9 +1,9 @@
-import { PageIntro } from "../../src/ui/page-intro";
-import { SectionIntro } from "../../src/ui/section-intro";
-import { FeatureCard } from "../../src/ui/feature-card";
-import { CarouselSection } from "../../src/ui/carousel-section";
-import { SettingsIcon, PenIcon } from "../../src/icons";
-import type { HomePageContentDict } from "../../src/types/content";
+import { PageIntro } from "@shared/ui/page-intro";
+import { SectionIntro } from "@shared/ui/section-intro";
+import { FeatureCard } from "@shared/ui/feature-card";
+import { CarouselSection } from "@shared/ui/carousel-section";
+import { SettingsIcon, PenIcon } from "@shared/icons";
+import type { HomePageContentDict } from "@shared/types/content";
 
 type HomePageContentProps = {
   dict: HomePageContentDict;

@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { PageIntro } from "../../src/ui/page-intro";
-import { ProjectCard } from "../../src/ui/project-card";
-import { ProjectGalleryModal } from "../../src/ui/project-gallery-modal";
-import { splitGoldTag } from "../../src/utils/split-gold-tag";
-import type { ProjectsDictionary } from "../../src/types/content";
+import { PageIntro } from "@shared/ui/page-intro";
+import { ProjectCard } from "@shared/ui/project-card";
+import { ProjectGalleryModal } from "@shared/ui/project-gallery-modal";
+import { FilterGroup } from "@shared/ui/filter-group";
+import { splitGoldTag } from "@shared/utils/split-gold-tag";
+import type { ProjectsDictionary } from "@shared/types/content";
 
 type ProjectsPageContentProps = {
   dict: ProjectsDictionary;
@@ -90,23 +91,13 @@ export function ProjectsPageContent({ dict, locale }: ProjectsPageContentProps) 
           </h2>
 
           {/* Filter buttons */}
-          <div className="flex items-center justify-center gap-3 mb-8 md:mb-10" role="group" aria-label={`${dict.filterAll} — ${dict.filterAnime} — ${dict.filterGames}`}>
-            {filters.map((filter) => (
-              <button
-                key={filter.key}
-                onClick={() => handleFilter(filter.key)}
-                aria-pressed={activeFilter === filter.key}
-                aria-label={filter.label}
-                className={`font-label text-[11px] uppercase tracking-[0.1em] px-5 py-2 rounded-full border transition-all duration-300 ${
-                  activeFilter === filter.key
-                    ? "bg-primary text-[#0d0d0d] border-primary shadow-[0_0_15px_rgba(212,175,55,0.3)]"
-                    : "border-white/20 bg-white/5 text-text-dim hover:border-primary/50 hover:text-primary"
-                }`}
-              >
-                {filter.label}
-              </button>
-            ))}
-          </div>
+          <FilterGroup
+            options={filters.map(({ key, label }) => ({ value: key, label }))}
+            value={activeFilter}
+            onChange={handleFilter}
+            label={`${dict.filterAll} — ${dict.filterAnime} — ${dict.filterGames}`}
+            className="mb-8 md:mb-10"
+          />
 
           {/* 3-column grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { isLocale, type Locale } from "../../i18n";
 import { legalDictionaries } from "../../content/legal-content";
-import { LegalPage } from "../../../src/ui/legal-page";
+import { LegalPage } from "@shared/ui/legal-page";
 
 type PrivacyPolicyPageProps = {
   params: Promise<{ locale: string }>;

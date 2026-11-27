@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { PageIntro } from "../../src/ui/page-intro";
-import { useShopCart } from "../../src/utils/use-shop-cart";
-import { ArrowIcon, CartIcon } from "../../src/icons";
-import type { ShopCategory, ShopDictionary, ShopProductContent } from "../../src/types/content";
+import { PageIntro } from "@shared/ui/page-intro";
+import { FilterGroup } from "@shared/ui/filter-group";
+import { useShopCart } from "@shared/utils/use-shop-cart";
+import { ArrowIcon, CartIcon } from "@shared/icons";
+import type { ShopCategory, ShopDictionary, ShopProductContent } from "@shared/types/content";
 import type { Locale } from "../i18n";
 
 type ShopPageContentProps = {
@@ -168,26 +169,18 @@ export function ShopPageContent({ dict, locale, initialCollection = null }: Shop
           </div>
           </div>
 
-          <div className="mb-8 flex flex-col gap-5 border-b border-white/10 pb-5 md:mb-8 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={dict.collectionsTitle}>
-              {[filters[0], filters[2], filters[3], filters[1], filters[4]].map((filter) => (
-                <button
-                  key={filter.key}
-                  type="button"
-                  onClick={() => handleFilter(filter.key)}
-                  aria-pressed={activeFilter === filter.key}
-                  className={`min-h-10 border px-4 font-label text-[10px] uppercase transition-colors md:px-5 ${
-                    activeFilter === filter.key
-                      ? "border-primary bg-primary text-[#0d0d0d]"
-                      : "border-white/10 bg-white/[0.03] text-text-dim hover:border-primary/60 hover:text-primary"
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              ))}
+          <div className="mb-8 border-b border-white/10 pb-6 md:mb-8">
+            <div className="mb-5">
+              <FilterGroup
+                options={[filters[0], filters[2], filters[3], filters[1], filters[4]].map(({ key, label }) => ({ value: key, label }))}
+                value={activeFilter}
+                onChange={handleFilter}
+                label={dict.collectionsTitle}
+                className="gap-2"
+              />
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 md:justify-end">
+            <div className="flex flex-wrap items-start justify-between gap-4">
               <label className="flex items-center gap-3 font-label text-[10px] uppercase text-text-dim">
                 {dict.sortLabel}
                 <select
@@ -221,10 +214,15 @@ export function ShopPageContent({ dict, locale, initialCollection = null }: Shop
                   <div
                     role="img"
                     aria-label={product.image.alt}
-                    className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-white/10 bg-cover bg-center"
+                    className="group/image relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-white/10 bg-cover bg-center"
                     style={{ backgroundImage: product.image.gradient }}
                   >
                     <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,rgba(255,255,255,0.035)_50%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(255,255,255,0.035)_50%,transparent_51%)] bg-[size:32px_32px] opacity-60" />
+                    <span aria-hidden="true" className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-500 group-hover/image:opacity-100 group-focus-visible/image:opacity-100">
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-black/70 text-primary shadow-[0_0_15px_rgba(212,175,55,0.2)] backdrop-blur-sm transition-all duration-500 group-hover/image:scale-110 group-hover/image:border-white group-hover/image:bg-white group-hover/image:text-[#0d0d0d] group-hover/image:shadow-[0_0_30px_rgba(212,175,55,0.5)] md:h-16 md:w-16">
+                        <ArrowIcon className="h-8 w-8 md:h-9 md:w-9" />
+                      </span>
+                    </span>
                     <span className="relative font-display text-4xl font-semibold uppercase italic text-white/20 md:text-5xl" aria-hidden="true">
                       3D
                     </span>
@@ -246,7 +244,7 @@ export function ShopPageContent({ dict, locale, initialCollection = null }: Shop
                         type="button"
                         onClick={() => handleAddToCart(product)}
                         aria-label={`${dict.addToCart}: ${product.title}`}
-                        className="min-h-10 border border-white/20 px-4 font-label text-[10px] uppercase text-white transition-colors hover:border-primary hover:bg-primary hover:text-[#0d0d0d]"
+                        className="inline-flex min-h-10 w-full items-center justify-center gap-2 bg-primary px-4 py-2 font-label text-[10px] uppercase tracking-widest text-[#0d0d0d] shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all duration-300 hover:bg-white hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] sm:w-auto"
                       >
                         {dict.addToCart}
                       </button>
@@ -264,7 +262,7 @@ export function ShopPageContent({ dict, locale, initialCollection = null }: Shop
               <button
                 type="button"
                 onClick={() => setVisibleCount((count) => count + INITIAL_VISIBLE)}
-                className="min-h-11 border border-white/20 px-7 font-label text-[10px] uppercase text-white transition-colors hover:border-primary hover:text-primary"
+                className="inline-flex min-h-12 w-full items-center justify-center gap-3 bg-primary px-6 py-3 font-label text-xs uppercase tracking-widest text-[#0d0d0d] shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all duration-300 hover:bg-white hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] sm:w-auto sm:px-8 sm:py-4"
               >
                 {dict.loadMore}
               </button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import type { Cart, ProductCartItem } from "../../../../src/models/api/contracts";
+import type { Cart, ProductCartItem } from "../models/api/contracts";
 import type { ShopProductContent } from "../types/content";
 
 const CART_STORAGE_KEY = "3d-cosprops-cart";

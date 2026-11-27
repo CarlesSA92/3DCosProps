@@ -2,7 +2,7 @@
 
 ## Global Status
 - Current phase: Phase 3 foundation/UI scope complete ✅; Phase 4 (Full Commerce and Services Integration) next
-- Last update: 2026-11-23 — aligned payment-provider status; completed a static accessibility/structured-data review and automated validation
+- Last update: 2026-11-27 — planned an early visual Backoffice prototype in Phase 4, with implementation and API integration delivered incrementally by workflow
 - Scope decision: Phase 1 complete; Phase 2 complete for documented UI scope; Phase 3 foundation/UI scope complete; Phase 4 not started
 - Phase 0 status: Completed
 - Phase 1 status: Completed
@@ -12,7 +12,7 @@
 - Payment-provider status: Stripe (cards) + PayPal selected; real checkout integration, compliance, and backend flows remain Phase 4 work.
 - Accessibility/SEO audit note: all implemented localized page families were inspected for landmarks, labels, keyboard semantics, metadata, and structured data. Automated verification: TypeScript passed; 109/109 unit tests passed; ESLint completed with five existing warnings and no errors; `git diff --check` passed. This is a code review, not a manual WCAG conformance or screen-reader sign-off.
 - Audit follow-up: verify product-specific structured data and runtime accessibility (keyboard/focus/dialog behavior) during Phase 4 QA; the product detail currently relies on global Organization data rather than Product JSON-LD.
-- Backoffice planning decision (2026-11-23): plan a private operational backoffice before Phase 4 implementation. Planning only; no backend implementation is authorized. Define roles/permissions, workflows, state transitions, dashboard metric definitions, auditability, and API/data implications first.
+- Backoffice planning decision (2026-11-23; sequencing clarified 2026-11-27): create a visual-only Backoffice prototype during Phase 4 planning/early delivery, using mock data to expose UX and operational requirements. Then specify, implement, and connect each workflow incrementally. A visual prototype does not approve business rules, grant access, or authorize backend actions. Do not duplicate prototype/UI tasks in Phase 5; Phase 5 owns operational backend capabilities and production connections.
 
 ## Progress Tracking Rules
 - Mark each item with [x] only when fully completed.
@@ -146,11 +146,22 @@ Goal: agree on operational workflows and access boundaries before backend and co
 - Prefer review/preview and controlled publishing for public-facing catalog and portfolio changes.
 
 #### Initial roles and permission questions
-- **Administrator:** full operational access, configuration and user/role administration, exceptional overrides, and sensitive reporting.
-- **Manager:** day-to-day handling of orders/commissions and content/catalog within assigned scope; authority to publish, refund, archive, or reassign remains to be decided per workflow.
-- **Open:** decide whether editor/support roles are needed, manager scopes, and which actions require a second approver. Specify permissions per action, not only per page.
+- **Role model agreed in principle (2026-11-26):** the business currently has one operator, who will hold the **Admin** role. If more staff are added later, they will be **Managers**. Customers are **Users** when registered and **Anonymous** when not registered.
+- **Admin:** unrestricted access to all site and backoffice pages and capabilities, including editing and support; includes all Manager and customer capabilities, plus administration/override capabilities.
+- **Manager:** backoffice access; may manage commissions and orders and create/edit product drafts, including uploading product images. Publication requires Admin validation/approval. Exact authority for refunds, cancellations, archiving, user data, and other sensitive actions remains to be specified by workflow.
+- **User (registered customer):** frontend access; may purchase products and submit/contact the shop regarding commissions; no backoffice access or site editing.
+- **Anonymous:** frontend browsing and registration are allowed; purchasing and sending messages/submitting commission requests are not allowed until registered.
+- **Permission proposal reviewed at high level (2026-11-26):** Admin/Manager proposal is accepted as a first draft, subject to a detailed review when those views/permissions are implemented. Admin is unrestricted; Manager operates within limited backoffice permissions and cannot publish public content without Admin approval. **Users and Anonymous must never access backoffice pages, routes, fields, or privileges.** Customer activities (contact, purchases, commissions, profile, order/download management) happen exclusively through frontend pages and customer-facing forms/profile, never through backoffice interfaces. Keep the detailed action matrix explicitly marked “review before implementation”; do not treat this draft as final authorization policy.
 
 #### Workflow drafts to validate (not final state contracts)
+- **Updated definitions and policies (2026-11-26):** an Order may contain multiple Projects. Each product or commission that needs creation follows project phases; when ready, it becomes an order item ready for dispatch. Products/commissions may be digital or physical. After verified payment, digital items are downloadable from the user's profile from server/cloud/database storage; digital returns are not allowed per business policy because access is immediate (legal validation required). Mixed orders enable downloads after payment verification while physical items follow production and shipping separately.
+- **Cancellation/production calendar rule (2026-11-26):** payment/order day counts as working day one. Monday payment → cancellation Monday and Tuesday; production starts Wednesday. Friday payment → cancellation Friday and Monday; production starts Tuesday. Public holidays count like weekends/non-working days; use Spain timezone. Within the two-working-day period, refund payment minus provider fee; after it, no refund per business policy. For a post-window provider dispute, intended evidence includes production having started, customer acceptance/payment confirmation, and expiry of cancellation window. Validate legal wording/provider terms before implementation.
+- **Shipping incidents and calendar proposal (2026-11-26):** all physical shipments use tracking. Photograph the product/order and package before dispatch. Incidents may occur at origin, transit, customs, destination, or delivery; for damage/non-delivery provide evidence to the carrier and submit a complaint/claim, with handling dependent on the specific case. Consider an internal Calendar for holidays, events, and orders; holidays should inform working-day scheduling. Dedicated Incidents manager and Calendar page are proposed; MVP scope remains undecided. Storage, resale, and legal terms remain deferred for external discussion.
+- **Backoffice views agreed as project scope (2026-11-26), delivered incrementally one at a time:** 1) Dashboard (home); 2) Sales (list/details, newest first by default); 3) Portfolio & Media (home carousel, portfolio, product images); 4) Product Catalog (create/edit); 5) Commissions (intake, review, feasibility/costs, customer contact and quotes); 6) User Management (registered users, data editing, role assignment); 7) Asset Vault (archive/STL/PDF uploads and storage for product association); 8) Incidents; 9) Calendar (schedule, timing, events); 10) Statistics (detailed telemetry/charts); 11) Profile. Backoffice must be responsive and usable on PC, tablet, and mobile. Individual view designs, sequencing, permissions, security/privacy review and detailed behavior remain to be defined.
+- **Backoffice access requirement (2026-11-26):** only authenticated Admins and Managers may access backoffice pages. Direct URL access by unauthenticated or unauthorized users must not render protected content and should redirect to login. Enforce authorization at server/API level as well as in UI/navigation.
+- **Core commerce terms agreed at definition level (2026-11-26):** a **Product** is any item displayed in the online shop that can be purchased. An **Order** consists of one or more products placed for purchase. An **Encargo/Commission** is a custom request for a product not listed in the shop or an extra/customization to an existing product, submitted through the Commissions form. A **Project** is the set of phases involved in creating product(s). Each product or commission requiring creation goes through project phases; an Order may contain multiple Projects. Once creation is complete, the result becomes part of an Order ready for dispatch. Products and commissions may be digital or physical. Define digital delivery milestones and mixed-format order handling before finalizing contracts.
+- **Payment, cancellation, delivery, and incident policies agreed at workflow level (2026-11-26):** do not hand over or deliver a product until payment is verified and received; once verified and received, proceed with delivery/shipping. A customer may cancel during the first **two working days, Monday–Friday, in Spain's timezone**, after payment; refund the payment less the payment-provider fee. After this window, refunds are not allowed under the agreed business policy. Every physical shipment must have a tracking number. If a failure occurs, wait for the customer's response/decision as applicable. Shipping incidents can arise at origin, in transit, customs, destination, or delivery; usual evidence practice is to photograph the product/order and package before dispatch, then provide evidence and submit a complaint/claim to the carrier for delivery damage or non-delivery. Exact case handling varies. A dedicated backoffice Incidents page is proposed, not yet approved for MVP. Storage, resale, and legal terms remain deferred for external discussion.
+- **Remaining clarifications before implementation:** define working-day counting precisely (payment timestamp vs next local business day, cutoff time, public holidays, inclusive/exclusive deadline); define provider-specific payment verification/receipt and handling of later reversal, dispute, or chargeback; detail incident categories, evidence, ownership, customer/carrier communication, resolution/closure, and digital-delivery exceptions; decide whether Incidents is an MVP backoffice page or later addition. Do not encode financial/legal rules until externally validated.
 - **Products:** Draft → In review → Published → Archived. Inventory/availability are separate operational fields, not publication states. Clarify review/publish authority, price-change safeguards, stock adjustments, and handling of products referenced by existing orders.
 - **Portfolio projects:** Draft → In review → Published → Archived. Define required media/alt text/localized content, preview, approval, and what happens to public URLs when unpublishing.
 - **Orders:** Received → Payment pending/paid (payment state tracked distinctly) → Confirmed → Preparing → Shipped/Ready for delivery → Delivered → Closed. Exceptions include cancellation, failed payment, return/refund, and partial fulfillment where applicable. Provider events are not ordinary manual status edits; define reconciliation and authorized refund flow.
@@ -159,20 +170,29 @@ Goal: agree on operational workflows and access boundaries before backend and co
   - Product payment and shipping payment are separate financial events. Track product quote/version, itemized materials/production costs, currency, sent/expiry timestamps, payment status/reference, and shipping quote/options/carrier selection/payment separately. Progress photos and customer messages are timeline events, not status transitions. Keep internal notes separate from customer-visible messages/media. Do not imply a fixed production deadline; duration depends on project scope.
   - **Deferred/open policy decisions:** storage duration and process after customer declines/does not arrange shipping; whether and under what conditions the product may be offered for resale; legal wording and any applicable consumer/refund exceptions for advance payment and the no-cancellation/no-changes rule. Also define whether a product quote may be revised before payment, shipping quote validity/price changes, handling failed/returned shipments, and photo consent/privacy, retention, and allowed file types. No deposit, post-payment cancellation/change path, fixed production ETA, or revision-round policy is assumed.
 
+#### Dashboard and reporting decisions (2026-11-26)
+- Dashboard KPI cards and definitions: Gross Sales = amount earned (exact gross/net and refund treatment still to be specified); Page Visits = number of people who have visited a website page (unique-person/session counting, consent, and analytics source still to be specified); Total Orders = order count (counting rules still to be specified); Downloads Completed = number of downloads of files sold on the website (download event/source and retry counting still to be specified); Total Sales = number of sales made (counting rules still to be specified).
+- Dashboard chart: daily net amount received, split into 3D Models, Finished Products, and Commissions. Attribute transactions by payment date; monthly view is the initial time range, with an annual option for longer-term comparison. Include sales only once accepted and paid. Provider breakdown is not needed on the initial Dashboard.
+- Dashboard operational lists: show orders currently in process for a quick status check and incoming commissions awaiting review. If either queue has no entries, show a clear empty-state message for that queue; do not hide the other queue or any in-process orders. Once a commission is approved and paid, move it into the orders list (and out of the incoming-review queue).
+- Backoffice navigation: persistent left-side menu listing the different backoffice pages. Preserve the color palette and visual aesthetic established by the existing public website. Proposed page inventory (2026-11-26) is listed above; responsive behavior and MVP prioritization remain to be designed.
+- Detailed reporting is intended for a separate Statistics page, to be designed later. Candidate reporting there includes payment-provider breakdown (Stripe/PayPal) and product-type tables; scope and metric definitions remain open.
+- Cancellation window for made-to-order/product-manufacturing orders (updated 2026-11-26): customer may cancel during the first two working days (Monday–Friday, Spain timezone) after payment; refund payment less the payment-provider fee. After the two-working-day window, no refund is allowed under the agreed business policy. Exact deadline calculation, public-holiday handling, legal wording, and provider behavior must be validated before implementation. This supersedes the earlier calendar-day formulation; storage/resale policy remains deferred.
+
 #### Cross-workflow requirements to plan
 - Lists should support search, filters, sorting, pagination, clear status/owner, and useful empty/loading/error states.
 - Detail views should show chronological activity, internal notes, assignment, customer-visible communication, and linked records.
 - Define notification triggers and recipients for customers and staff separately; internal-only transitions should not accidentally notify customers.
 - Define audit-log access/retention and data masking. Do not store card details in the backoffice.
-- Dashboard MVP candidate: paid sales totals (net/gross definition TBD), order counts and pending orders, commissions needing action, low-stock items, content awaiting review, and recent activity. KPI definitions remain open.
+- Dashboard MVP (updated 2026-11-26): KPI cards (Gross Sales = amount earned, Page Visits = people visiting website pages, Total Orders, Downloads Completed = sold files downloaded, Total Sales = number of sales); daily net-received sales chart split by 3D Models, Finished Products, and Commissions, with monthly and annual views and payment-date attribution; in-process orders list; incoming commissions awaiting review list with independent empty states. Define precise KPI sources/counting and refund/cancellation behavior before implementation. Richer provider reporting is deferred to a separate Statistics page. Backoffice uses a persistent left-side page menu and the existing site's visual identity; page inventory/responsive behavior remain to be decided.
 - Before implementation, map transitions and permissions to API contracts, validation/error cases, concurrency behavior, and test scenarios. Keep unresolved payment/legal/tax/refund policies explicit.
 
 #### Planning checklist (complete before backend implementation)
-- [ ] Confirm actors/roles, action-level permissions, scopes, and approval requirements.
+- [x] Confirm initial actors/roles and high-level access boundaries: Admin, Manager, registered User, and Anonymous (2026-11-26). Action-level permissions, scopes, and workflow-specific approval requirements remain to be mapped before implementation.
 - [x] Validate commission intake, feasibility decision, 14-day product quote, advance payment, production updates, and separate shipping quote at workflow level.
-- [ ] Validate remaining workflows and operational exceptions/recovery paths, including deferred commission storage/resale policy.
+- [ ] Validate remaining workflows and operational exceptions/recovery paths, including exact cancellation/payment/shipping rules and deferred commission storage/resale policy. Core entity terminology and initial policy proposals were captured 2026-11-26; outstanding clarifications are listed above.
 - [ ] Decide customer-visible vs internal fields, notes, notifications, and templates.
-- [ ] Define dashboard KPIs and reporting semantics.
+- [ ] Define KPI data sources/counting (unique visits, download events/retries, order/sale counts, refund treatment), monthly/annual comparison behavior, and separate Statistics page scope.
+- [ ] Define backoffice page inventory and responsive behavior for the left navigation.
 - [ ] Specify audit events, sensitive-data boundaries, and retention expectations.
 - [ ] Derive API/data contract requirements and acceptance tests from approved workflows (documentation only until implementation is authorized).
 
@@ -500,10 +520,17 @@ cancelled (only from submitted / in_review / quoted — before payment)
 ---
 
 ## Phase 4 - Full Commerce and Services Integration
-Goal: implement real backend integration and payment flow.
+Goal: deliver customer commerce integrations and establish an early visual Backoffice prototype that helps discover and validate operational requirements. Prototype first with mock data; implement real behavior only when its workflow, permissions, contract, and acceptance cases are sufficiently defined. Deliver in vertical slices rather than waiting for every view or endpoint to be complete.
 
 ### Checklist
-- [ ] Implement backend/API endpoints under services.
+- [ ] Define Phase 4/5 boundaries and first vertical slices: Phase 4 owns customer-facing commerce/profile integrations and the visual-only Backoffice prototype; Phase 5 owns production operational backend capabilities and their production connections. Shared foundations/contracts are assigned once to the phase that implements them; avoid duplicate checklist ownership.
+- [ ] Plan the Backoffice prototype scope from the agreed page inventory: prioritize views and journeys, record explicitly deferred views/actions, and map each view to its users and purpose.
+- [ ] Build the Backoffice visual shell: responsive persistent navigation, page headers, consistent forms/tables/dialogs, status indicators, and the site's existing visual identity; support PC, tablet, and mobile layouts.
+- [ ] Build prioritized Backoffice views as prototypes using clearly identified mock data only. Include representative list/detail and empty, loading, error, and populated states; keep unapproved or high-impact actions disabled/non-functional and label them as prototype behavior.
+- [ ] Maintain a per-view traceability record: purpose, displayed data, actions, roles, states, filters/sorting/pagination, notifications, API/contract dependencies, edge cases, and unresolved decisions. Update it during prototype reviews so discoveries are not lost.
+- [ ] Review the prototype against operational workflows and update the workflow drafts, page inventory, priorities, and acceptance scenarios; distinguish confirmed decisions from assumptions and open questions.
+- [ ] For each Phase 4 customer-facing slice, approve the relevant workflow and derive endpoint/data contracts, authorization, validation/error behavior, concurrency/idempotency needs, and acceptance tests before enabling real actions.
+- [ ] Implement only the backend/API endpoints required for approved Phase 4 customer-facing slices under services; do not treat this as completion of the Phase 5 operational backend.
 - [ ] Connect commissions form to API.
 - [ ] Implement checkout with selected payment gateway.
 - [ ] Add order lifecycle handling and validation.
@@ -512,34 +539,46 @@ Goal: implement real backend integration and payment flow.
 - [ ] Connect User Profile password update flow to backend with secure validation.
 - [ ] Connect User Profile payment method management to payment provider tokens/references.
 - [ ] Connect User Profile order and commission status feeds to backend endpoints.
-- [ ] Enforce backend link access by role on both frontend guards and backend authorization.
+- [ ] Enforce customer account and role-based access for implemented Phase 4 routes/actions on both frontend and backend; backoffice prototype visibility is not an authorization mechanism.
+- [ ] Validate prototype usability and responsive behavior, accessibility basics, and consistency between visible controls/states and documented workflow decisions; keep prototype-only behavior clearly separated from production functionality.
+
+### Phase 4 Prototype Guardrails
+- Backoffice prototype screens are planning/UX artifacts, not production operations. Use synthetic fixtures; never expose real customer, payment, or sensitive data in the prototype.
+- Mock transitions must be clearly non-persistent and must not imply that a payment, refund, shipment, publication, deletion, or permission change actually occurred.
+- Do not implement/enable real financial, destructive, publication, or personal-data actions until the relevant policy, action-level permission, endpoint contract, confirmation/safeguard, audit event, and tests are approved.
+- Preserve an explicit status for every item: `prototype`, `specified`, `implemented`, `integrated`, or `deferred`; do not mark a Phase 5 operational capability complete merely because a visual screen exists.
+- Reuse the prototype as the UX reference when Phase 5 implementation begins. Changes discovered then should update the traceability record and contracts, not create a second parallel set of views.
 
 ### Exit Criteria
-- End-to-end purchase flow works reliably.
-- Error handling and observability are in place.
+- Agreed Phase 4 customer-facing commerce/profile flows work end-to-end with validation, error handling, observability, and integration tests.
+- Prioritized Backoffice prototype views exist with responsive layouts, mock-state coverage, and documented assumptions/open decisions.
+- A per-view traceability record links prototype requirements to approved workflows, contracts, permissions, and tests; non-approved actions remain inert.
+- Phase 5 operational backend capabilities are explicitly tracked as pending and are not represented as completed by the prototype.
 
 ---
 
 ## Phase 5 - Backend Setup and Admin Operations
-Goal: configure backend capabilities and admin operations required to run users, commissions, store, products, and portfolio.
+Goal: configure and implement production backend capabilities and operational Backoffice behavior required to run users, commissions, store, products, portfolio, and related operations. Use the Phase 4 prototype and traceability record as UX input; implement and connect capabilities incrementally as workflows/contracts are approved. Do not repeat Phase 4 prototype creation or customer-facing integration tasks here.
 
 ### Checklist
 - [x] Define backend integration blueprint and shared API contracts for all views (pre-implementation).
 - [ ] Configure backend project foundation and integration boundaries.
-- [ ] Implement admin metrics dashboard baseline (KPIs to be finalized later).
-- [ ] Implement users control panel (filter, view details, delete/disable).
-- [ ] Implement commissions control panel (intake, detail view, status tracking).
-- [ ] Implement online shop control panel (sales view, shipping management, order status).
-- [ ] Implement products database CRUD (create/read/update/delete).
-- [ ] Connect products database to store listing and updates.
-- [ ] Implement portfolio database CRUD for Projects content.
-- [ ] Connect portfolio database to Projects page rendering.
-- [ ] Define admin auth and permissions model.
+- [ ] Finalize production action-level RBAC, auditability, sensitive-data boundaries, and retention from the planning matrix before enabling operational actions.
+- [ ] Implement production Backoffice authentication/authorization and server-side protection for Admin/Manager routes and APIs; reject unauthenticated/unauthorized direct access.
+- [ ] Implement operational dashboard data and metrics against approved definitions and sources (prototype layout is Phase 4; production data/behavior is Phase 5).
+- [ ] Implement production user-management operations (filters/details and approved disable/delete or other lifecycle actions) with permission checks and audit records.
+- [ ] Implement production commission operations (intake/detail, approved transitions, internal notes, customer communications, and status tracking).
+- [ ] Implement production sales/order operations (list/detail, shipping and approved status actions, reconciliation/refund paths where policies permit).
+- [ ] Implement product catalog persistence and CRUD with review/publication safeguards; connect the customer shop to the production catalog.
+- [ ] Implement portfolio/media persistence and CRUD with review/publication safeguards; connect the public Projects page to production content.
+- [ ] Implement additional operational views (Asset Vault, Incidents, Calendar, Statistics, Profile) only according to the approved priority, workflows, contracts, and policies; keep deferred scope explicitly deferred.
+- [ ] Add integration/authorization/audit tests for each production operational slice and verify it against the Phase 4 view traceability record.
 
 ### Exit Criteria
-- Admin panels and database operations are functional end-to-end.
+- Prioritized production Backoffice views and database operations are functional end-to-end with server-side authorization and auditability.
 - Store and Projects content can be maintained from backend tools.
 - Commission requests can be tracked operationally.
+- Implemented production behavior matches the approved workflows/contracts and the Phase 4 prototype or has an explicitly reviewed UX change; prototype-only fixtures and inert controls are not mistaken for production capabilities.
 
 ### Notes
 - Scope may be modified in future when this phase starts, based on business and operational requirements.

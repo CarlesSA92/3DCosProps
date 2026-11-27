@@ -1,5 +1,5 @@
 import type { Locale } from "./i18n";
-import type { HomeDictionary, ServicesDictionary, ProjectsDictionary, ShopDictionary } from "../src/types/content";
+import type { HomeDictionary, ServicesDictionary, ProjectsDictionary, ShopDictionary } from "@shared/types/content";
 
 const dictionaries: Record<Locale, HomeDictionary> = {
   en: {

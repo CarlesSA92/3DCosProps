@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type ChangeEvent, type DragEvent, type FormEvent } from "react";
-import { PageIntro } from "../../src/ui/page-intro";
-import type { CommissionPageDictionary } from "../../src/types/content";
+import { PageIntro } from "@shared/ui/page-intro";
+import type { CommissionPageDictionary } from "@shared/types/content";
 
 type CommissionsPageContentProps = {
   dict: CommissionPageDictionary;
@@ -370,11 +370,11 @@ export function CommissionsPageContent({ dict }: CommissionsPageContentProps) {
                     </button>
                   ) : <span aria-hidden="true" />}
                   {step < 2 ? (
-                    <button type="button" onClick={continueToNextStep} className="min-h-12 bg-primary px-6 font-label text-xs font-semibold uppercase tracking-[0.12em] text-on-primary transition-colors hover:bg-white">
+                    <button type="button" onClick={continueToNextStep} className="inline-flex min-h-12 items-center justify-center gap-3 bg-primary px-6 py-3 font-label text-xs uppercase tracking-widest text-[#0d0d0d] shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all duration-300 hover:bg-white hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] sm:px-8 sm:py-4">
                       {dict.actions.next} <span aria-hidden="true">→</span>
                     </button>
                   ) : (
-                    <button type="submit" className="min-h-12 bg-primary px-6 font-label text-xs font-semibold uppercase tracking-[0.12em] text-on-primary transition-colors hover:bg-white">
+                    <button type="submit" className="inline-flex min-h-12 items-center justify-center gap-3 bg-primary px-6 py-3 font-label text-xs uppercase tracking-widest text-[#0d0d0d] shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all duration-300 hover:bg-white hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] sm:px-8 sm:py-4">
                       {dict.actions.submit} <span aria-hidden="true">→</span>
                     </button>
                   )}

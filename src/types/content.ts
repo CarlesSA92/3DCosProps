@@ -1,4 +1,4 @@
-import type { Product } from "../../../../src/models/api/contracts";
+import type { Product } from "../models/api/contracts";
 
 export type NavItem = {
   href: string;

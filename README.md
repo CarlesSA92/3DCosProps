@@ -27,7 +27,7 @@ The repository follows a domain-first monorepo layout where each top-level folde
 |- .agents/        # Agent rules and operational guidance
 |- .memory-bank/   # Planning memory, progress tracking, and technical context
 |- docs/           # Product/design/backend architecture documentation
-|- media/          # Images and assets used by the web experience
+|- assets/         # Images and assets used by the web experience
 |- references/     # Visual references for final UI direction
 |- scripts/        # Automation and repository scripts
 |- services/       # API layer and backend contracts/implementations
@@ -81,6 +81,10 @@ Run in development mode:
 1. cd uis/web
 2. npm run dev
 3. Open http://localhost:3000
+
+Web serves shared media through `uis/web/public/media`, a symlink to the root
+`assets/` directory. Keep shared files in `assets/` and reference them as
+`/media/<filename>` in app code.
 
 Suggested first milestones:
 

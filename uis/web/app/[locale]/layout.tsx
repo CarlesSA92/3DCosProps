@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
-import { ScalesBackground } from "../../src/ui/scales-background";
+import { ScalesBackground } from "@shared/ui/scales-background";
 import { getDictionary } from "../content";
 import { isLocale, locales, type Locale } from "../i18n";
 

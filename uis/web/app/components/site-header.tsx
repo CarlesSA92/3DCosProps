@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import type { Locale } from "../i18n";
-import { ProfileIcon, HamburgerIcon, CloseIcon } from "../../src/icons";
+import { ProfileIcon, HamburgerIcon, CloseIcon } from "@shared/icons";
 
 type SiteHeaderProps = {
   locale: Locale;

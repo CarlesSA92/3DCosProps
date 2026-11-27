@@ -1,4 +1,4 @@
-import type { NavItem } from "../../src/types/content";
+import type { NavItem } from "@shared/types/content";
 import type { Locale } from "../i18n";
 import {
   FacebookIcon,
@@ -6,7 +6,7 @@ import {
   InstagramIcon,
   YouTubeIcon,
   SketchfabIcon,
-} from "../../src/icons";
+} from "@shared/icons";
 
 type SiteFooterProps = {
   locale: Locale;

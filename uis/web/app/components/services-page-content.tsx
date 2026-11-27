@@ -1,7 +1,7 @@
-import { PageIntro } from "../../src/ui/page-intro";
-import { CtaButton } from "../../src/ui/cta-button";
-import { renderBody } from "../../src/utils/render-body";
-import { splitGoldTag } from "../../src/utils/split-gold-tag";
+import { PageIntro } from "@shared/ui/page-intro";
+import { CtaButton } from "@shared/ui/cta-button";
+import { renderBody } from "@shared/utils/render-body";
+import { splitGoldTag } from "@shared/utils/split-gold-tag";
 import {
   CubeIcon,
   PrinterIcon,
@@ -9,8 +9,8 @@ import {
   HelmetIcon,
   MessageIcon,
   SprayIcon,
-} from "../../src/icons";
-import type { ServicesDictionary } from "../../src/types/content";
+} from "@shared/icons";
+import type { ServicesDictionary } from "@shared/types/content";
 import type { Locale } from "../i18n";
 import type { ReactNode } from "react";
 

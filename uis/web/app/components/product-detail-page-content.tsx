@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowIcon, CartIcon, CloseIcon, CubeIcon, MagnifyingGlassIcon, SettingsIcon } from "../../src/icons";
-import { PageIntro } from "../../src/ui/page-intro";
-import { splitGoldTag } from "../../src/utils/split-gold-tag";
-import { useShopCart } from "../../src/utils/use-shop-cart";
-import type { ShopDictionary, ShopProductContent } from "../../src/types/content";
+import { ArrowIcon, CartIcon, CloseIcon, CubeIcon, MagnifyingGlassIcon, SettingsIcon } from "@shared/icons";
+import { PageIntro } from "@shared/ui/page-intro";
+import { splitGoldTag } from "@shared/utils/split-gold-tag";
+import { useShopCart } from "@shared/utils/use-shop-cart";
+import type { ShopDictionary, ShopProductContent } from "@shared/types/content";
 import type { Locale } from "../i18n";
 import { getProductDetailDictionary } from "../content/product-detail-content";
 
@@ -142,7 +142,7 @@ export function ProductDetailPageContent({ product, dict, locale }: ProductDetai
                     <button type="button" title={text.increase} aria-label={text.increase} disabled={quantity === 99} onClick={() => setQuantity(quantity + 1)} className="h-full w-10 text-white hover:text-primary disabled:opacity-30">+</button>
                   </div>
                 </div>
-                <button type="button" onClick={() => setFeedback(addProduct(product, quantity) ? dict.addedToCart.replace("{product}", product.title) : text.error)} className="flex min-h-12 flex-1 items-center justify-center gap-3 border border-primary bg-primary px-5 font-label text-[10px] uppercase text-background transition-colors hover:bg-white hover:border-white">
+                <button type="button" onClick={() => setFeedback(addProduct(product, quantity) ? dict.addedToCart.replace("{product}", product.title) : text.error)} className="inline-flex min-h-12 flex-1 items-center justify-center gap-3 bg-primary px-5 py-3 font-label text-[10px] uppercase tracking-widest text-[#0d0d0d] shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all duration-300 hover:bg-white hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
                   <CartIcon />{dict.addToCart}
                 </button>
               </div>
